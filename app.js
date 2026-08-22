@@ -231,6 +231,7 @@ function setLoc(id){
   $('#menuLoc').textContent   = L.name;
   $('#evLoc').textContent     = L.name;
   $('#stickyCall').href       = 'tel:' + L.tel;
+  const sm = $('#stickyMaps'); if (sm) sm.href = L.maps;
   const hc = $('#heroCall'); if (hc) hc.href = 'tel:' + L.tel;
 
   // Cada ciudad tiene una carta de distinto largo: New Orleans son 41 platos y
