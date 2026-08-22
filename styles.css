@@ -506,6 +506,13 @@ footer h5{margin:0 0 .8rem;font-size:.72rem;text-transform:uppercase;letter-spac
 .band-ladrillo{background:var(--ladrillo);color:var(--masa);border-color:var(--ladrillo)}
 .band-ladrillo .eyebrow{color:rgba(245,238,225,.72)}
 
+/* Las anclas tienen que aterrizar debajo de la barra fija, no debajo de ella.
+   Sin esto, cada salto a #menu o #tuesday deja el encabezado de la sección
+   tapado por la barra — y en Taco Tuesday tapa justo la cinta corriente. */
+html{scroll-behavior:smooth}
+:root{--anchor-off:calc(var(--bar-h) + 1.5rem)}
+section[id],header[id]{scroll-margin-top:var(--anchor-off)}
+
 /* ---------- responsive ---------- */
 @media (max-width:900px){
   .hero-grid,.late,.planner,.wait,.foot{grid-template-columns:1fr}
@@ -515,12 +522,17 @@ footer h5{margin:0 0 .8rem;font-size:.72rem;text-transform:uppercase;letter-spac
 }
 @media (max-width:640px){
   body{padding-bottom:64px}
+  /* la barra baja a dos filas, así que las anclas necesitan más margen */
+  :root{--anchor-off:104px}
+  /* el aviso se dibuja por encima de la barra de acciones, no encima de ella */
+  .toast{bottom:calc(64px + 1rem)}
   .sticky{display:flex}
   .locbar-in{gap:.6rem;padding-block:.5rem}
   .locpick{margin-inline-start:0;width:100%;order:3}
   .locpick button{flex:1;padding:.5rem .3rem}
 }
 @media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
   *{transition:none!important;animation:none!important}
   .btn:hover{transform:none}
 }

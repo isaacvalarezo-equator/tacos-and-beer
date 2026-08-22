@@ -137,7 +137,7 @@ function renderEvents(){
       <span class="when">${when}</span>
       <h4>${e.title}</h4>
       <p>${e.copy}</p>
-      <a href="#grupos">${e.cta} →</a>
+      <a href="#parties">${e.cta} →</a>
     </article>`;
   }).join('');
 }
@@ -233,6 +233,13 @@ function setLoc(id){
   $('#stickyCall').href       = 'tel:' + L.tel;
   const hc = $('#heroCall'); if (hc) hc.href = 'tel:' + L.tel;
 
+  // Cada ciudad tiene una carta de distinto largo: New Orleans son 41 platos y
+  // Hammond 26. Sin anclar el scroll, quien esté leyendo a media página sale
+  // disparado más de mil píxeles al cambiar de local — y eso pasa justo en el
+  // momento de la demostración en que se enseña el selector.
+  const ref = $$('section').find(sec => sec.getBoundingClientRect().bottom > 0);
+  const antes = ref ? ref.getBoundingClientRect().top : 0;
+
   renderRail(L); renderMenu(); renderEvents(); renderLocs(); renderQueue(); renderSchema();
 
   // El contenido cambia de golpe al elegir otra ciudad. Un fundido corto evita
@@ -243,6 +250,13 @@ function setLoc(id){
     const el = $(q); if (!el) return;
     el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap');
   });
+
+  if (ref){
+    const desplazo = ref.getBoundingClientRect().top - antes;
+    // 'instant' porque html tiene scroll-behavior:smooth y una corrección
+    // animada se vería como un salto en cámara lenta.
+    if (Math.abs(desplazo) > 1) window.scrollBy({ top: desplazo, behavior: 'instant' });
+  }
 }
 
 /* ---------- party planner ---------- */
