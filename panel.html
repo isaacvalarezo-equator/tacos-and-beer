@@ -38,7 +38,9 @@
   .rojo{color:var(--rojo)} .amb{color:#B77B12} .tom{color:var(--verde)} .turq{color:#12786F}
 
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
-  .lst{border:2px solid var(--line-hard);background:var(--cal)}
+  /* padding-block:0 anula la regla global de `section`, que le metía hasta
+     112px de aire vacío dentro del marco, encima del encabezado. */
+  .lst{border:2px solid var(--line-hard);background:var(--cal);padding-block:0}
   .lst h3{
     margin:0;padding:.9rem 1.2rem;background:var(--comal);color:var(--masa);
     font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;

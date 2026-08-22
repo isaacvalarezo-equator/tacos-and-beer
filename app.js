@@ -74,13 +74,13 @@ function renderRail(L){
   $('#rail').innerHTML = tops.slice(0,8).map((i, n) => {
     const src = FOTOS[i[0]];
     const art = src
-      ? `<img src="${src}" alt="${i[0]}" loading="lazy">`
+      ? `<img src="${src}" alt="${i[0]}" width="800" height="600" loading="lazy">`
       : `<span>${i[0].split(' ')[0]}</span>`;
     return `
     <article class="card">
       <div class="card-art${src ? ' has-photo' : ' c' + ((n % 4) + 1)}">${art}</div>
       <div class="card-body">
-        <h4>${i[0]}</h4>
+        <h3>${i[0]}</h3>
         <p>${i[1] || ''}</p>
         <span class="price">${money(i[2])}</span>
       </div>
@@ -135,7 +135,7 @@ function renderEvents(){
     const when = d.toLocaleDateString('en-US', { month:'long', day:'numeric' });
     return `<article class="event">
       <span class="when">${when}</span>
-      <h4>${e.title}</h4>
+      <h3>${e.title}</h3>
       <p>${e.copy}</p>
       <a href="#parties">${e.cta} →</a>
     </article>`;
@@ -155,7 +155,7 @@ function renderLocs(){
     return `<article class="loc ${L.id === loc ? 'on' : ''}">
       ${L.id === 'nola' ? '<img class="loc-shot" src="img/fachada.jpg" alt="The Tacos and Beer storefront on St. Charles Ave" width="1000" height="753" loading="lazy">' : ''}
       <span class="hood">${L.hood}</span>
-      <h4>${L.name}</h4>
+      <h3>${L.name}</h3>
       <address>${L.address}<br>${L.city}</address>
       <div class="hrs">${L.hoursText.map(h => `<span>${h[0]} · ${h[1]}</span>`).join('')}</div>
       <p style="margin:.4rem 0 0;font-size:.8rem;color:${L.id === loc ? 'var(--amarillo)' : 'var(--verde)'}">${st.text}</p>
