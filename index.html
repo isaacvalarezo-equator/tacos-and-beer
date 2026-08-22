@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en" data-loc="nola">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tacos and Beer — New Orleans · Slidell · Hammond</title>
+<meta name="description" content="Tacos, cold beer, and 64 oz margaritas in New Orleans, Slidell, and Hammond. Full menu, big tables for groups, and an online waitlist.">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===== barra de ubicación ===== -->
+<div class="locbar">
+  <div class="locbar-in">
+    <a class="brand" href="#top"><img src="img/logo.png" alt="Tacos and Beer" width="399" height="60"><span class="sr">Tacos and Beer</span></a>
+      <a class="ttbadge" href="#tuesday" id="ttBadge">🌮 It is Taco Tuesday</a>
+      <span class="latebadge">Late night</span>
+      <span class="livestate"><span class="dot" id="dot"></span><span id="livetext">—</span></span>
+    <div class="locpick" role="group" aria-label="Choose your location">
+      <button type="button" data-loc="nola">New Orleans</button>
+      <button type="button" data-loc="slidell">Slidell</button>
+      <button type="button" data-loc="hammond">Hammond</button>
+    </div>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- ===== hero ===== -->
+<header class="hero">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow" id="heroBrow">Since 2014</p>
+      <h1 class="hero-mark"><img src="img/logo.png" alt="Tacos and Beer" width="399" height="60" fetchpriority="high"></h1>
+      <p class="hero-sub" id="heroPitch">—</p>
+      <p style="font-family:'Fraunces',Georgia,serif;font-size:1.15rem;font-variation-settings:'WONK' 1;margin:-1.2rem 0 1.9rem;color:var(--ink)">“We know tacos… and beer.”</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#waitlist">Get on the list</a>
+        <a class="btn btn-ghost" id="heroCall" href="tel:+15043048722">Call to reserve</a>
+        </div>
+      <p style="font-size:.82rem;color:var(--ink-soft);margin:.9rem 0 0"><a href="#menu" style="text-decoration:underline">See the menu</a> · Groups of 8 or more, <a href="#parties" style="text-decoration:underline">plan your party</a></p>
+      <div class="hero-meta">
+        <span id="heroAddr">—</span>
+        <span id="heroHours">—</span>
+      </div>
+    </div>
+    <figure class="hero-art">
+      <img src="img/platon.jpg" alt="A platter of twelve assorted tacos on our house paper" width="900" height="900" fetchpriority="high">
+      <figcaption class="note"><strong>Reserving still means calling us</strong>And on a Friday night nobody can get to the phone. So now you can join the line from wherever you are, and we will text you when your table is ready.</figcaption>
+    </figure>
+  </div>
+</header>
+
+<!-- ===== rail de populares ===== -->
+<section class="wrap papel">
+  <div class="rail-head">
+    <div>
+      <p class="eyebrow">What people order</p>
+      <h2 class="display">Start here</h2>
+    </div>
+    <a class="btn btn-ghost" href="#menu">Full menu</a>
+  </div>
+  <div class="rail" id="rail"></div>
+</section>
+
+<hr class="tala">
+
+<!-- ===== menú ===== -->
+<section class="wrap papel" id="menu">
+  <p class="eyebrow">The <span id="menuLoc">New Orleans</span> menu</p>
+  <h2 class="display">The menu</h2>
+  <p class="hero-sub">These are this location’s prices. They differ between restaurants, so pick your city up top.</p>
+  <figure class="shot wide">
+    <img src="img/papel.jpg" alt="Carne asada and al pastor tacos served on our house paper" width="1000" height="753" loading="lazy">
+    <figcaption>Everything comes out wrapped in our own paper.</figcaption>
+  </figure>
+  <div class="menu-grid" id="menuGrid" style="margin-top:2.5rem"></div>
+</section>
+
+<!-- ===== barra ===== -->
+<section class="band band-comal">
+  <div class="wrap">
+    <p class="eyebrow">The other half of the name</p>
+    <h2 class="display">The bar</h2>
+    <div class="menu-grid" style="margin-top:2.5rem">
+      <div class="menu-cat">
+        <h3 class="display">On draft</h3>
+        <p class="eyebrow" style="margin-bottom:.6rem">16 oz · 24 oz · 64 oz pitcher</p>
+        <div id="draft"></div>
+      </div>
+      <div class="menu-cat">
+        <h3 class="display">Margaritas</h3>
+        <p class="eyebrow" style="margin-bottom:.6rem">16 oz · 32 oz · 64 oz</p>
+        <div id="margs"></div>
+        <h3 class="display" style="margin-top:2rem">Specials</h3>
+        <div id="specials"></div>
+        <figure class="shot" style="margin-top:1.6rem">
+          <img src="img/margarita.jpg" alt="A house margarita in the big glass" width="560" height="865" loading="lazy">
+          <figcaption>The fishbowl. It comes in 16, 32, and 64 ounces.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== taco tuesday ===== -->
+<section class="tt" id="tuesday">
+  <div class="tt-strip" aria-hidden="true"><div class="tt-run" id="ttRun"></div></div>
+  <div class="wrap tt-in">
+    <div class="tt-copy">
+      <p class="eyebrow">Every week, no exceptions</p>
+      <h2 class="display tt-title">Taco<br>Tuesday</h2>
+      <p class="tt-line" id="ttLine">$1 tacos. All day. Every Tuesday.</p>
+      <p class="tt-note" id="ttNote"></p>
+      <div class="btn-row" style="margin-top:1.6rem">
+        <a class="btn btn-primary" href="#waitlist">Get on the list early</a>
+        <a class="btn btn-ghost" href="#menu">See the tacos</a>
+      </div>
+    </div>
+    <div class="tt-clock" id="ttClock">
+      <p class="tt-clock-k" id="ttClockK">Next Taco Tuesday in</p>
+      <div class="tt-dial">
+        <div><span class="v" id="ttD">0</span><span class="u">days</span></div>
+        <div><span class="v" id="ttH">0</span><span class="u">hrs</span></div>
+        <div><span class="v" id="ttM">0</span><span class="u">min</span></div>
+        <div><span class="v" id="ttS">0</span><span class="u">sec</span></div>
+      </div>
+      <p class="tt-warn">It is our busiest night. The line gets long.</p>
+    </div>
+  </div>
+  <div class="tt-strip flip" aria-hidden="true"><div class="tt-run" id="ttRun2"></div></div>
+</section>
+
+<!-- ===== calendario ===== -->
+<section class="band band-turquesa">
+  <div class="wrap">
+    <p class="eyebrow">This season in <span id="evLoc">New Orleans</span></p>
+    <h2 class="display">What is coming up</h2>
+    <div class="events" id="events"></div>
+  </div>
+</section>
+
+<!-- ===== party planner ===== -->
+<section class="band band-rojo" id="parties">
+  <div class="wrap">
+    <p class="eyebrow">Groups of 8 or more</p>
+    <h2 class="display">Plan your party</h2>
+    <p class="hero-sub" style="color:rgba(255,255,255,.9);max-width:52ch">Tell us how many you are and what you are celebrating. You get the estimate right here, without waiting for someone to pick up the phone.</p>
+
+    <figure class="shot wide" style="margin-top:1.8rem">
+      <img src="img/mesa.jpg" alt="A shared table with chips, guacamole, and salsas" width="900" height="678" loading="lazy">
+    </figure>
+
+    <div class="planner">
+      <form id="partyForm">
+        <div class="pkgs" id="pkgs" role="group" aria-label="Choose a package"></div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="pDate">Date</label>
+            <input type="date" id="pDate" required>
+          </div>
+          <div class="field">
+            <label for="pTime">Time</label>
+            <input type="time" id="pTime" value="19:00" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="pGuests">How many people <span id="gOut" class="price"></span></label>
+          <input type="range" id="pGuests" min="8" max="120" value="24" step="2">
+          <span class="hint">8 to 120. For more than 120, call us and we will work it out.</span>
+        </div>
+
+        <div class="field">
+          <label>What is the occasion</label>
+          <div class="chips" id="occ" role="group" aria-label="Occasion"></div>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="pName">Your name</label>
+            <input type="text" id="pName" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="pPhone">Phone</label>
+            <input type="tel" id="pPhone" required autocomplete="tel" placeholder="(504) 555-0123">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="pNotes">Anything we should know</label>
+          <textarea id="pNotes" placeholder="Allergies, vegetarians, whether you are bringing a cake, whether you need a screen…"></textarea>
+        </div>
+
+        <button class="btn" type="submit" style="background:#fff;color:var(--rojo);border-color:#fff;width:100%">Send me a quote</button>
+      </form>
+
+      <aside class="estimate" aria-live="polite">
+        <p class="eyebrow" style="color:rgba(255,255,255,.75)">Your estimate</p>
+        <div class="big" id="estTotal">$432</div>
+        <p style="margin:0;font-size:.87rem"><span id="estPer">$18</span> per person × <span id="estGuests">24</span> people</p>
+        <ul id="estIncludes"></ul>
+        <div class="row"><span>Deposit to hold the date</span><span class="price" id="estDep">$100</span></div>
+        <div class="row" style="border:0;padding-top:.4rem;margin-top:.3rem;opacity:.8;font-size:.78rem">
+          <span>A crawfish boil for the same group</span><span class="price" id="estVs">$408–$624</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== lista de espera ===== -->
+<section class="wrap" id="waitlist">
+  <p class="eyebrow">Walk in, or skip the wait</p>
+  <h2 class="display">The waitlist</h2>
+  <p class="hero-sub">Reservations go through the phone, and they always have. Call us and we will take care of you. This is for the rest of it: the Friday night when nobody can get to the phone, the table of four already circling the block, the moment you just want to know how long the wait really is.</p>
+
+  <div class="wait" style="margin-top:2.5rem">
+    <form id="waitForm">
+      <div class="grid2">
+        <div class="field">
+          <label for="wName">Name</label>
+          <input type="text" id="wName" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="wPhone">Phone</label>
+          <input type="tel" id="wPhone" required autocomplete="tel" placeholder="(504) 555-0123">
+        </div>
+      </div>
+      <div class="field">
+        <label>How many</label>
+        <div class="chips" id="party" role="group" aria-label="Party size"></div>
+      </div>
+      <div class="field">
+        <label for="wNotes">Where would you like to sit</label>
+        <select id="wNotes">
+          <option value="">Wherever opens up</option>
+          <option>Inside</option>
+          <option>Patio</option>
+          <option>At the bar</option>
+          <option>Near the screens</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit" style="width:100%">Get on the list</button>
+      <p class="hint" style="margin-top:.8rem">We text you when you are two tables away, and you have 10 minutes to get here. Booking a bigger table or a party? Call us, or use the party planner above.</p>
+    </form>
+
+    <aside class="ticket" aria-live="polite">
+      <p class="eyebrow">Wait right now in <span id="wLoc">New Orleans</span></p>
+      <div class="num" id="waitMin">25<span style="font-size:1.2rem"> min</span></div>
+      <p style="margin:.2rem 0 0;color:var(--ink-soft);font-size:.9rem" id="waitSub">4 parties ahead of you</p>
+      <div class="queue" id="queue"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ===== late night ===== -->
+<section class="band band-comal">
+  <div class="wrap late">
+    <div>
+      <p class="eyebrow">When everything else has closed</p>
+      <h2 class="display">Still<br>open</h2>
+      <p class="hero-sub" style="color:rgba(246,236,220,.8)">Slidell until 2 AM Thursday through Saturday. Hammond until 1 AM. We are one of the few places still serving real food at that hour.</p>
+    </div>
+    <div>
+      <figure class="shot" style="margin-bottom:1.6rem">
+        <img src="img/comedor.jpg" alt="The New Orleans dining room: turquoise walls, exposed brick, and neon" width="700" height="933" loading="lazy">
+      </figure>
+      <div class="late-hours" id="lateHours"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="tala">
+
+<!-- ===== ubicaciones ===== -->
+<section class="wrap" id="locations">
+  <p class="eyebrow">Three restaurants</p>
+  <h2 class="display">Where we are</h2>
+  <div class="locs" id="locs"></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="#top"><img src="img/logo.png" alt="Tacos and Beer" width="399" height="60" loading="lazy"></a>
+        <p style="max-width:32ch;color:rgba(246,236,220,.7);font-size:.9rem;margin-top:.8rem">
+          Real Mexican flavor, cold beer, and a room that does not take itself too seriously. In Louisiana since 2012.
+        </p>
+      </div>
+      <div>
+        <h5>Menu</h5>
+        <p style="display:grid;gap:.35rem;margin:0;font-size:.9rem">
+          <a href="#menu">The menu</a>
+          <a href="#menu">The bar</a>
+          <a href="#parties">Groups and parties</a>
+          <a href="#waitlist">The waitlist</a>
+        </p>
+      </div>
+      <div>
+        <h5>Locations</h5>
+        <p style="display:grid;gap:.35rem;margin:0;font-size:.9rem" id="footLocs"></p>
+      </div>
+    </div>
+    <p class="proto">
+      Demonstration prototype built by Equator Consulting Group. Prices and hours come from public sources and still need to be confirmed with the restaurant. Nothing submitted on this page reaches the restaurant.
+    </p>
+  </div>
+</footer>
+
+<!-- ===== barra móvil ===== -->
+<nav class="sticky" aria-label="Quick actions">
+  <a class="main" href="#waitlist">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    Waitlist
+  </a>
+  <a href="#menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16M4 12h16M4 19h10"/></svg>
+    Menu
+  </a>
+  <a href="#parties">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3.5"/><path d="M22 20v-2a4 4 0 0 0-3-3.9"/></svg>
+    Parties
+  </a>
+  <a id="stickyCall" href="tel:+15043048722">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.6 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.8.6a2 2 0 0 1 1.7 2z"/></svg>
+    Call
+  </a>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="application/ld+json" id="schema"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

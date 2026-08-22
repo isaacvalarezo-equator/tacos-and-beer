@@ -1,0 +1,777 @@
+/* Tacos and Beer — prototipo ECG
+   Paleta tomada del local real, no inventada. Verificada contra fotos del
+   sitio: fachada amarilla de New Orleans, letrero de neón rojo, paredes
+   turquesa, ladrillo visto, piso y mesas de madera, sillas de cuero camel y
+   el papel deli rojo sobre crema que envuelve toda la comida.
+   Sin gradientes, sin sombras difusas. Bloques planos y bordes duros. */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Archivo+Black&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&display=swap');
+
+:root{
+  /* --- los cinco colores que están de verdad en el local ---
+     Los `-dia` son el color con luz de día y NINGÚN tema los pisa. Los otros
+     cuatro son el color vigente: de noche suben de brillo como sube un neón.
+     Una superficie que se queda clara de noche (el papel) vuelve a los `-dia`. */
+  --rojo-dia:#CE3226;    /* neón del letrero y tinta del papel deli */
+  --turquesa-dia:#1F9E93;/* paredes del comedor: el color firma del interior */
+  --amarillo-dia:#E8B93A;/* tablas de la fachada */
+  --verde-dia:#4E8C43;   /* el agave chiquito impreso en el papel deli */
+
+  --rojo:var(--rojo-dia);
+  --turquesa:var(--turquesa-dia);
+  --amarillo:var(--amarillo-dia);
+  --verde:var(--verde-dia);
+  --ladrillo:#8C4A35;    /* la columna de ladrillo visto */
+
+  /* --- materiales --- */
+  --masa:#F5EEE1;        /* el crema del papel deli */
+  --cal:#FFFCF6;
+  --comal:#221A16;       /* el techo de madera oscura */
+  --madera:#A87B4F;      /* el piso de duela */
+  --cuero:#B4834F;       /* las sillas de cuero camel */
+  --barro:#4A403A;
+
+  --bg:var(--masa);
+  --surface:var(--cal);
+  --ink:var(--comal);
+  --ink-soft:var(--barro);
+  --line:rgba(34,26,22,.16);
+  --line-hard:var(--comal);
+  --accent:var(--rojo);
+
+  --sans:'Archivo','Helvetica Neue',Arial,system-ui,sans-serif;
+  --black:'Archivo Black','Archivo','Helvetica Neue',Arial,sans-serif;
+  --dish:'Fraunces',Georgia,'Times New Roman',serif;
+
+  --pad:clamp(1.25rem,4vw,4.5rem);
+  --maxw:1280px;
+  --bar-h:56px;
+}
+
+/* De noche el local es madera oscura y neón. El tema oscuro es eso, no un
+   inverso genérico: el rojo y el ámbar suben de brillo como sube un neón. */
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme:dark){
+    --bg:#17110E; --surface:#241A15; --ink:#F5EEE1; --ink-soft:#C6B4A0;
+    --line:rgba(245,238,225,.18); --line-hard:#F5EEE1;
+    --rojo:#F04A3A; --amarillo:#F2C75B; --turquesa:#33BFB2; --verde:#77B564;
+  }
+}
+:root[data-daypart="late"]{
+  --bg:#17110E; --surface:#241A15; --ink:#F5EEE1; --ink-soft:#C6B4A0;
+  --line:rgba(245,238,225,.18); --line-hard:#F5EEE1;
+  --rojo:#F04A3A; --amarillo:#F2C75B; --turquesa:#33BFB2; --verde:#77B564;
+}
+.latebadge{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.2rem .55rem;
+  border:1px solid var(--amarillo);color:var(--amarillo);font-size:.64rem;
+  text-transform:uppercase;letter-spacing:.1em;font-variation-settings:'wdth' 90,'wght' 700;
+}
+:root:not([data-daypart="late"]) .latebadge{display:none}
+:root[data-theme="dark"]{
+  --bg:#17110E; --surface:#241A15; --ink:#F5EEE1; --ink-soft:#C6B4A0;
+  --line:rgba(245,238,225,.18); --line-hard:#F5EEE1;
+  --rojo:#F04A3A; --amarillo:#F2C75B; --turquesa:#33BFB2; --verde:#77B564;
+}
+
+*{box-sizing:border-box}
+/* Que los controles nativos (slider, checkbox, date, time) tomen el rojo de la
+   casa. Sin esto el navegador los pinta de azul de sistema, que es el único
+   color de la página que no existe en el local. */
+html{accent-color:var(--rojo)}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:17px;line-height:1.55;
+  font-variation-settings:'wdth' 100,'wght' 400;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+
+/* ---------- tipografía de rotulación ---------- */
+.display{
+  font-family:var(--sans);
+  font-variation-settings:'wdth' 125,'wght' 900;
+  text-transform:uppercase;line-height:.9;letter-spacing:-.01em;
+  margin:0;
+}
+h1.display{font-size:clamp(2.9rem,9vw,7rem)}
+h2.display{font-size:clamp(2rem,5.2vw,3.9rem)}
+h3.display{font-size:clamp(1.3rem,2.6vw,1.9rem)}
+.condensed{font-variation-settings:'wdth' 75,'wght' 500}
+.eyebrow{
+  font-variation-settings:'wdth' 100,'wght' 700;
+  text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;
+  color:var(--ink-soft);margin:0 0 .9rem;
+}
+.price{font-variation-settings:'wdth' 100,'wght' 600;font-variant-numeric:tabular-nums}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+section{padding-block:clamp(3.5rem,8vw,7rem)}
+
+/* ---------- barra de ubicación ---------- */
+.locbar{
+  position:sticky;top:0;z-index:60;background:var(--comal);color:var(--masa);
+  border-bottom:2px solid var(--comal);
+}
+.locbar-in{
+  max-width:var(--maxw);margin:0 auto;padding:0 var(--pad);
+  min-height:var(--bar-h);display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
+}
+.brand{
+  font-family:var(--sans);font-variation-settings:'wdth' 125,'wght' 900;
+  text-transform:uppercase;font-size:1rem;letter-spacing:-.01em;
+  text-decoration:none;white-space:nowrap;
+}
+.brand em{font-style:normal;color:var(--amarillo)}
+.locpick{display:flex;gap:0;margin-inline-start:auto;flex-wrap:wrap}
+.locpick button{
+  background:none;border:0;padding:.55rem .85rem;cursor:pointer;
+  font-variation-settings:'wdth' 90,'wght' 700;
+  text-transform:uppercase;letter-spacing:.08em;font-size:.74rem;
+  color:rgba(246,236,220,.62);border-bottom:3px solid transparent;
+}
+.locpick button:hover{color:var(--masa)}
+.locpick button[aria-pressed="true"]{color:var(--masa);border-bottom-color:var(--rojo)}
+.livestate{
+  display:inline-flex;align-items:center;gap:.45rem;font-size:.76rem;
+  font-variation-settings:'wdth' 90,'wght' 600;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--masa);
+}
+.dot{width:8px;height:8px;background:var(--verde)}
+.dot.shut{background:var(--amarillo)}
+
+/* ---------- hero asimétrico ---------- */
+.hero{padding:0;border-bottom:2px solid var(--line-hard)}
+.hero-grid{
+  max-width:var(--maxw);margin:0 auto;
+  display:grid;grid-template-columns:1.05fr .95fr;align-items:stretch;
+}
+.hero-copy{padding:clamp(2.5rem,5vw,4.5rem) var(--pad);display:flex;flex-direction:column;justify-content:center}
+.hero h1{margin-bottom:1.1rem}
+
+/* El hero lleva el rótulo real, no tipografía imitándolo. El archivo es el
+   logo original del restaurante (recuperado del Internet Archive) y mide
+   399x60, así que el ancho se topa: pasado ese tamaño se ve suave en pantalla
+   Retina. Sobre el fondo oscuro el contorno negro del logo se pierde y quedan
+   las letras rojas, igual que ya pasa en la barra superior. */
+.hero-mark{margin:0 0 1.1rem}
+.hero-mark img{width:min(100%,24rem);height:auto;display:block}
+.hero-sub{font-size:clamp(1rem,1.6vw,1.2rem);max-width:34ch;color:var(--ink-soft);margin:0 0 1.9rem}
+.hero-meta{
+  display:flex;gap:1.4rem;flex-wrap:wrap;font-size:.78rem;
+  font-variation-settings:'wdth' 90,'wght' 600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink-soft);margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--line);
+}
+.hero-art{
+  background:var(--rojo);color:#fff;position:relative;overflow:hidden;
+  display:flex;align-items:flex-end;padding:clamp(1.5rem,3vw,2.5rem);min-height:340px;
+}
+.hero-art .stamp{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-variation-settings:'wdth' 125,'wght' 900;text-transform:uppercase;
+  font-size:clamp(5rem,17vw,13rem);line-height:.8;color:rgba(255,255,255,.14);
+  pointer-events:none;user-select:none;text-align:center;
+}
+.hero-art .note{position:relative;font-size:.92rem;max-width:30ch;line-height:1.4}
+.hero-art .note strong{
+  display:block;font-variation-settings:'wdth' 110,'wght' 900;
+  text-transform:uppercase;font-size:1.15rem;margin-bottom:.35rem;
+}
+
+/* ---------- botones ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.95rem 1.6rem;border:2px solid var(--comal);background:var(--comal);color:var(--masa);
+  font-variation-settings:'wdth' 100,'wght' 700;text-transform:uppercase;
+  letter-spacing:.07em;font-size:.82rem;cursor:pointer;text-decoration:none;
+  transition:transform .12s ease,background .12s ease,color .12s ease;
+}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--comal)}
+.btn:active{transform:translate(0,0);box-shadow:none}
+.btn-primary{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.btn-primary:hover{box-shadow:4px 4px 0 var(--comal)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-hard)}
+.btn-row{display:flex;gap:.8rem;flex-wrap:wrap}
+:focus-visible{outline:3px solid var(--turquesa);outline-offset:3px}
+
+/* ---------- rail de tacos ---------- */
+.rail-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.rail{display:flex;gap:1rem;overflow-x:auto;padding-bottom:1rem;scroll-snap-type:x mandatory}
+.rail::-webkit-scrollbar{height:8px}
+.rail::-webkit-scrollbar-thumb{background:var(--line)}
+.card{
+  flex:0 0 min(260px,72vw);scroll-snap-align:start;
+  border:2px solid var(--line-hard);background:var(--surface);display:flex;flex-direction:column;
+}
+.card-art{
+  aspect-ratio:4/3;background:var(--amarillo);position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;border-bottom:2px solid var(--line-hard);
+}
+.card-art span{
+  font-variation-settings:'wdth' 125,'wght' 900;text-transform:uppercase;
+  font-size:2.6rem;color:rgba(25,18,16,.22);line-height:.85;text-align:center;padding:.5rem;
+}
+.card-art.c2{background:var(--turquesa)}
+.card-art.c2 span{color:rgba(255,255,255,.24)}
+.card-art.c3{background:var(--rojo)}
+.card-art.c3 span{color:rgba(255,255,255,.24)}
+.card-art.c4{background:var(--verde)}
+.card-art.c4 span{color:rgba(255,255,255,.24)}
+.card-body{padding:1rem;display:flex;flex-direction:column;gap:.3rem;flex:1}
+.card-body h4{margin:0;font-variation-settings:'wdth' 100,'wght' 800;font-size:1.02rem;line-height:1.2}
+.card-body p{margin:0;font-size:.85rem;color:var(--ink-soft);flex:1}
+.card-body .price{margin-top:.5rem;font-size:1.05rem}
+
+/* ---------- menú tipográfico ---------- */
+.menu-grid{
+  /* El min() es lo que evita el desborde en teléfonos angostos: sin él la pista
+     se queda en 340px aunque el contenedor mida 280, y la página se va de lado. */
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));
+  gap:clamp(1.2rem,2vw,1.8rem);align-items:start;
+}
+
+/* Cada categoría es una tarjeta sobre papel, no una columna suelta.
+   Le da aire y hace que la carta se lea como carta y no como una lista. */
+.menu-cat{
+  background:var(--cal);border:2px solid var(--line-hard);
+  padding:clamp(1.3rem,2.2vw,1.9rem);
+}
+.menu-cat h3{
+  margin:0 0 1.3rem;padding:0 0 .8rem;
+  border-bottom:2px solid var(--rojo);
+  font-variation-settings:'wdth' 112,'wght' 900;
+  font-size:clamp(1.15rem,1.9vw,1.5rem);letter-spacing:-.005em;
+  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+}
+.menu-cat h3::after{
+  content:attr(data-n);font-family:var(--sans);
+  font-variation-settings:'wdth' 90,'wght' 600;
+  font-size:.68rem;letter-spacing:.12em;color:var(--ink-soft);
+  text-transform:none;flex:none;
+}
+
+.menu-item{padding:.7rem 0;border-bottom:1px solid var(--line)}
+.menu-item:last-child{border-bottom:0;padding-bottom:0}
+.menu-item .line{display:flex;align-items:baseline;gap:.5rem;margin:0}
+.menu-item .nm{
+  flex:0 1 auto;font-family:var(--dish);
+  font-variation-settings:'opsz' 30,'wght' 640,'SOFT' 0,'WONK' 1;
+  font-size:1.06rem;line-height:1.25;letter-spacing:-.006em;color:var(--ink);
+}
+.menu-item .leader{
+  flex:1 1 auto;min-width:1rem;align-self:baseline;
+  border-bottom:1.5px dotted color-mix(in srgb, var(--ink) 32%, transparent);
+  transform:translateY(-.32em);
+}
+.menu-item .price{
+  flex:none;font-family:var(--sans);
+  font-variation-settings:'wdth' 100,'wght' 800;
+  font-variant-numeric:tabular-nums;font-size:1.02rem;color:var(--ink);
+}
+.menu-item .dsc{
+  margin:.28rem 0 0;font-family:var(--sans);font-size:.845rem;line-height:1.45;
+  color:var(--ink-soft);font-variation-settings:'wdth' 95,'wght' 400;
+  max-width:44ch;
+}
+
+.tag{
+  display:inline-block;flex:none;align-self:center;
+  padding:.16rem .45rem;font-family:var(--sans);
+  font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+  font-variation-settings:'wdth' 88,'wght' 800;
+  color:#fff;background:var(--ink);
+}
+.tag.top{background:var(--rojo)}
+.tag.grupo{background:var(--turquesa)}
+
+/* ---------- bandas de color ---------- */
+.band{border-block:2px solid var(--line-hard)}
+/* Las bandas de color invierten los TOKENS, no solo el color del texto.
+   Si solo se cambia `color`, todo lo que deriva de --ink-soft, --line y
+   --line-hard sigue en oscuro y desaparece: descripciones de platillos,
+   puntos guía y reglas de sección. */
+.band-comal,.band-rojo,.band-turquesa{
+  --ink:currentColor;
+  --ink-soft:color-mix(in srgb, currentColor 72%, transparent);
+  --line:color-mix(in srgb, currentColor 30%, transparent);
+  --line-hard:currentColor;
+  --surface:transparent;
+}
+.band-turquesa{background:var(--turquesa);color:#fff;border-color:var(--turquesa)}
+
+.band-comal{background:var(--comal);color:var(--masa);border-color:var(--comal)}
+.band-comal .eyebrow{color:rgba(245,238,225,.6)}
+.band-rojo{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+
+
+.events{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2rem}
+.event{border:2px solid currentColor;padding:1.3rem;display:flex;flex-direction:column;gap:.5rem}
+.event .when{font-size:.72rem;text-transform:uppercase;letter-spacing:.11em;font-variation-settings:'wdth' 90,'wght' 700;opacity:.8}
+.event h4{margin:0;font-variation-settings:'wdth' 115,'wght' 900;text-transform:uppercase;font-size:1.35rem;line-height:1}
+.event p{margin:0;font-size:.9rem;flex:1;opacity:.92}
+.event a{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-variation-settings:'wdth' 90,'wght' 700}
+
+/* ---------- late night ---------- */
+.late{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+.late-hours{display:grid;gap:.6rem}
+.late-hours div{display:flex;justify-content:space-between;gap:1rem;padding-bottom:.55rem;border-bottom:1px solid rgba(246,236,220,.2)}
+.late-hours .h{font-variation-settings:'wdth' 125,'wght' 900;font-size:clamp(1.5rem,3vw,2.4rem);line-height:1;color:var(--amarillo)}
+.late-hours .d{font-variation-settings:'wdth' 90,'wght' 600;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;align-self:end}
+
+/* ---------- formularios ---------- */
+.field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.1rem}
+.field label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-variation-settings:'wdth' 90,'wght' 700}
+/* El range se excluye a propósito: la caja y el color oscuro de los campos de
+   texto lo dejaban con borde negro y currentColor oscuro dentro de la banda
+   roja. Se dibuja aparte, más abajo. */
+.field input:not([type=range]),.field select,.field textarea{
+  padding:.8rem .9rem;border:2px solid var(--line-hard);background:var(--surface);
+  color:var(--ink);border-radius:0;width:100%;
+}
+.field textarea{min-height:90px;resize:vertical}
+.field .hint{font-size:.76rem;opacity:.75}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 1rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{
+  padding:.5rem .85rem;border:2px solid currentColor;background:transparent;cursor:pointer;
+  font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;
+  font-variation-settings:'wdth' 90,'wght' 700;
+}
+.chip[aria-pressed="true"]{background:var(--comal);color:var(--masa);border-color:var(--comal)}
+.band-rojo .chip[aria-pressed="true"]{background:#fff;color:var(--rojo);border-color:#fff}
+
+/* ---------- party planner ---------- */
+.planner{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,4vw,3.5rem);margin-top:2rem}
+.estimate{border:2px solid currentColor;padding:1.5rem;align-self:start;position:sticky;top:calc(var(--bar-h) + 1rem)}
+.estimate .big{
+  font-variation-settings:'wdth' 125,'wght' 900;font-size:clamp(2.8rem,7vw,4.4rem);
+  line-height:.9;margin:.3rem 0;font-variant-numeric:tabular-nums;
+}
+.estimate ul{margin:.9rem 0 0;padding:0;list-style:none;display:grid;gap:.4rem;font-size:.87rem}
+.estimate li{display:flex;gap:.5rem;align-items:baseline}
+.estimate li::before{content:'';width:6px;height:6px;background:currentColor;flex:none;transform:translateY(-1px)}
+.estimate .row{display:flex;justify-content:space-between;font-size:.87rem;padding-top:.6rem;margin-top:.9rem;border-top:1px solid currentColor}
+.pkgs{display:grid;gap:.7rem;margin-bottom:1.2rem}
+.pkg{
+  border:2px solid currentColor;padding:.9rem 1rem;cursor:pointer;text-align:start;
+  background:transparent;display:flex;justify-content:space-between;gap:1rem;align-items:baseline;width:100%;
+}
+.pkg[aria-pressed="true"]{background:#fff;color:var(--rojo);border-color:#fff}
+.pkg .n{font-variation-settings:'wdth' 110,'wght' 900;text-transform:uppercase;font-size:1.05rem}
+.pkg .d{display:block;font-size:.8rem;opacity:.85;font-variation-settings:'wdth' 90,'wght' 400;text-transform:none;margin-top:.15rem}
+.pkg .p{font-variation-settings:'wdth' 100,'wght' 700;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* ---------- slider de grupo ----------
+   Vive dentro de la banda roja, así que accent-color lo dejaba rojo sobre rojo,
+   invisible. Se dibuja con currentColor: cream sobre la banda, oscuro sobre el
+   papel, sin tener que saber en qué sección está. */
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;background:transparent;cursor:pointer;margin:.4rem 0 0;
+}
+/* Nada de opacity en la pista: en WebKit el pulgar es hijo suyo y se apagaba
+   con ella. El destiñe va en el color, no en la capa. */
+input[type=range]::-webkit-slider-runnable-track{
+  height:6px;background:color-mix(in srgb,currentColor 38%,transparent);
+}
+input[type=range]::-moz-range-track{
+  height:6px;background:color-mix(in srgb,currentColor 38%,transparent);
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:22px;height:22px;margin-top:-8px;border-radius:0;
+  background:currentColor;border:2px solid currentColor;
+}
+input[type=range]::-moz-range-thumb{
+  width:22px;height:22px;border-radius:0;
+  background:currentColor;border:2px solid currentColor;
+}
+input[type=range]:focus-visible{outline:3px solid currentColor;outline-offset:6px}
+
+/* ---------- lista de espera ---------- */
+.wait{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,4vw,3.5rem)}
+.ticket{border:2px solid var(--line-hard);background:var(--surface);padding:1.6rem;align-self:start}
+.ticket .num{
+  font-variation-settings:'wdth' 125,'wght' 900;font-size:clamp(3rem,8vw,5rem);line-height:.9;
+  color:var(--rojo);font-variant-numeric:tabular-nums;
+}
+.queue{margin-top:1.2rem;display:grid;gap:.45rem}
+.queue div{display:flex;justify-content:space-between;font-size:.85rem;padding:.45rem 0;border-bottom:1px solid var(--line)}
+.queue .me{color:var(--rojo);font-variation-settings:'wdth' 90,'wght' 700}
+
+/* ---------- ubicaciones ---------- */
+.locs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2rem}
+.loc{border:2px solid var(--line-hard);padding:1.4rem;display:flex;flex-direction:column;gap:.5rem;background:var(--surface)}
+.loc.on{background:var(--comal);color:var(--masa)}
+.loc h4{margin:0;font-variation-settings:'wdth' 115,'wght' 900;text-transform:uppercase;font-size:1.5rem;line-height:1}
+.loc .hood{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;opacity:.7;font-variation-settings:'wdth' 90,'wght' 700}
+.loc address{font-style:normal;font-size:.92rem;line-height:1.5}
+.loc .hrs{font-size:.83rem;opacity:.85;display:grid;gap:.15rem;margin-top:.3rem}
+.loc .acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:auto;padding-top:1rem}
+.loc .acts a{
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;
+  font-variation-settings:'wdth' 90,'wght' 700;padding:.45rem .7rem;border:2px solid currentColor;text-decoration:none;
+}
+
+/* ---------- divisor talavera (uso máximo 3 veces) ---------- */
+.tala{height:16px;border:0;margin:0;background-color:var(--rojo);
+  background-image:
+    linear-gradient(45deg,var(--comal) 25%,transparent 25%,transparent 75%,var(--comal) 75%),
+    linear-gradient(45deg,var(--comal) 25%,transparent 25%,transparent 75%,var(--comal) 75%);
+  background-size:32px 32px;background-position:0 0,16px 16px;}
+
+/* ---------- footer ---------- */
+footer{background:var(--comal);color:var(--masa);padding-block:3.5rem 6rem;border-top:2px solid var(--comal)}
+.foot{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:2rem}
+footer a{color:var(--masa)}
+footer h5{margin:0 0 .8rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;font-variation-settings:'wdth' 90,'wght' 700;color:rgba(245,238,225,.6)}
+.proto{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(246,236,220,.2);font-size:.8rem;color:rgba(245,238,225,.6)}
+
+/* ---------- barra móvil ---------- */
+.sticky{
+  position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;
+  background:var(--comal);border-top:2px solid var(--comal);
+}
+.sticky a{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:.15rem;
+  padding:.7rem .3rem;text-decoration:none;color:var(--masa);
+  font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;
+  font-variation-settings:'wdth' 90,'wght' 700;
+}
+.sticky a.main{background:var(--rojo);color:#fff}
+.sticky svg{width:19px;height:19px}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed;left:50%;bottom:1.5rem;transform:translate(-50%,140%);z-index:90;
+  background:var(--comal);color:var(--masa);padding:.9rem 1.3rem;border:2px solid var(--amarillo);
+  font-size:.88rem;max-width:min(440px,90vw);
+  visibility:hidden;
+  transition:transform .28s cubic-bezier(.2,.8,.3,1),visibility 0s linear .28s;
+}
+.toast.on{transform:translate(-50%,0);visibility:visible;transition-delay:0s}
+
+/* ---------- papel deli (el material de la casa) ----------
+   Toda la comida del local sale envuelta en este papel: la palabra en rojo,
+   repetida y torcida, sobre crema. Es lo más reconocible de la marca después
+   del letrero, así que aquí es una textura real y no un color plano. */
+.papel{
+  /* El papel deli es crema en cualquier tema: es un material del local, no una
+     superficie que sigue al tema. Por eso fija sus propios TOKENS, igual que
+     las bandas de color invierten los suyos. Heredándolos, el tema oscuro pone
+     --ink en crema y los nombres de los platos desaparecen sobre el papel. */
+  --ink:var(--comal);
+  --ink-soft:var(--barro);
+  --line:rgba(34,26,22,.16);
+  --line-hard:var(--comal);
+  --surface:var(--cal);
+  --rojo:var(--rojo-dia);
+  --turquesa:var(--turquesa-dia);
+  --amarillo:var(--amarillo-dia);
+  --verde:var(--verde-dia);
+  color:var(--ink);
+  background-color:var(--masa);
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22200%22%20viewBox%3D%220%200%20300%20200%22%3E%3Cg%20fill%3D%22%23CE3226%22%20font-family%3D%22Archivo%2C%20Helvetica%2C%20Arial%2C%20sans-serif%22%20font-weight%3D%22900%22%20font-size%3D%2234%22%20letter-spacing%3D%22-1%22%3E%3Ctext%20x%3D%228%22%20y%3D%2242%22%20transform%3D%22rotate%28-8%208%2042%29%22%3ETACOS%3C%2Ftext%3E%3Ctext%20x%3D%22176%22%20y%3D%2234%22%20transform%3D%22rotate%286%20176%2034%29%22%3EBEER%3C%2Ftext%3E%3Ctext%20x%3D%22120%22%20y%3D%22112%22%20transform%3D%22rotate%284%20120%20112%29%22%3ETACOS%3C%2Ftext%3E%3Ctext%20x%3D%22-12%22%20y%3D%22150%22%20transform%3D%22rotate%2810%20-12%20150%29%22%3EBEER%3C%2Ftext%3E%3Ctext%20x%3D%22212%22%20y%3D%22182%22%20transform%3D%22rotate%28-6%20212%20182%29%22%3ETACOS%3C%2Ftext%3E%3C%2Fg%3E%3Cg%20fill%3D%22%234E8C43%22%3E%3Ccircle%20cx%3D%2296%22%20cy%3D%22150%22%20r%3D%224%22%2F%3E%3Ccircle%20cx%3D%22270%22%20cy%3D%2296%22%20r%3D%224%22%2F%3E%3Ccircle%20cx%3D%2224%22%20cy%3D%2296%22%20r%3D%224%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+  background-size:300px 200px;
+  position:relative;
+}
+.papel > *{position:relative}
+/* La tinta del papel está impresa, o sea apagada. A tope compite con el texto. */
+.papel::before{
+  content:"";position:absolute;inset:0;background:var(--masa);opacity:.86;pointer-events:none;
+}
+.papel-fuerte::before{opacity:.72}
+:root[data-daypart="late"] .papel::before,
+:root[data-theme="dark"] .papel::before{background:var(--bg);opacity:.9}
+
+/* ---------- neón del letrero ----------
+   El rótulo de la fachada es neón rojo. Solo la marca lo lleva, y solo sobre
+   fondo oscuro, que es donde un neón se ve. */
+.locbar .brand{
+  color:var(--masa);
+  text-shadow:0 0 6px rgba(240,74,58,.55),0 0 18px rgba(206,50,38,.35);
+}
+.locbar .brand em{
+  color:var(--verde);
+  text-shadow:0 0 6px rgba(119,181,100,.5),0 0 16px rgba(78,140,67,.3);
+}
+
+/* ---------- madera y ladrillo ----------
+   Las superficies del comedor: duela clara, mesas oscuras, columna de ladrillo. */
+.band-madera{background:var(--madera);color:var(--comal);border-color:var(--comal)}
+.band-madera .eyebrow{color:rgba(34,26,22,.65)}
+.band-ladrillo{background:var(--ladrillo);color:var(--masa);border-color:var(--ladrillo)}
+.band-ladrillo .eyebrow{color:rgba(245,238,225,.72)}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .hero-grid,.late,.planner,.wait,.foot{grid-template-columns:1fr}
+  .hero-art{min-height:220px;order:-1}
+  .estimate{position:static}
+  .grid2{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  body{padding-bottom:64px}
+  .sticky{display:flex}
+  .locbar-in{gap:.6rem;padding-block:.5rem}
+  .locpick{margin-inline-start:0;width:100%;order:3}
+  .locpick button{flex:1;padding:.5rem .3rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .btn:hover{transform:none}
+}
+
+/* ================= fotografía del local =================
+   Las fotos son del local, no de banco. Nunca se les pone un velo oscuro
+   encima: cuando hace falta texto sobre foto, va en un bloque de color plano. */
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* el rótulo real como marca de la barra */
+.locbar .brand{display:flex;align-items:center;padding:.45rem 0;text-shadow:none}
+.locbar .brand img{
+  /* el logo original, recuperado del Internet Archive */
+  height:26px;width:auto;display:block;
+}
+/* En el pie va a 30px de alto: son 200x30 en pantalla, que en Retina pide
+   exactamente los 399x60 del archivo. Más grande empieza a verse suave. */
+.foot .brand{display:inline-block}
+.foot .brand img{height:30px;width:auto;display:block}
+
+/* hero: la foto manda, el texto vive en su propio bloque */
+.hero-art{background:var(--comal);padding:0;display:block;position:relative;margin:0}
+.hero-art img{width:100%;height:100%;min-height:340px;object-fit:cover;display:block}
+.hero-art .note{
+  position:absolute;left:0;right:0;bottom:0;margin:0;
+  background:var(--rojo);color:#fff;padding:1.1rem clamp(1.2rem,3vw,2rem);
+  font-size:.9rem;line-height:1.45;max-width:none;
+}
+.hero-art .note strong{
+  display:block;font-family:var(--sans);font-variation-settings:'wdth' 110,'wght' 900;
+  text-transform:uppercase;font-size:1.05rem;margin-bottom:.25rem;letter-spacing:-.005em;
+}
+
+/* figuras sueltas */
+.shot{margin:0;border:2px solid var(--line-hard);background:var(--surface)}
+.shot img{width:100%;height:auto;display:block}
+.shot.wide{margin:2rem 0 0}
+.shot.wide img{max-height:420px;object-fit:cover}
+.shot figcaption{
+  padding:.6rem .9rem;font-size:.78rem;color:var(--ink-soft);
+  border-top:2px solid var(--line-hard);
+}
+.band-comal .shot,.band-rojo .shot,.band-turquesa .shot{border-color:currentColor;background:transparent}
+.band-comal .menu-cat,.band-rojo .menu-cat,.band-turquesa .menu-cat{background:transparent;border-color:currentColor}
+.band-comal .menu-cat h3,.band-rojo .menu-cat h3,.band-turquesa .menu-cat h3{border-bottom-color:currentColor}
+.band-comal .menu-item .nm,.band-rojo .menu-item .nm,.band-turquesa .menu-item .nm,
+.band-comal .menu-item .price,.band-rojo .menu-item .price,.band-turquesa .menu-item .price{color:inherit}
+.band-comal .tag,.band-rojo .tag,.band-turquesa .tag{background:currentColor;color:var(--comal)}
+.band-comal .shot figcaption,.band-rojo .shot figcaption,.band-turquesa .shot figcaption{
+  border-color:currentColor;color:inherit;opacity:.85;
+}
+
+/* tarjetas del rail con foto */
+.card-art.has-photo{background:var(--comal);padding:0}
+.card-art.has-photo img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* fachada en la tarjeta de New Orleans */
+.loc-shot{
+  width:calc(100% + 2.8rem);margin:-1.4rem -1.4rem 1rem;
+  height:150px;object-fit:cover;display:block;
+  border-bottom:2px solid var(--line-hard);
+}
+.loc.on .loc-shot{border-bottom-color:var(--masa)}
+
+@media (max-width:900px){
+  .hero-art img{min-height:260px;max-height:60vh}
+}
+
+/* ===================== MOTION =====================
+   Curvas y duraciones fijas, no improvisadas. Solo transform y opacity.
+   Todo lo de hover va detrás de (hover:hover) porque el táctil dispara
+   hovers falsos al tocar. */
+:root{
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
+  --t-press:120ms;
+  --t-ui:200ms;
+  --t-reveal:520ms;
+}
+
+/* --- entrada del hero: escalonada, se ve una vez --- */
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes riseArt{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
+
+.hero-copy > *{animation:rise 620ms var(--ease-out) both}
+.hero-copy > :nth-child(1){animation-delay:60ms}
+.hero-copy > :nth-child(2){animation-delay:120ms}
+.hero-copy > :nth-child(3){animation-delay:180ms}
+.hero-copy > :nth-child(4){animation-delay:240ms}
+.hero-copy > :nth-child(5){animation-delay:300ms}
+.hero-copy > :nth-child(6){animation-delay:360ms}
+.hero-art img{animation:riseArt 760ms var(--ease-out) both}
+.hero-art .note{animation:rise 620ms var(--ease-out) 420ms both}
+
+/* --- revelado al hacer scroll --- */
+.rv{opacity:0;transform:translateY(18px);
+  transition:opacity var(--t-reveal) var(--ease-out),transform var(--t-reveal) var(--ease-out)}
+.rv.in{opacity:1;transform:none}
+.rv-stagger > *{opacity:0;transform:translateY(14px);
+  transition:opacity 460ms var(--ease-out),transform 460ms var(--ease-out)}
+.rv-stagger.in > *{opacity:1;transform:none}
+.rv-stagger.in > :nth-child(1){transition-delay:0ms}
+.rv-stagger.in > :nth-child(2){transition-delay:60ms}
+.rv-stagger.in > :nth-child(3){transition-delay:120ms}
+.rv-stagger.in > :nth-child(4){transition-delay:180ms}
+.rv-stagger.in > :nth-child(5){transition-delay:240ms}
+.rv-stagger.in > :nth-child(6){transition-delay:300ms}
+
+/* --- cambio de ubicación: evita que el contenido se teletransporte --- */
+.swap{animation:rise 380ms var(--ease-out) both}
+
+/* --- botones: respuesta a la pulsación --- */
+.btn{transition:transform var(--t-press) var(--ease-out),
+                background var(--t-ui) var(--ease-out),
+                color var(--t-ui) var(--ease-out),
+                box-shadow var(--t-press) var(--ease-out)}
+.btn:active{transform:translate(0,0) scale(.98);box-shadow:none}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--comal)}
+  .card{transition:transform 220ms var(--ease-out)}
+  .card:hover{transform:translateY(-4px)}
+  .card-art img{transition:transform 420ms var(--ease-out)}
+  .card:hover .card-art img{transform:scale(1.05)}
+  .loc{transition:transform 220ms var(--ease-out)}
+  .loc:hover{transform:translateY(-3px)}
+  .chip,.pkg{transition:transform var(--t-press) var(--ease-out),background var(--t-ui) var(--ease-out),color var(--t-ui) var(--ease-out)}
+  .chip:hover,.pkg:hover{transform:translateY(-2px)}
+}
+.chip:active,.pkg:active{transform:scale(.97)}
+
+/* --- el estimado late al cambiar de paquete, no al arrastrar --- */
+@keyframes bump{0%{transform:none}40%{transform:scale(1.045)}100%{transform:none}}
+.estimate .big.bump{animation:bump 320ms var(--ease-out)}
+
+/* --- la barra superior se despega al hacer scroll --- */
+.locbar{transition:box-shadow 240ms var(--ease-out)}
+.locbar.stuck{box-shadow:0 3px 0 rgba(34,26,22,.18)}
+
+/* --- confirmación de la lista de espera --- */
+@keyframes ticketIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.queue .me{animation:ticketIn 360ms var(--ease-out) both}
+
+/* --- el toast entra y sale por el mismo lado, con transición --- */
+.toast{transition:transform 280ms var(--ease-out),visibility 280ms}
+
+@media (prefers-reduced-motion:reduce){
+  /* menos y más suave, no cero: se conserva la opacidad, se quita el movimiento */
+  .hero-copy > *,.hero-art img,.hero-art .note,.swap,.queue .me{animation:none;opacity:1;transform:none}
+  .rv,.rv-stagger > *{transform:none;transition:opacity 300ms ease}
+  .estimate .big.bump{animation:none}
+  .btn:hover,.card:hover,.loc:hover,.chip:hover,.pkg:hover{transform:none}
+  .card:hover .card-art img{transform:none}
+}
+
+/* ===================== TACO TUESDAY =====================
+   Es lo que más los identifica y merece su propio territorio.
+   Amarillo de la fachada sobre comal, con dos cintas corriendo. */
+.tt{
+  /* Madera oscura en cualquier tema, así que invierte sus TOKENS igual que
+     .band-*: con luz de día heredaría un --ink oscuro sobre su propio fondo
+     oscuro y el botón fantasma se apagaría. */
+  --ink:currentColor;
+  --ink-soft:color-mix(in srgb, currentColor 72%, transparent);
+  --line:color-mix(in srgb, currentColor 30%, transparent);
+  --line-hard:currentColor;
+  --surface:transparent;
+  background:var(--comal);color:var(--masa);
+  border-block:3px solid var(--amarillo);
+  padding:0;overflow:hidden;position:relative;
+}
+.tt-in{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,4vw,4rem);
+  align-items:center;padding-block:clamp(2.6rem,6vw,4.5rem);
+}
+
+/* cinta corriendo */
+.tt-strip{background:var(--amarillo);color:var(--comal);overflow:hidden;padding:.42rem 0}
+.tt-run{
+  display:flex;gap:2.5rem;width:max-content;
+  font-variation-settings:'wdth' 112,'wght' 900;text-transform:uppercase;
+  font-size:.82rem;letter-spacing:.06em;white-space:nowrap;
+  animation:march 26s linear infinite;
+}
+.tt-strip.flip .tt-run{animation-direction:reverse}
+@keyframes march{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tt:hover .tt-run{animation-play-state:paused}
+
+.tt-title{
+  font-size:clamp(2.8rem,8vw,6.2rem);line-height:.86;margin:0 0 1rem;
+  color:var(--amarillo);
+}
+.tt-line{
+  font-family:var(--dish);font-variation-settings:'opsz' 60,'wght' 600,'WONK' 1;
+  font-size:clamp(1.2rem,2.4vw,1.75rem);line-height:1.25;margin:0;max-width:20ch;
+}
+.tt-note{font-size:.8rem;color:rgba(245,238,225,.55);margin:.7rem 0 0;max-width:38ch}
+.tt .eyebrow{color:var(--amarillo)}
+
+/* el reloj */
+.tt-clock{border:2px solid rgba(245,238,225,.28);padding:clamp(1.2rem,2.5vw,1.8rem)}
+.tt-clock-k{
+  margin:0 0 1rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  font-variation-settings:'wdth' 90,'wght' 700;color:rgba(245,238,225,.6);
+}
+.tt-dial{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;text-align:center}
+.tt-dial div{border:1px solid rgba(245,238,225,.2);padding:.7rem .2rem}
+.tt-dial .v{
+  display:block;font-variation-settings:'wdth' 118,'wght' 900;
+  font-size:clamp(1.5rem,3.2vw,2.2rem);line-height:1;font-variant-numeric:tabular-nums;
+  color:var(--masa);
+}
+.tt-dial .u{
+  display:block;margin-top:.3rem;font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;font-variation-settings:'wdth' 90,'wght' 700;
+  color:rgba(245,238,225,.55);
+}
+.tt-warn{margin:1rem 0 0;font-size:.78rem;color:var(--amarillo)}
+
+/* cuando de verdad ES martes, el bloque se enciende */
+:root[data-tuesday="1"] .tt{background:var(--amarillo);color:var(--comal);border-color:var(--comal)}
+:root[data-tuesday="1"] .tt .eyebrow,
+:root[data-tuesday="1"] .tt-title{color:var(--rojo)}
+:root[data-tuesday="1"] .tt-strip{background:var(--rojo);color:#fff}
+:root[data-tuesday="1"] .tt-note,
+:root[data-tuesday="1"] .tt-clock-k,
+:root[data-tuesday="1"] .tt-dial .u{color:rgba(34,26,22,.6)}
+:root[data-tuesday="1"] .tt-clock{border-color:rgba(34,26,22,.3)}
+:root[data-tuesday="1"] .tt-dial div{border-color:rgba(34,26,22,.22)}
+:root[data-tuesday="1"] .tt-dial .v{color:var(--comal)}
+:root[data-tuesday="1"] .tt-warn{color:var(--rojo)}
+:root[data-tuesday="1"] .tt .btn-ghost{color:var(--comal);border-color:var(--comal)}
+
+/* aviso en la barra superior, solo los martes */
+.ttbadge{
+  display:none;align-items:center;gap:.35rem;padding:.28rem .6rem;
+  background:var(--amarillo);color:var(--comal);text-decoration:none;
+  font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+  font-variation-settings:'wdth' 90,'wght' 800;
+}
+:root[data-tuesday="1"] .ttbadge{display:inline-flex}
+@media (hover:hover) and (pointer:fine){ .ttbadge:hover{background:#fff} }
+
+/* el precio de $1 en la carta, solo el día que aplica */
+.menu-item .was{
+  text-decoration:line-through;opacity:.45;margin-inline-end:.4rem;font-weight:400;
+}
+.menu-item .price.tuesday{color:var(--rojo)}
+
+@media (max-width:900px){ .tt-in{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){
+  .tt-run{animation:none}
+  .tt-strip{overflow-x:auto}
+}

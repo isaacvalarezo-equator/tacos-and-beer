@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Front of house · Tacos and Beer</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* El panel es una herramienta de trabajo, no una pieza de marca: fondo claro
+     como el papel, y el color solo donde significa algo. */
+  body{background:var(--masa);color:var(--ink)}
+
+  .panel-top{
+    position:sticky;top:0;z-index:60;background:var(--comal);color:var(--masa);
+    border-bottom:3px solid var(--rojo);
+  }
+  .panel-top .locpick button{color:rgba(245,238,225,.6)}
+  .panel-top .locpick button:hover{color:var(--masa)}
+  .panel-top .locpick button[aria-pressed="true"]{color:var(--masa);border-bottom-color:var(--rojo)}
+
+  /* KPIs: tarjetas blancas con una franja de color arriba */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2.5rem}
+  .kpi{background:var(--cal);border:2px solid var(--line-hard);padding:1.3rem;border-top-width:6px}
+  .kpi.k1{border-top-color:var(--rojo)}
+  .kpi.k2{border-top-color:var(--amarillo)}
+  .kpi.k3{border-top-color:var(--verde)}
+  .kpi.k4{border-top-color:var(--turquesa)}
+  .kpi .n{
+    display:block;font-variation-settings:'wdth' 125,'wght' 900;
+    font-size:clamp(2.2rem,4.5vw,3.1rem);line-height:1;font-variant-numeric:tabular-nums;
+  }
+  .kpi .l{
+    display:block;margin-top:.5rem;font-size:.68rem;text-transform:uppercase;
+    letter-spacing:.11em;color:var(--ink-soft);font-variation-settings:'wdth' 90,'wght' 700;
+  }
+  .rojo{color:var(--rojo)} .amb{color:#B77B12} .tom{color:var(--verde)} .turq{color:#12786F}
+
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
+  .lst{border:2px solid var(--line-hard);background:var(--cal)}
+  .lst h3{
+    margin:0;padding:.9rem 1.2rem;background:var(--comal);color:var(--masa);
+    font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;
+    font-variation-settings:'wdth' 90,'wght' 700;
+  }
+  .it{padding:1rem 1.2rem;border-bottom:1px solid var(--line);display:flex;gap:1rem;align-items:start;flex-wrap:wrap}
+  .it:last-child{border-bottom:0}
+  .it .main{flex:1;min-width:190px}
+  .it .nm{font-family:var(--dish);font-variation-settings:'WONK' 1;font-weight:600;font-size:1.08rem}
+  .it .meta{font-size:.8rem;color:var(--ink-soft);margin-top:.2rem;line-height:1.5}
+  .it .amt{font-variation-settings:'wdth' 100,'wght' 800;font-variant-numeric:tabular-nums;font-size:1.15rem}
+
+  .mini{
+    padding:.4rem .7rem;font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;
+    font-variation-settings:'wdth' 90,'wght' 700;border:2px solid var(--line-hard);
+    background:transparent;cursor:pointer;color:var(--ink);
+  }
+  .mini:hover{background:var(--comal);color:var(--masa)}
+  .mini.go{background:var(--rojo);border-color:var(--rojo);color:#fff}
+  .mini.go:hover{background:var(--comal);border-color:var(--comal)}
+
+  .empty{padding:2.5rem 1.2rem;text-align:center;color:var(--ink-soft);font-size:.9rem}
+  .badge{
+    font-size:.6rem;text-transform:uppercase;letter-spacing:.09em;padding:.18rem .45rem;
+    border:2px solid currentColor;font-variation-settings:'wdth' 90,'wght' 700;
+  }
+
+  /* La calculadora sí es una pieza de argumento: va oscura y a todo lo ancho. */
+  .calc{background:var(--comal);color:var(--masa);border:0;padding:clamp(1.6rem,4vw,2.6rem);margin-top:2.5rem}
+  .calc .eyebrow{color:var(--amarillo)}
+  .calc p{color:rgba(245,238,225,.72)}
+  .calc label{color:var(--masa)}
+  .calc input[type=range]{width:100%;color:var(--masa)}
+  .calc .out{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1.4rem;margin-top:1.6rem}
+  .calc .out .cap{
+    display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.11em;
+    color:rgba(245,238,225,.6);font-variation-settings:'wdth' 90,'wght' 700;margin-bottom:.3rem;
+  }
+  .calc .out .v{
+    display:block;font-variation-settings:'wdth' 125,'wght' 900;
+    font-size:clamp(1.8rem,3.8vw,2.6rem);line-height:1;font-variant-numeric:tabular-nums;
+  }
+  .calc .v.rojo{color:#F0574A} .calc .v.tom{color:#8FCC79} .calc .v.amb{color:var(--amarillo)}
+
+  .seedbar{
+    display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;
+    margin-bottom:1.5rem;padding:.7rem .9rem;border:2px dashed var(--line);
+    font-size:.78rem;color:var(--ink-soft);
+  }
+  @media(max-width:900px){.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="panel-top">
+  <div class="locbar-in">
+    <a class="brand" href="index.html"><img src="img/logo.png" alt="Tacos and Beer" width="399" height="60"></a>
+    <span class="livestate"><span class="dot"></span>Tonight’s shift</span>
+    <div class="locpick" role="group" aria-label="Location">
+      <button type="button" data-loc="all" aria-pressed="true">All</button>
+      <button type="button" data-loc="nola">New Orleans</button>
+      <button type="button" data-loc="slidell">Slidell</button>
+      <button type="button" data-loc="hammond">Hammond</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap" style="padding-block:2.5rem 5rem">
+
+  <p class="eyebrow" style="color:rgba(246,236,220,.55)">Today</p>
+  <h1 class="display" style="font-size:clamp(2rem,5vw,3.4rem);margin-bottom:2rem">What is coming in</h1>
+
+  <div class="seedbar">
+    <span>Demo:</span>
+    <button class="mini" id="seed" type="button">Load sample shift</button>
+    <button class="mini" id="clear" type="button">Clear everything</button>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi k1"><span class="n rojo" id="kWait">0</span><span class="l">On the waitlist</span></div>
+    <div class="kpi k2"><span class="n amb" id="kParty">0</span><span class="l">Party requests</span></div>
+    <div class="kpi k3"><span class="n tom" id="kValue">$0</span><span class="l">Value in quotes</span></div>
+    <div class="kpi k4"><span class="n turq" id="kCovers">0</span><span class="l">People expected</span></div>
+  </div>
+
+  <div class="row2">
+    <section class="lst">
+      <h3>Waitlist</h3>
+      <div id="waitList"></div>
+    </section>
+
+    <section class="lst">
+      <h3>Groups and parties</h3>
+      <div id="partyList"></div>
+    </section>
+  </div>
+
+  <section class="calc">
+    <p class="eyebrow" style="color:var(--amarillo)">What the apps cost you</p>
+    <h2 class="display" style="font-size:clamp(1.5rem,3.4vw,2.3rem)">Commission you pay today</h2>
+    <p style="color:rgba(246,236,220,.7);font-size:.9rem;max-width:56ch;margin:.6rem 0 1.4rem">
+      Drag to how many delivery orders you do per week across all three restaurants.
+      Commission assumes a 25% average across DoorDash, Uber Eats, and Grubhub; direct ordering, 3.3% + 30¢.
+    </p>
+    <label for="ordVol" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-variation-settings:'wdth' 90,'wght' 700">
+      <span id="ordOut">180</span> orders a week · $<span id="tickOut">28</span> average ticket
+    </label>
+    <input type="range" id="ordVol" min="40" max="600" value="180" step="10">
+    <input type="range" id="ordTick" min="15" max="60" value="28" step="1" style="width:100%;margin-top:.6rem">
+    <div class="out">
+      <div><span class="cap">Commission per year</span><span class="v rojo" id="cComm">$0</span></div>
+      <div><span class="cap">If half moves to direct</span><span class="v tom" id="cSave">$0</span></div>
+      <div><span class="cap">Recovered per month</span><span class="v amb" id="cMonth">$0</span></div>
+    </div>
+  </section>
+
+  <p class="proto" style="border-color:rgba(246,236,220,.2)">
+    Demonstration prototype by Equator Consulting Group. Everything here comes from
+    <a href="index.html" style="color:var(--amarillo)">the public site</a> and lives only in this browser.
+    No real message is ever sent.
+  </p>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="panel.js"></script>
+</body>
+</html>
