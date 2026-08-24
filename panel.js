@@ -23,6 +23,14 @@ if (!storageOK()){
 
 /* Los estados se escribían en español antes de pasar el producto a inglés.
    Se traducen al leer para que un registro viejo no desaparezca del panel. */
+/* El aviso sale del teléfono del propio host, no de una plataforma de pago.
+   `sms:` abre su mensajero con el mensaje escrito; en iOS el separador del
+   cuerpo es `&`, en Android `?`, y el `&` funciona en los dos. */
+function smsLink(w){
+  const texto = `Hi ${w.name.split(' ')[0]}, your table at Tacos and Beer is ready. We will hold it for 10 minutes.`;
+  return `sms:${String(w.phone || '').replace(/[^0-9+]/g,'')}&body=${encodeURIComponent(texto)}`;
+}
+
 const MIGRA = { esperando:'waiting', avisado:'texted', sentado:'seated',
                 cancelado:'left', nuevo:'new', cotizado:'quoted',
                 confirmado:'confirmed', descartado:'dropped' };
@@ -53,7 +61,7 @@ function act(kind, id, status){
   if (!r) return;
   r.status = status;
   write(d); render();
-  if (status === 'texted')    toast(`Text sent to ${r.name} — “Your table is ready, you have 10 minutes.”`);
+  if (status === 'texted')    toast(`Opening your messages to ${r.name}. The text is already written.`);
   if (status === 'seated')    toast(`${r.name} seated. Off the list.`);
   if (status === 'quoted')    toast(`Quote sent to ${r.name} for ${money(r.total)}.`);
   if (status === 'confirmed') toast(`${r.name} confirmed for ${r.date}. Added to the restaurant calendar.`);
@@ -80,7 +88,7 @@ function render(){
         <div class="meta">${w.size} people · ${where(w.loc)} · ${ago(w.at)}${w.pref ? ' · ' + w.pref : ''}<br>${w.phone}</div>
       </div>
       <div style="display:flex;gap:.4rem;flex-wrap:wrap">
-        ${w.status === 'waiting' ? `<button class="mini go" onclick="act('wait','${w.id}','texted')">Text them</button>` : ''}
+        ${w.status === 'waiting' ? `<a class="mini go" href="${smsLink(w)}" onclick="act('wait','${w.id}','texted')">Text them</a>` : ''}
         <button class="mini" onclick="act('wait','${w.id}','seated')">Seated</button>
         <button class="mini" onclick="act('wait','${w.id}','left')">Left</button>
       </div>
