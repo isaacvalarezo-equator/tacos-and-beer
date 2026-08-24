@@ -37,27 +37,39 @@
 
 <!-- ===== hero ===== -->
 <header class="hero">
-  <div class="hero-grid">
-    <div class="hero-copy">
-      <p class="eyebrow" id="heroBrow">Since 2014</p>
-      <h1 class="hero-mark"><img src="img/logo.png" alt="Tacos and Beer" width="399" height="60" fetchpriority="high"></h1>
-      <p class="hero-sub" id="heroPitch">—</p>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="#waitlist">Get on the list</a>
-        <a class="btn btn-ghost" id="heroCall" href="tel:+15043048722">Call to reserve</a>
-        </div>
-      <p style="font-size:.82rem;color:var(--ink-soft);margin:.9rem 0 0"><a href="#menu" style="text-decoration:underline">See the menu</a> · Groups of 8 or more, <a href="#parties" style="text-decoration:underline">plan your party</a></p>
-      <div class="hero-meta">
-        <span id="heroAddr">—</span>
-        <span id="heroHours">—</span>
-      </div>
+  <!-- El letrero real encendido, fotografiado por ECG con autorización del
+       local. La noche del 22 de agosto de 2026. -->
+  <picture class="hero-foto">
+    <source media="(max-width:700px)" srcset="img/letrero-noche-movil.jpg">
+    <img src="img/letrero-noche-1400.jpg"
+         srcset="img/letrero-noche-800.jpg 800w, img/letrero-noche-1400.jpg 1400w, img/letrero-noche-2400.jpg 2400w"
+         sizes="100vw" width="2400" height="1260" fetchpriority="high"
+         alt="The Tacos and Beer neon sign lit up at night over the St. Charles Avenue patio">
+  </picture>
+
+  <div class="hero-in">
+    <p class="eyebrow" id="heroBrow">Since 2014</p>
+    <h1 class="hero-t"><span class="sr">Tacos and Beer. </span>Tacos, cold beer, and a 64 oz margarita.</h1>
+    <p class="hero-sub" id="heroPitch">&mdash;</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#waitlist">Get on the list</a>
+      <a class="btn btn-ghost" id="heroCall" href="tel:+15043048722">Call to reserve</a>
     </div>
-    <figure class="hero-art">
-      <img src="img/platon.jpg" alt="A platter of twelve assorted tacos on our house paper" width="900" height="900" fetchpriority="high">
-      <figcaption class="note"><strong>Reserving still means calling us</strong>And on a Friday night nobody can get to the phone. So now you can join the line from wherever you are, and we will text you when your table is ready.</figcaption>
-    </figure>
+    <p class="hero-links"><a href="#menu">See the menu</a> · Groups of 8 or more, <a href="#parties">plan your party</a></p>
+    <div class="hero-meta">
+      <span id="heroAddr">&mdash;</span>
+      <span id="heroHours">&mdash;</span>
+    </div>
   </div>
 </header>
+
+<aside class="tira-fila">
+  <div class="wrap tira-in">
+    <p class="tira-t">Reserving still means calling us.</p>
+    <p class="tira-d">And on a Friday night nobody can get to the phone. Join the line from wherever you are, and we will text you when your table is ready.</p>
+    <a class="btn btn-ghost" href="#waitlist">Join the line</a>
+  </div>
+</aside>
 
 <!-- ===== rail de populares ===== -->
 <section class="wrap papel">

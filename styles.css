@@ -144,13 +144,6 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .dot.shut{background:var(--amarillo)}
 
 /* ---------- hero asimétrico ---------- */
-.hero{padding:0;border-bottom:2px solid var(--line-hard)}
-.hero-grid{
-  max-width:var(--maxw);margin:0 auto;
-  display:grid;grid-template-columns:1.05fr .95fr;align-items:stretch;
-}
-.hero-copy{padding:clamp(2.5rem,5vw,4.5rem) var(--pad);display:flex;flex-direction:column;justify-content:center}
-.hero h1{margin-bottom:1.1rem}
 
 /* El hero lleva el rótulo real, no tipografía imitándolo. El archivo es el
    logo original del restaurante (recuperado del Internet Archive) y mide
@@ -164,21 +157,6 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   display:flex;gap:1.4rem;flex-wrap:wrap;font-size:.78rem;
   font-variation-settings:'wdth' 90,'wght' 600;text-transform:uppercase;letter-spacing:.08em;
   color:var(--ink-soft);margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--line);
-}
-.hero-art{
-  background:var(--rojo);color:#fff;position:relative;overflow:hidden;
-  display:flex;align-items:flex-end;padding:clamp(1.5rem,3vw,2.5rem);min-height:340px;
-}
-.hero-art .stamp{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-variation-settings:'wdth' 125,'wght' 900;text-transform:uppercase;
-  font-size:clamp(5rem,17vw,13rem);line-height:.8;color:rgba(255,255,255,.14);
-  pointer-events:none;user-select:none;text-align:center;
-}
-.hero-art .note{position:relative;font-size:.92rem;max-width:30ch;line-height:1.4}
-.hero-art .note strong{
-  display:block;font-variation-settings:'wdth' 110,'wght' 900;
-  text-transform:uppercase;font-size:1.15rem;margin-bottom:.35rem;
 }
 
 /* ---------- botones ---------- */
@@ -196,6 +174,77 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-hard)}
 .btn-row{display:flex;gap:.8rem;flex-wrap:wrap}
 :focus-visible{outline:3px solid var(--turquesa);outline-offset:3px}
+
+/* ===================== HERO DE NOCHE =====================
+   El letrero real encendido, fotografiado en el local. La banda es oscura en
+   cualquier tema, así que FIJA SUS TOKENS, igual que .papel y .tt. Si la tinta
+   siguiera al tema y el fondo no, el texto desaparecería con luz de día.
+
+   Los colores salen medidos de la propia fotografía: el negro de la noche
+   #0C0C0C ocupa una quinta parte del encuadre, el neón da #F03010, y la madera
+   iluminada por las bombillas da #846C54. */
+.hero{
+  --ink:var(--masa);
+  --ink-soft:rgba(245,238,225,.76);
+  --line:rgba(245,238,225,.22);
+  --line-hard:var(--masa);
+  --surface:transparent;
+  --rojo:#F03010;
+  position:relative;isolation:isolate;
+  background:#0C0C0C;color:var(--ink);
+  min-height:clamp(560px,84vh,780px);
+  display:flex;align-items:flex-end;
+  border-bottom:3px solid var(--comal);
+}
+.hero-foto{position:absolute;inset:0;z-index:-2;display:block}
+.hero-foto img{width:100%;height:100%;object-fit:cover;object-position:50% 26%;display:block}
+/* Velo desde la izquierda, que es donde la foto ya es oscura. La regla de la
+   casa dice que a una foto del local no se le pone un velo plano encima; este
+   es un degradado direccional, no un apagón. */
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:
+    linear-gradient(180deg, rgba(12,12,12,.58) 0%, rgba(12,12,12,0) 24%, rgba(12,12,12,.50) 56%, rgba(12,12,12,.93) 84%),
+    linear-gradient(100deg, rgba(12,12,12,.92) 0%, rgba(12,12,12,.78) 30%, rgba(12,12,12,.22) 58%, rgba(12,12,12,0) 100%);
+}
+.hero-in{
+  max-width:var(--maxw);margin:0 auto;width:100%;
+  padding:clamp(2.5rem,6vw,4.5rem) var(--pad) clamp(2.2rem,5vw,3.5rem);
+}
+.hero .eyebrow{color:var(--amarillo)}
+/* El letrero de la foto ya dice el nombre. El titular dice lo que el letrero
+   no puede decir. Sin sombra difusa: la regla de la casa son bordes duros. */
+.hero-t{
+  font-family:var(--black);font-variation-settings:'wdth' 118,'wght' 900;
+  text-transform:uppercase;font-size:clamp(1.75rem,5.2vw,4.1rem);
+  line-height:.94;letter-spacing:-.012em;margin:0 0 1.1rem;max-width:16ch;
+  overflow-wrap:break-word;
+  color:var(--masa);text-wrap:balance;
+}
+.hero-sub{font-size:clamp(1.02rem,1.6vw,1.2rem);max-width:34ch;color:var(--ink-soft);margin:0 0 1.9rem}
+.hero-links{font-size:.84rem;color:var(--ink-soft);margin:1rem 0 0}
+.hero-links a{color:var(--masa);text-decoration:underline}
+.hero-meta{
+  display:flex;gap:1.6rem;flex-wrap:wrap;font-size:.78rem;text-transform:uppercase;
+  letter-spacing:.1em;font-variation-settings:'wdth' 90,'wght' 700;
+  color:var(--ink-soft);margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--line);
+}
+
+/* la promesa que antes vivía sobre la foto, ahora como tira propia */
+.tira-fila{background:var(--rojo);color:#fff;border-bottom:2px solid var(--comal)}
+.tira-in{
+  display:flex;align-items:center;gap:clamp(1rem,3vw,2.4rem);flex-wrap:wrap;
+  padding-block:clamp(1.1rem,2.4vw,1.6rem);
+}
+.tira-t{
+  margin:0;font-variation-settings:'wdth' 110,'wght' 900;text-transform:uppercase;
+  font-size:clamp(.98rem,1.9vw,1.3rem);letter-spacing:-.005em;
+  flex:1 1 auto;min-width:0;text-wrap:balance;
+}
+.tira-d{margin:0;font-size:.9rem;line-height:1.45;flex:1 1 22ch;min-width:22ch;opacity:.95}
+.tira-fila .btn-ghost{color:#fff;border-color:#fff;flex:none}
+@media (hover:hover) and (pointer:fine){ .tira-fila .btn-ghost:hover{background:#fff;color:var(--rojo)} }
+@media (max-width:700px){ .hero{min-height:clamp(420px,64vh,560px)} }
 
 /* ---------- rail de tacos ---------- */
 .rail-head{display:flex;align-items:end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.6rem}
@@ -305,7 +354,6 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .band-comal{background:var(--comal);color:var(--masa);border-color:var(--comal)}
 .band-comal .eyebrow{color:rgba(245,238,225,.6)}
 .band-rojo{background:var(--rojo);color:#fff;border-color:var(--rojo)}
-
 
 .events{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2rem}
 .event{border:2px solid currentColor;padding:1.3rem;display:flex;flex-direction:column;gap:.5rem}
@@ -537,8 +585,8 @@ section[id],header[id]{scroll-margin-top:var(--anchor-off)}
 
 /* ---------- responsive ---------- */
 @media (max-width:900px){
-  .hero-grid,.late,.planner,.wait,.foot{grid-template-columns:1fr}
-  .hero-art{min-height:220px;order:-1}
+  .late,.planner,.wait,.foot{grid-template-columns:1fr}
+  
   .estimate{position:static}
   .grid2{grid-template-columns:1fr}
 }
@@ -577,17 +625,6 @@ section[id],header[id]{scroll-margin-top:var(--anchor-off)}
 .foot .brand img{height:30px;width:auto;display:block}
 
 /* hero: la foto manda, el texto vive en su propio bloque */
-.hero-art{background:var(--comal);padding:0;display:block;position:relative;margin:0}
-.hero-art img{width:100%;height:100%;min-height:340px;object-fit:cover;display:block}
-.hero-art .note{
-  position:absolute;left:0;right:0;bottom:0;margin:0;
-  background:var(--rojo);color:#fff;padding:1.1rem clamp(1.2rem,3vw,2rem);
-  font-size:.9rem;line-height:1.45;max-width:none;
-}
-.hero-art .note strong{
-  display:block;font-family:var(--sans);font-variation-settings:'wdth' 110,'wght' 900;
-  text-transform:uppercase;font-size:1.05rem;margin-bottom:.25rem;letter-spacing:-.005em;
-}
 
 /* figuras sueltas */
 .shot{margin:0;border:2px solid var(--line-hard);background:var(--surface)}
@@ -621,7 +658,7 @@ section[id],header[id]{scroll-margin-top:var(--anchor-off)}
 .loc.on .loc-shot{border-bottom-color:var(--masa)}
 
 @media (max-width:900px){
-  .hero-art img{min-height:260px;max-height:60vh}
+  
 }
 
 /* ===================== MOTION =====================
@@ -640,15 +677,13 @@ section[id],header[id]{scroll-margin-top:var(--anchor-off)}
 @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes riseArt{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
 
-.hero-copy > *{animation:rise 620ms var(--ease-out) both}
-.hero-copy > :nth-child(1){animation-delay:60ms}
-.hero-copy > :nth-child(2){animation-delay:120ms}
-.hero-copy > :nth-child(3){animation-delay:180ms}
-.hero-copy > :nth-child(4){animation-delay:240ms}
-.hero-copy > :nth-child(5){animation-delay:300ms}
-.hero-copy > :nth-child(6){animation-delay:360ms}
-.hero-art img{animation:riseArt 760ms var(--ease-out) both}
-.hero-art .note{animation:rise 620ms var(--ease-out) 420ms both}
+.hero-in > *{animation:rise 620ms var(--ease-out) both}
+.hero-in > :nth-child(1){animation-delay:60ms}
+.hero-in > :nth-child(2){animation-delay:120ms}
+.hero-in > :nth-child(3){animation-delay:180ms}
+.hero-in > :nth-child(4){animation-delay:240ms}
+.hero-in > :nth-child(5){animation-delay:300ms}
+.hero-in > :nth-child(6){animation-delay:360ms}
 
 /* --- revelado al hacer scroll --- */
 .rv{opacity:0;transform:translateY(18px);
@@ -703,7 +738,7 @@ section[id],header[id]{scroll-margin-top:var(--anchor-off)}
 
 @media (prefers-reduced-motion:reduce){
   /* menos y más suave, no cero: se conserva la opacidad, se quita el movimiento */
-  .hero-copy > *,.hero-art img,.hero-art .note,.swap,.queue .me{animation:none;opacity:1;transform:none}
+  .hero-in > *,.swap,.queue .me{animation:none;opacity:1;transform:none}
   .rv,.rv-stagger > *{transform:none;transition:opacity 300ms ease}
   .estimate .big.bump{animation:none}
   .btn:hover,.card:hover,.loc:hover,.chip:hover,.pkg:hover{transform:none}

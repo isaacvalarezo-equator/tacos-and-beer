@@ -119,9 +119,12 @@ function renderMenu(){
 function renderBar(){
   const row = (n, d, ...p) => `
     <div class="menu-item">
-      <span class="nm">${n}${d ? `<span class="dsc">${d}</span>` : ''}</span>
-      <span class="leader"></span>
-      <span class="price">${p.map(x => money(x)).join(' · ')}</span>
+      <p class="line">
+        <span class="nm">${n}</span>
+        <span class="leader"></span>
+        <span class="price">${p.map(x => money(x)).join(' · ')}</span>
+      </p>
+      ${d ? `<p class="dsc">${d}</p>` : ''}
     </div>`;
   $('#draft').innerHTML    = BAR.draft.map(b => row(b[0], b[1], b[2], b[3], b[4])).join('');
   $('#margs').innerHTML    = BAR.margs.map(b => row(b[0], b[1], b[2], b[3], b[4])).join('');
