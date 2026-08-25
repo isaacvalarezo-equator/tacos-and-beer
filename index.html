@@ -14,22 +14,25 @@
 <!-- ===== barra de ubicación ===== -->
 <div class="locbar">
   <div class="locbar-in">
-    <a class="brand" href="#top"><img src="img/logo.png" alt="Tacos and Beer" width="399" height="60"><span class="sr">Tacos and Beer</span></a>
-      <a class="ttbadge" href="#tuesday" id="ttBadge">🌮 It is Taco Tuesday</a>
-      <span class="latebadge">Late night</span>
-      <span class="livestate"><span class="dot" id="dot"></span><span id="livetext">—</span></span>
-    <nav class="secnav" aria-label="Sections">
-      <a href="#menu">Menu</a>
-      <a href="#tuesday">Tuesday</a>
-      <a href="#parties">Parties</a>
-      <a href="#locations">Locations</a>
-      <a class="secnav-cta" href="#waitlist">Get on the list</a>
-    </nav>
+
+    <!-- izquierda: elegir local, que es el control que manda en este sitio -->
     <div class="locpick" role="group" aria-label="Choose your location">
       <button type="button" data-loc="nola">New Orleans</button>
       <button type="button" data-loc="slidell">Slidell</button>
       <button type="button" data-loc="hammond">Hammond</button>
     </div>
+
+    <!-- centro: la marca -->
+    <a class="brand" href="#top"><img src="img/logo.png" alt="Tacos and Beer" width="399" height="60"><span class="sr">Tacos and Beer</span></a>
+
+    <!-- derecha: si está abierto, y la única acción que importa -->
+    <div class="lb-der">
+      <a class="ttbadge" href="#tuesday" id="ttBadge">🌮 It is Taco Tuesday</a>
+      <span class="latebadge">Late night</span>
+      <span class="livestate"><span class="dot" id="dot"></span><span id="livetext">&mdash;</span></span>
+      <a class="lb-cta" href="#waitlist">Get on the list</a>
+    </div>
+
   </div>
 </div>
 
@@ -49,21 +52,30 @@
    </picture>
   </div>
 
-  <div class="hero-in">
-    <p class="eyebrow" id="heroBrow">Since 2014</p>
-    <h1 class="hero-t"><span class="sr">Tacos and Beer. </span>Tacos, cold beer, and a 64 oz margarita.</h1>
-    <p class="hero-sub" id="heroPitch">&mdash;</p>
-    <div class="btn-row">
-      <a class="btn btn-primary" href="#waitlist">Get on the list</a>
-      <a class="btn btn-ghost" id="heroCall" href="tel:+15043048722">Call to reserve</a>
+  <a class="hero-baja" href="#intro" aria-label="Skip to the details"><span></span></a>
+</header>
+
+
+<section class="intro" id="intro">
+  <div class="wrap intro-in">
+    <div>
+      <p class="eyebrow" id="heroBrow">Since 2014</p>
+      <h1 class="intro-t"><span class="sr">Tacos and Beer. </span>Tacos, cold beer, and a 64 oz margarita.</h1>
+      <p class="intro-sub" id="heroPitch">&mdash;</p>
     </div>
-    <p class="hero-links"><a href="#menu">See the menu</a> · Groups of 8 or more, <a href="#parties">plan your party</a></p>
-    <div class="hero-meta">
-      <span id="heroAddr">&mdash;</span>
-      <span id="heroHours">&mdash;</span>
+    <div class="intro-acc">
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#waitlist">Get on the list</a>
+        <a class="btn btn-ghost" id="heroCall" href="tel:+15043048722">Call to reserve</a>
+      </div>
+      <p class="intro-links"><a href="#menu">See the menu</a> · Groups of 8 or more, <a href="#parties">plan your party</a></p>
+      <div class="intro-meta">
+        <span id="heroAddr">&mdash;</span>
+        <span id="heroHours">&mdash;</span>
+      </div>
     </div>
   </div>
-</header>
+</section>
 
 <aside class="tira-fila">
   <div class="wrap tira-in">
