@@ -5,7 +5,7 @@
    el papel deli rojo sobre crema que envuelve toda la comida.
    Sin gradientes, sin sombras difusas. Bloques planos y bordes duros. */
 
-@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Archivo+Black&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Titan+One&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..900,0..100,0..1&display=swap');
 
 :root{
   /* --- los cinco colores que están de verdad en el local ---
@@ -40,7 +40,11 @@
   --accent:var(--rojo);
 
   --sans:'Archivo','Helvetica Neue',Arial,system-ui,sans-serif;
-  --black:'Archivo Black','Archivo','Helvetica Neue',Arial,sans-serif;
+  /* La letra del rótulo. Titan One es la que más se le parece de las que hay
+     en Google Fonts: mismo peso, mismas terminaciones gruesas, misma
+     compresión. Solo para titulares: el cuerpo sigue en Archivo, porque una
+     carta de 41 platos con precios en tipografía de display no se lee. */
+  --black:'Titan One','Archivo Black','Archivo',Arial,sans-serif;
   --dish:'Fraunces',Georgia,'Times New Roman',serif;
 
   --pad:clamp(1.25rem,4vw,4.5rem);
@@ -92,14 +96,18 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* ---------- tipografía de rotulación ---------- */
 .display{
+  letter-spacing:.004em;
   font-family:var(--sans);
   font-variation-settings:'wdth' 125,'wght' 900;
   text-transform:uppercase;line-height:.9;letter-spacing:-.01em;
   margin:0;
 }
-h1.display{font-size:clamp(2.9rem,9vw,7rem)}
-h2.display{font-size:clamp(2rem,5.2vw,3.9rem)}
-h3.display{font-size:clamp(1.3rem,2.6vw,1.9rem)}
+h1.display{
+  letter-spacing:.004em;font-size:clamp(2.9rem,9vw,7rem)}
+h2.display{
+  letter-spacing:.004em;font-size:clamp(2rem,5.2vw,3.9rem)}
+h3.display{
+  letter-spacing:.004em;font-size:clamp(1.3rem,2.6vw,1.9rem)}
 .condensed{font-variation-settings:'wdth' 75,'wght' 500}
 .eyebrow{
   font-variation-settings:'wdth' 100,'wght' 700;
@@ -190,7 +198,11 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   --rojo:#F03010;
   position:relative;isolation:isolate;
   background:#0C0C0C;color:var(--ink);
-  min-height:clamp(420px,72vh,720px);
+  /* La foto se queda con la primera pantalla entera, menos la barra fija.
+     Así la banda de texto empieza debajo del pliegue y no asoma al abrir.
+     `svh` en vez de `vh` para que la barra del navegador del teléfono no la
+     corte. El tope evita que en una pantalla muy alta quede desmedida. */
+  min-height:min(calc(100svh - var(--bar-h)), 880px);
   display:block;
   border-bottom:3px solid var(--comal);
 }
@@ -225,7 +237,13 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .tira-d{margin:0;font-size:.9rem;line-height:1.45;flex:1 1 22ch;min-width:22ch;opacity:.95}
 .tira-fila .btn-ghost{color:#fff;border-color:#fff;flex:none}
 @media (hover:hover) and (pointer:fine){ .tira-fila .btn-ghost:hover{background:#fff;color:var(--rojo)} }
-@media (max-width:700px){ .hero{min-height:clamp(420px,64vh,560px)} }
+/* En teléfono la pantalla es mucho más vertical que la foto, así que llenarla
+   entera recortaría el letrero por los lados. El letrero es el punto, así que
+   manda él: la banda toma la proporción del recorte y se ve completo. */
+@media (max-width:900px){
+  .hero{min-height:0;aspect-ratio:1000/1090;max-height:calc(100svh - 108px)}
+  .hero-foto img{object-position:50% 50%}
+}
 
 /* ---------- montaje del hero ----------
    Siete fotos del local encadenadas con fundido y un desplazamiento lento de
@@ -277,9 +295,9 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .intro{background:var(--bg);border-bottom:2px solid var(--line-hard);padding-block:clamp(2.6rem,5.5vw,4.4rem)}
 .intro-in{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,5vw,4.5rem);align-items:end}
 .intro-t{
-  font-family:var(--black);font-variation-settings:'wdth' 116,'wght' 900;
-  text-transform:uppercase;font-size:clamp(1.8rem,4.6vw,3.5rem);
-  line-height:.94;letter-spacing:-.014em;margin:0;max-width:17ch;
+  font-family:var(--black);
+  text-transform:uppercase;font-size:clamp(1.7rem,4.3vw,3.2rem);
+  line-height:1.02;letter-spacing:.004em;margin:0;max-width:17ch;
   text-wrap:balance;overflow-wrap:break-word;color:var(--ink);
 }
 .intro-sub{font-size:clamp(1rem,1.6vw,1.2rem);max-width:40ch;color:var(--ink-soft);margin:1.1rem 0 0}
