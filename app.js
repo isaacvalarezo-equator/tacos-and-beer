@@ -421,7 +421,7 @@ function renderTuesday(){
   // Avenida no lo está, así que ahí el martes se anuncia sin cifra.
   $('#ttBadge').textContent = cfg.confirmed && cfg.price
     ? `🌮 ${money(cfg.price)} Tacos today`
-    : '🌮 It is Taco Tuesday';
+    : '🌮 Taco Tuesday';
 
   $('#ttLine').textContent = cfg.line || '';
   $('#ttNote').textContent = cfg.confirmed === false && cfg.price

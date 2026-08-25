@@ -126,7 +126,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 }
 .locbar-in{
   max-width:var(--maxw);margin:0 auto;padding:0 var(--pad);
-  min-height:var(--bar-h);gap:1.5rem;
+  min-height:var(--bar-h);gap:1.1rem;
   /* La marca al centro, como en la referencia que mandó el dueño. Las columnas
      de los lados son iguales, así el logotipo queda centrado de verdad y no
      desplazado por lo que pese cada lado. */
@@ -327,7 +327,8 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 }
 @media (hover:hover) and (pointer:fine){ .lb-cta:hover{background:var(--amarillo);color:var(--comal)} }
 /* el aviso del martes cede el sitio: solo aparece cuando de verdad es martes */
-.locbar .ttbadge{font-size:.62rem;padding:.24rem .5rem}
+.locbar .ttbadge{font-size:.62rem;padding:.24rem .5rem;white-space:nowrap;flex:none}
+.locbar .livestate{white-space:nowrap;flex:none}
 
 @media (max-width:900px){
   .locbar-in{grid-template-columns:1fr;justify-items:center;gap:.55rem;padding-block:.55rem}
@@ -692,9 +693,12 @@ section[id],header[id]{scroll-margin-top:var(--anchor-off)}
 /* el rótulo real como marca de la barra */
 .locbar .brand{display:flex;align-items:center;padding:.45rem 0;text-shadow:none}
 .locbar .brand img{
-  /* el logo original, recuperado del Internet Archive */
-  height:26px;width:auto;display:block;
+  /* El logo original, recuperado del Internet Archive. Mide 399x60, así que a
+     30px de alto es nítido en Retina y a 44 empieza a verse suave. Isaac lo
+     pidió grande: va a 44 y se nota el techo del archivo. */
+  height:44px;width:auto;display:block;
 }
+@media (max-width:640px){ .locbar .brand img{height:34px} }
 /* En el pie va a 30px de alto: son 200x30 en pantalla, que en Retina pide
    exactamente los 399x60 del archivo. Más grande empieza a verse suave. */
 .foot .brand{display:inline-block}
