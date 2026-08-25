@@ -463,3 +463,39 @@ function tickTuesday(){
 renderTuesday(); tickTuesday();
 setInterval(tickTuesday, 1000);
 setInterval(renderTuesday, 60000);
+
+/* ---------- montaje del hero ----------
+   Los cuadros se inyectan después de `load` para que no compitan con la
+   primera pintura. La foto del letrero ya está en el HTML y es el cuadro 1;
+   estos son del 2 al 7. Si el visitante pidió menos movimiento, no se cargan. */
+addEventListener('load', function montajeHero(){
+  const menos = matchMedia('(prefers-reduced-motion: reduce)');
+  if (menos.matches) return;
+  const foto = $('.hero-foto');
+  if (!foto) return;
+
+  const cuadros = [
+    ['img/m2-fachada.jpg',  'The yellow storefront on St. Charles Avenue'],
+    ['img/m3-comedor.jpg',  'The turquoise dining room'],
+    ['img/m4-platon.jpg',   'A platter of assorted tacos'],
+    ['img/m5-papel.jpg',    'Tacos served on our house paper'],
+    ['img/m6-margarita.jpg','A 64 oz margarita'],
+    ['img/m7-mesa.jpg',     'A shared table with chips and guacamole'],
+  ];
+  const total = cuadros.length + 1;          // el letrero cuenta como uno
+  const ciclo = total * 5;                   // cinco segundos por foto
+  foto.style.setProperty('--ciclo', ciclo + 's');
+
+  cuadros.forEach(([src, alt], i) => {
+    const d = document.createElement('div');
+    d.className = 'cuadro';
+    // cada cuadro entra un turno después que el anterior
+    d.style.animationDelay = ((i + 1) * 5) + 's';
+    const img = new Image();
+    img.src = src; img.alt = alt; img.width = 1280; img.height = 720;
+    img.decoding = 'async';
+    img.style.animationDelay = ((i + 1) * 5) + 's';
+    d.appendChild(img);
+    foto.appendChild(d);
+  });
+});
