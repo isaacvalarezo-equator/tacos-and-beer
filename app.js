@@ -483,18 +483,19 @@ addEventListener('load', function montajeHero(){
     ['img/m7-mesa.jpg',     'A shared table with chips and guacamole'],
   ];
   const total = cuadros.length + 1;          // el letrero cuenta como uno
-  const ciclo = total * 5;                   // cinco segundos por foto
+  const ciclo = total * 2.6;                 // 2.6 s por foto: el primer cambio
+                                             // ocurre antes de que nadie se aburra
   foto.style.setProperty('--ciclo', ciclo + 's');
 
   cuadros.forEach(([src, alt], i) => {
     const d = document.createElement('div');
     d.className = 'cuadro';
     // cada cuadro entra un turno después que el anterior
-    d.style.animationDelay = ((i + 1) * 5) + 's';
+    d.style.animationDelay = ((i + 1) * 2.6) + 's';
     const img = new Image();
     img.src = src; img.alt = alt; img.width = 1280; img.height = 720;
     img.decoding = 'async';
-    img.style.animationDelay = ((i + 1) * 5) + 's';
+    img.style.animationDelay = ((i + 1) * 2.6) + 's';
     d.appendChild(img);
     foto.appendChild(d);
   });

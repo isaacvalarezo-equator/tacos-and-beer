@@ -261,17 +261,20 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .hero-foto .cuadro img{width:100%;height:100%;object-fit:cover;display:block;
   animation:deriva var(--ciclo) linear infinite}
 @keyframes montaje{
-  0%{opacity:0} 2%{opacity:1} 12.3%{opacity:1} 14.3%{opacity:0} 100%{opacity:0}
+  0%{opacity:0} 3.02%{opacity:1} 11.26%{opacity:1} 14.29%{opacity:0} 100%{opacity:0}
 }
+/* La cámara se mueve durante el turno de la foto y se queda quieta el resto,
+   para que no derive fuera de cuadro mientras está oculta. */
 @keyframes deriva{
-  0%{transform:scale(1.06) translate3d(0,0,0)}
-  16%{transform:scale(1.14) translate3d(-1.4%,-1%,0)}
-  100%{transform:scale(1.14) translate3d(-1.4%,-1%,0)}
+  0%{transform:scale(1.05)}
+  14.29%{transform:scale(1.13) translate3d(-1.2%,-.9%,0)}
+  100%{transform:scale(1.13) translate3d(-1.2%,-.9%,0)}
 }
 /* El primer cuadro es la foto base, que ya está pintada: se queda fija y solo
    se apaga cuando entra el segundo. */
 .cuadro-base{animation:baseFoto var(--ciclo) linear infinite}
-@keyframes baseFoto{ 0%{opacity:1} 12.3%{opacity:1} 14.3%{opacity:0} 97%{opacity:0} 100%{opacity:1} }
+.cuadro-base img{animation:deriva var(--ciclo) linear infinite}
+@keyframes baseFoto{ 0%{opacity:1} 11.26%{opacity:1} 14.29%{opacity:0} 96.98%{opacity:0} 100%{opacity:1} }
 
 @media (prefers-reduced-motion:reduce){
   .hero-foto .cuadro,.hero-foto .cuadro img,.cuadro-base{animation:none}
