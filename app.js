@@ -98,7 +98,7 @@ function renderRail(L){
     const src = FOTOS[i[0]];
     const art = src
       ? `<img src="${src}" alt="${i[0]}" width="800" height="600" loading="lazy">`
-      : `<span>${i[0].split(' ')[0]}</span>`;
+      : `<span aria-hidden="true">${i[0].split(' ')[0]}</span>`;
     return `
     <article class="card">
       <div class="card-art${src ? ' has-photo' : ' c' + ((n % 4) + 1)}">${art}</div>
@@ -199,7 +199,7 @@ function renderLocs(){
       <h3>${L.name}</h3>
       <address>${L.address}<br>${L.city}</address>
       <div class="hrs">${L.hoursText.map(h => `<span>${h[0]} · ${h[1]}</span>`).join('')}</div>
-      <p style="margin:.4rem 0 0;font-size:.8rem;color:${L.id === loc ? 'var(--amarillo)' : 'var(--verde)'}">${st.text}</p>
+      <p class="estado"><span class="dot${st.open ? '' : ' shut'}"></span>${st.text}</p>
       <div class="acts">
         <a href="tel:${L.tel}">Call</a>
         <a href="${L.maps}" target="_blank" rel="noopener">Directions</a>

@@ -21,7 +21,12 @@
   --turquesa:var(--turquesa-dia);
   --amarillo:var(--amarillo-dia);
   --verde:var(--verde-dia);
-  --ladrillo:#8C4A35;    /* la columna de ladrillo visto */
+  --ladrillo:#8C4A35;
+  /* El rojo de ACENTO sube de brillo de noche, como sube un neón. El rojo de
+     RELLENO no: es la superficie que carga tinta blanca encima, y el neón de
+     noche deja el blanco en 3.65:1. Se queda en el rojo del papel deli, que
+     con blanco mide 5.11:1 en cualquier tema. */
+  --rojo-solido:var(--rojo-dia);    /* la columna de ladrillo visto */
 
   /* --- materiales --- */
   --masa:#F5EEE1;        /* el crema del papel deli */
@@ -181,6 +186,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .locpick{display:flex;gap:0;flex-wrap:wrap;justify-self:start}
 .locpick button{
   background:none;border:0;padding:.55rem .85rem;cursor:pointer;
+  min-height:44px;
   font-variation-settings:'wdth' 90,'wght' 700;
   text-transform:uppercase;letter-spacing:.08em;font-size:.74rem;
   color:rgba(246,236,220,.62);border-bottom:3px solid transparent;
@@ -215,11 +221,14 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 }
 .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--comal)}
 .btn:active{transform:translate(0,0);box-shadow:none}
-.btn-primary{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.btn-primary{background:var(--rojo-solido);border-color:var(--rojo-solido);color:#fff}
 .btn-primary:hover{box-shadow:4px 4px 0 var(--comal)}
 .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-hard)}
 .btn-row{display:flex;gap:.8rem;flex-wrap:wrap}
-:focus-visible{outline:3px solid var(--turquesa);outline-offset:3px}
+/* La turquesa sola sobre el crema del papel mide 2.86:1 y no llega al 3:1 que
+   pide un indicador de foco. El anillo interior de tinta se lo garantiza sobre
+   cualquier superficie, y la turquesa sigue siendo la señal. */
+:focus-visible{outline:3px solid var(--turquesa);outline-offset:3px;box-shadow:0 0 0 3px var(--ink)}
 
 /* ===================== HERO DE NOCHE =====================
    El letrero real encendido, fotografiado en el local. La banda es oscura en
@@ -258,7 +267,10 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
    contra la banda de abajo. La foto se ve casi limpia. */
 .hero::before{
   content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg, rgba(12,12,12,.62) 0%, rgba(12,12,12,0) 22%,
+  background:linear-gradient(180deg,
+             rgba(12,12,12,.66) 0%,
+             rgba(12,12,12,.52) var(--bar-total),
+             rgba(12,12,12,0) calc(var(--bar-total) + 4.5rem),
              rgba(12,12,12,0) 74%, rgba(12,12,12,.55) 100%);
 }
 
@@ -266,7 +278,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
    no puede decir. Sin sombra difusa: la regla de la casa son bordes duros. */
 
 /* la promesa que antes vivía sobre la foto, ahora como tira propia */
-.tira-fila{background:var(--rojo);color:#fff;border-bottom:2px solid var(--comal)}
+.tira-fila{background:var(--rojo-solido);color:#fff;border-bottom:2px solid var(--comal)}
 .tira-in{
   display:flex;align-items:center;gap:clamp(1rem,3vw,2.4rem);flex-wrap:wrap;
   padding-block:clamp(1.1rem,2.4vw,1.6rem);
@@ -276,9 +288,11 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   font-size:clamp(.98rem,1.9vw,1.3rem);letter-spacing:-.005em;
   flex:1 1 auto;min-width:0;text-wrap:balance;
 }
-.tira-d{margin:0;font-size:.9rem;line-height:1.45;flex:1 1 22ch;min-width:22ch;opacity:.95}
+/* Sin destiñe: el blanco entero sobre el rojo de relleno mide 5.11:1, y al 90%
+   se queda en 4.4:1. La jerarquía la lleva el tamaño, no la transparencia. */
+.tira-d{margin:0;font-size:.9rem;line-height:1.45;flex:1 1 22ch;min-width:22ch}
 .tira-fila .btn-ghost{color:#fff;border-color:#fff;flex:none}
-@media (hover:hover) and (pointer:fine){ .tira-fila .btn-ghost:hover{background:#fff;color:var(--rojo)} }
+@media (hover:hover) and (pointer:fine){ .tira-fila .btn-ghost:hover{background:#fff;color:var(--rojo-solido)} }
 /* En teléfono la pantalla es mucho más vertical que la foto, así que llenarla
    entera recortaría el letrero por los lados. El letrero es el punto, así que
    manda él: la banda toma la proporción del recorte y se ve completo. */
@@ -294,7 +308,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .pasos li{display:grid;grid-template-columns:auto 1fr;gap:.85rem;align-items:start;font-size:.9rem;line-height:1.5}
 .pasos span{
   display:grid;place-items:center;width:26px;height:26px;flex:none;
-  background:var(--rojo);color:#fff;font-family:var(--black);font-size:.78rem;
+  background:var(--rojo-solido);color:#fff;font-family:var(--black);font-size:.78rem;
 }
 @media (max-width:820px){ .reserva{grid-template-columns:1fr} }
 
@@ -388,7 +402,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
    la imagen, y el hero queda para lo que sirve: enseñar el local. */
 .hero-baja{
   position:absolute;left:50%;bottom:1.6rem;translate:-50% 0;z-index:2;
-  width:34px;height:34px;display:grid;place-items:center;
+  width:44px;height:44px;display:grid;place-items:center;
 }
 .hero-baja span{
   width:11px;height:11px;border-right:2px solid var(--masa);border-bottom:2px solid var(--masa);
@@ -460,7 +474,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .locbar .brand{justify-self:center}
 .lb-der{display:flex;align-items:center;gap:.9rem;justify-self:end;justify-content:flex-end}
 .lb-cta{
-  background:var(--rojo);color:#fff;text-decoration:none;white-space:nowrap;
+  background:var(--rojo-solido);color:#fff;text-decoration:none;white-space:nowrap;
   padding:.45rem .9rem;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;
   font-variation-settings:'wdth' 90,'wght' 800;flex:none;
 }
@@ -495,7 +509,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 }
 .card-art.c2{background:var(--turquesa)}
 .card-art.c2 span{color:rgba(255,255,255,.24)}
-.card-art.c3{background:var(--rojo)}
+.card-art.c3{background:var(--rojo-solido)}
 .card-art.c3 span{color:rgba(255,255,255,.24)}
 .card-art.c4{background:var(--verde)}
 .card-art.c4 span{color:rgba(255,255,255,.24)}
@@ -564,8 +578,10 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   font-variation-settings:'wdth' 88,'wght' 800;
   color:#fff;background:var(--ink);
 }
-.tag.top{background:var(--rojo)}
-.tag.grupo{background:var(--turquesa)}
+.tag.top{background:var(--rojo-solido)}
+/* La turquesa de las paredes es un color claro: con blanco encima mide 3.3:1
+   de día y 2.27:1 de noche. Rellena igual, con la tinta oscura de la casa. */
+.tag.grupo{background:var(--turquesa);color:var(--comal)}
 
 /* ---------- bandas de color ---------- */
 .band{border-block:2px solid var(--line-hard)}
@@ -580,18 +596,21 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   --line-hard:currentColor;
   --surface:transparent;
 }
-.band-turquesa{background:var(--turquesa);color:#fff;border-color:var(--turquesa)}
+.band-turquesa{background:var(--turquesa);color:var(--comal);border-color:var(--turquesa)}
 
 .band-comal{background:var(--comal);color:var(--masa);border-color:var(--comal)}
 .band-comal .eyebrow{color:rgba(245,238,225,.6)}
-.band-rojo{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+.band-rojo{background:var(--rojo-solido);color:#fff;border-color:var(--rojo-solido)}
 
 .events{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2rem}
 .event{border:2px solid currentColor;padding:1.3rem;display:flex;flex-direction:column;gap:.5rem}
 .event .when{font-size:.72rem;text-transform:uppercase;letter-spacing:.11em;font-variation-settings:'wdth' 90,'wght' 700;opacity:.8}
 .event h3{margin:0;font-variation-settings:'wdth' 115,'wght' 900;text-transform:uppercase;font-size:1.35rem;line-height:1}
 .event p{margin:0;font-size:.9rem;flex:1;opacity:.92}
-.event a{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-variation-settings:'wdth' 90,'wght' 700}
+.event a{
+  font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-variation-settings:'wdth' 90,'wght' 700;
+  min-height:44px;display:inline-flex;align-items:center;align-self:flex-start;
+}
 
 /* ---------- late night ---------- */
 .late{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
@@ -620,7 +639,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   font-variation-settings:'wdth' 90,'wght' 700;
 }
 .chip[aria-pressed="true"]{background:var(--comal);color:var(--masa);border-color:var(--comal)}
-.band-rojo .chip[aria-pressed="true"]{background:#fff;color:var(--rojo);border-color:#fff}
+.band-rojo .chip[aria-pressed="true"]{background:#fff;color:var(--rojo-solido);border-color:#fff}
 
 /* ---------- party planner ---------- */
 .planner{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,4vw,3.5rem);margin-top:2rem}
@@ -638,7 +657,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   border:2px solid currentColor;padding:.9rem 1rem;cursor:pointer;text-align:start;
   background:transparent;display:flex;justify-content:space-between;gap:1rem;align-items:baseline;width:100%;
 }
-.pkg[aria-pressed="true"]{background:#fff;color:var(--rojo);border-color:#fff}
+.pkg[aria-pressed="true"]{background:#fff;color:var(--rojo-solido);border-color:#fff}
 .pkg .n{font-variation-settings:'wdth' 110,'wght' 900;text-transform:uppercase;font-size:1.05rem}
 .pkg .d{display:block;font-size:.8rem;opacity:.85;font-variation-settings:'wdth' 90,'wght' 400;text-transform:none;margin-top:.15rem}
 .pkg .p{font-variation-settings:'wdth' 100,'wght' 700;white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -648,8 +667,11 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
    invisible. Se dibuja con currentColor: cream sobre la banda, oscuro sobre el
    papel, sin tener que saber en qué sección está. */
 input[type=range]{
+  /* La pista mide 6px, que es el alto que le queda bien al dibujo y el que
+     ningún dedo acierta. El campo se lleva los 44px y el navegador centra la
+     pista dentro: se ve igual y se agarra entero. */
   -webkit-appearance:none;appearance:none;
-  width:100%;background:transparent;cursor:pointer;margin:.4rem 0 0;
+  width:100%;height:44px;background:transparent;cursor:pointer;margin:.4rem 0 0;padding:0;
 }
 /* Nada de opacity en la pista: en WebKit el pulgar es hijo suyo y se apagaba
    con ella. El destiñe va en el color, no en la capa. */
@@ -684,7 +706,22 @@ input[type=range]:focus-visible{outline:3px solid currentColor;outline-offset:6p
 /* ---------- ubicaciones ---------- */
 .locs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2rem}
 .loc{border:2px solid var(--line-hard);padding:1.4rem;display:flex;flex-direction:column;gap:.5rem;background:var(--surface)}
-.loc.on{background:var(--comal);color:var(--masa)}
+/* La tarjeta del local elegido fija su fondo, así que fija también sus tokens
+   de tinta. Con solo `color` el marco seguía en --line-hard y de día quedaba
+   oscuro sobre oscuro. */
+.loc.on{
+  background:var(--comal);color:var(--masa);
+  --ink:var(--masa); --ink-soft:rgba(245,238,225,.72);
+  --line:rgba(245,238,225,.22); --line-hard:var(--masa); --surface:transparent;
+}
+/* Si está abierto o cerrado no lo puede decir el color solo: el verde sobre el
+   crema de la tarjeta mide 3.98:1 y el ámbar todavía menos. Lo dice la palabra,
+   en la tinta de la tarjeta, y el punto lo repite en color. */
+.loc .estado{
+  margin:.4rem 0 0;font-size:.8rem;display:flex;align-items:center;gap:.45rem;
+  font-variation-settings:'wdth' 90,'wght' 700;
+}
+.loc .estado .dot{flex:none}
 .loc h3{margin:0;font-variation-settings:'wdth' 115,'wght' 900;text-transform:uppercase;font-size:1.5rem;line-height:1}
 .loc .hood{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;opacity:.7;font-variation-settings:'wdth' 90,'wght' 700}
 .loc address{font-style:normal;font-size:.92rem;line-height:1.5}
@@ -693,10 +730,11 @@ input[type=range]:focus-visible{outline:3px solid currentColor;outline-offset:6p
 .loc .acts a{
   font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;
   font-variation-settings:'wdth' 90,'wght' 700;padding:.45rem .7rem;border:2px solid currentColor;text-decoration:none;
+  min-height:44px;display:inline-flex;align-items:center;
 }
 
 /* ---------- divisor talavera (uso máximo 3 veces) ---------- */
-.tala{height:16px;border:0;margin:0;background-color:var(--rojo);
+.tala{height:16px;border:0;margin:0;background-color:var(--rojo-solido);
   background-image:
     linear-gradient(45deg,var(--comal) 25%,transparent 25%,transparent 75%,var(--comal) 75%),
     linear-gradient(45deg,var(--comal) 25%,transparent 25%,transparent 75%,var(--comal) 75%);
@@ -720,7 +758,7 @@ footer h4{margin:0 0 .8rem;font-size:.72rem;text-transform:uppercase;letter-spac
   font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;
   font-variation-settings:'wdth' 90,'wght' 700;
 }
-.sticky a.main{background:var(--rojo);color:#fff}
+.sticky a.main{background:var(--rojo-solido);color:#fff}
 .sticky svg{width:19px;height:19px}
 
 /* ---------- toast ---------- */
@@ -764,8 +802,11 @@ footer h4{margin:0 0 .8rem;font-size:.72rem;text-transform:uppercase;letter-spac
   content:"";position:absolute;inset:0;background:var(--masa);opacity:.86;pointer-events:none;
 }
 .papel-fuerte::before{opacity:.72}
-:root[data-daypart="late"] .papel::before,
-:root[data-theme="dark"] .papel::before{background:var(--bg);opacity:.9}
+/* El velo que apaga la trama se pinta con el crema del propio papel, nunca
+   con el fondo del tema. Con --bg el papel se volvía casi negro mientras su
+   tinta seguía fijada en oscuro, y el titular de sección y el botón de la
+   carta desaparecían. En late night eso le pasaba a todo el mundo, porque
+   late night se enciende por hora y no por el tema del sistema. */
 
 /* ---------- neón del letrero ----------
    El rótulo de la fachada es neón rojo. Solo la marca lo lleva, y solo sobre
@@ -839,6 +880,7 @@ body:has(:is(input,select,textarea):focus) .sticky{transform:translateY(100%)}
 /* el rótulo real como marca de la barra */
 .locbar .brand{display:flex;align-items:center;padding:.45rem 0;text-shadow:none}
 .locbar .brand{position:relative;z-index:2}
+.locbar .brand::after{content:"";position:absolute;inset:-6px -10px}
 .locbar .brand img{
   /* Sale un poco de la barra hacia abajo, como un rótulo colgado. Lo justo
      para que se note, sin taparle el sitio al contenido. */
@@ -849,6 +891,10 @@ body:has(:is(input,select,textarea):focus) .sticky{transform:translateY(100%)}
 /* En el pie va a 30px de alto: son 200x30 en pantalla, que en Retina pide
    exactamente los 399x60 del archivo. Más grande empieza a verse suave. */
 .foot .brand{display:inline-block}
+@media (pointer:coarse){
+  .foot p a{min-height:44px;display:flex;align-items:center}
+  .foot .brand{min-height:44px;display:inline-flex;align-items:center}
+}
 .foot .brand img{height:30px;width:auto;display:block}
 
 /* hero: la foto manda, el texto vive en su propio bloque */
@@ -1070,4 +1116,18 @@ body:has(:is(input,select,textarea):focus) .sticky{transform:translateY(100%)}
 @media (prefers-reduced-motion:reduce){
   .tt-run{animation:none}
   .tt-strip{overflow-x:auto}
+}
+
+/* A 320px la barra se comía 158px de 568: el 28% de la pantalla, y el selector
+   de local partía en dos líneas. El rótulo baja de alto (a 280px de ancho ya
+   estaba estirado por encima de los 399px del archivo, así que más chico se ve
+   más limpio) y las tres etiquetas caben en una línea.
+   Va al final de la hoja a propósito: las reglas de la barra para <=900 y
+   <=640 viven más abajo que su bloque original y lo pisaban. */
+@media (max-width:400px){
+  .locbar-in{gap:.4rem;padding-block:.4rem}
+  .locbar .brand{padding:.2rem 0}
+  .locbar .brand img{height:36px;margin-bottom:-8px}
+  .locpick button{font-size:.64rem;letter-spacing:.04em;padding:.4rem .2rem}
+  .locbar .livestate{font-size:.64rem}
 }
