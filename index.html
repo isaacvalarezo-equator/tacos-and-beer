@@ -254,12 +254,23 @@
 
 <!-- ===== lista de espera ===== -->
 <section class="wrap" id="waitlist">
-  <p class="eyebrow">Get a table</p>
-  <h2 class="display">Hold your spot from here</h2>
-  <p class="intro-sub" style="max-width:52ch">Put your name down before you leave the house and walk in when your table is ready. No calling, no standing on the sidewalk on St. Charles waiting for someone to wave you over.</p>
+  <p class="eyebrow">Reserve a table</p>
+  <h2 class="display">Book it from here</h2>
+  <p class="intro-sub" style="max-width:54ch">Pick your day, your time and how many you are. The request reaches the restaurant the moment you send it, and someone confirms it back to you. The phone still works if you would rather talk to a person.</p>
 
-  <div class="wait" style="margin-top:2.5rem">
+  <div class="reserva">
     <form id="waitForm">
+      <div class="grid2">
+        <div class="field">
+          <label for="rDate">Day</label>
+          <input type="date" id="rDate" required>
+        </div>
+        <div class="field">
+          <label for="rTime">Time</label>
+          <input type="time" id="rTime" value="19:00" required>
+        </div>
+      </div>
+
       <div class="grid2">
         <div class="field">
           <label for="wName">Name</label>
@@ -270,29 +281,36 @@
           <input type="tel" id="wPhone" required autocomplete="tel" placeholder="(504) 555-0123">
         </div>
       </div>
-      <div class="field">
-        <label>How many</label>
-        <div class="chips" id="party" role="group" aria-label="Party size"></div>
+
+      <div class="grid2">
+        <div class="field">
+          <label for="rSize">How many</label>
+          <input type="number" id="rSize" min="1" max="12" value="2" step="1" required inputmode="numeric">
+          <span class="hint">More than 12? Use the group form above.</span>
+        </div>
+        <div class="field">
+          <label for="wNotes">Where would you like to sit</label>
+          <select id="wNotes">
+            <option value="">No preference</option>
+            <option>Inside</option>
+            <option>Patio</option>
+            <option>At the bar</option>
+            <option>Near the screens</option>
+          </select>
+        </div>
       </div>
-      <div class="field">
-        <label for="wNotes">Where would you like to sit</label>
-        <select id="wNotes">
-          <option value="">Wherever opens up</option>
-          <option>Inside</option>
-          <option>Patio</option>
-          <option>At the bar</option>
-          <option>Near the screens</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" type="submit" style="width:100%">Get on the list</button>
-      <p class="hint" style="margin-top:.8rem">We text you when you are two tables away, and you hold the table for 10 minutes. Prefer to talk to someone? The phone still works: <a id="waitCall" href="tel:+15043048722">give us a call</a>.</p>
+
+      <button class="btn btn-primary" type="submit">Request this table</button>
+      <p class="hint" style="margin-top:.8rem">You get a text back confirming it. Same day and you are already nearby? <a id="waitCall" href="tel:+15043048722">Call us instead</a> and we will sort it out on the spot.</p>
     </form>
 
-    <aside class="ticket" aria-live="polite">
-      <p class="eyebrow">Wait right now in <span id="wLoc">New Orleans</span></p>
-      <div class="num" id="waitMin">25<span style="font-size:1.2rem"> min</span></div>
-      <p style="margin:.2rem 0 0;color:var(--ink-soft);font-size:.9rem" id="waitSub">4 parties ahead of you</p>
-      <div class="queue" id="queue"></div>
+    <aside class="reserva-lado">
+      <h3 class="display" style="font-size:1.2rem;margin:0 0 .8rem">What happens next</h3>
+      <ol class="pasos">
+        <li><span>1</span><div><strong>You send it.</strong> It lands with the restaurant right away, with your name, your phone and the table you want.</div></li>
+        <li><span>2</span><div><strong>Someone confirms.</strong> A person looks at the book and texts you back. No automatic yes for a table that is not there.</div></li>
+        <li><span>3</span><div><strong>You walk in.</strong> Your table is under your name.</div></li>
+      </ol>
     </aside>
   </div>
 </section>

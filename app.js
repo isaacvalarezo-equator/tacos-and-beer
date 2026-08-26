@@ -189,24 +189,9 @@ function renderLocs(){
     .map(L => `<a href="tel:${L.tel}">${L.name} · ${L.phone}</a>`).join('');
 }
 
-function renderQueue(){
-  const L = LOCATIONS[loc];
-  // sigue en la fila mientras no lo sienten, aunque ya se le haya avisado
-  const mine = db.read().wait.filter(w => w.loc === loc && (w.status === 'waiting' || w.status === 'texted'));
-  // espera base simulada por hora del día, para que la demo se sienta viva
-  const hour = new Date().getHours();
-  const base = hour >= 18 && hour <= 21 ? 4 : hour >= 11 && hour <= 14 ? 3 : 1;
-  const ahead = base + mine.length;
-  $('#waitMin').innerHTML = (ahead * 7) + '<span style="font-size:1.2rem"> min</span>';
-  $('#waitSub').textContent = ahead === 1 ? '1 party ahead of you' : ahead + ' parties ahead of you';
-  $('#wLoc').textContent = L.name;
-
-  const fake = [['Rodríguez',4],['Boudreaux',2],['Nguyen',6],['Landry',3]].slice(0, base);
-  const rows = fake.map(f => `<div><span>${f[0]}</span><span>${f[1]} people</span></div>`);
-  mine.forEach(m => rows.push(
-    `<div class="me"><span>${m.name} — you</span><span>${m.size} people</span></div>`));
-  $('#queue').innerHTML = rows.join('');
-}
+/* La fila en vivo se retiró: inventaba nombres y una espera simulada por hora
+   del día. El restaurante gestiona reservas, no un turno, y un dato falso en
+   pantalla es exactamente lo que no puede llevar este sitio. */
 
 function renderSchema(){
   const L = LOCATIONS[loc];
@@ -260,7 +245,7 @@ function setLoc(id){
   const ref = $$('section').find(sec => sec.getBoundingClientRect().bottom > 0);
   const antes = ref ? ref.getBoundingClientRect().top : 0;
 
-  renderRail(L); renderMenu(); renderEvents(); renderLocs(); renderQueue(); renderSchema();
+  renderRail(L); renderMenu(); renderEvents(); renderLocs(); renderSchema();
 
   // El contenido cambia de golpe al elegir otra ciudad. Un fundido corto evita
   // que el menú y los precios se teletransporten.
@@ -296,6 +281,9 @@ $$('.locpick button').forEach(b => b.onclick = () => setLoc(b.dataset.loc));
 
 renderBar(); renderLate();
 
+const hoy = new Date().toISOString().slice(0,10);
+const rd = $('#rDate'); if (rd) { rd.value = hoy; rd.min = hoy; }
+
 const t = new Date(Date.now() + 6048e5);
 $('#pDate').value = t.toISOString().slice(0,10);
 $('#pDate').min   = new Date().toISOString().slice(0,10);
@@ -304,10 +292,10 @@ $('#waitForm').addEventListener('submit', e => {
   e.preventDefault();
   const rec = db.add('wait', {
     loc, name: $('#wName').value.trim(), phone: $('#wPhone').value.trim(),
-    size: partySize, pref: $('#wNotes').value
+    date: $('#rDate').value, time: $('#rTime').value,
+    size: +$('#rSize').value, pref: $('#wNotes').value
   });
-  e.target.reset(); partySize = 2; renderQueue();
-  toast(`You are on the list, ${rec.name.split(' ')[0]}. We will text ${rec.phone} when you are two tables away.`);
+  e.target.reset(); toast(`Got it, ${rec.name.split(' ')[0]}. ${LOCATIONS[loc].name} will text ${rec.phone} to confirm your table for ${rec.size}.`);
 });
 
 $('#partyForm').addEventListener('submit', e => {
