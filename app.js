@@ -516,7 +516,7 @@ addEventListener('load', function revelado(){
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const grupos = [
-    ['section.wrap > *, section.band .wrap > *, .intro-in > *', 0],
+    ['section.wrap > *, section.band .wrap > *', 0],
     ['.menu-cat', 1], ['.card', 1], ['.event', 1], ['.loc', 1], ['.pkg', 1], ['.stat', 1]
   ];
   const vistos = new Set();
@@ -589,7 +589,7 @@ addEventListener('load', function palabrasQueSuben(){
         w.className = 'palabra';
         const inner = document.createElement('i');
         inner.textContent = trozo;
-        inner.style.setProperty('--d', (retardoBase + i * 0.035).toFixed(3) + 's');
+        inner.style.setProperty('--d', (retardoBase + i * 0.055).toFixed(3) + 's');
         i++;
         w.appendChild(inner);
         frag.appendChild(w);
@@ -598,7 +598,7 @@ addEventListener('load', function palabrasQueSuben(){
     });
   };
 
-  const objetivos = [['.intro .eyebrow', 0], ['.intro-t', .08], ['.intro-sub', .26]];
+  const objetivos = [['.intro .eyebrow', 0], ['.intro-t', .18], ['.intro-sub', .62]];
   objetivos.forEach(([sel, base]) => { const el = $(sel); if (el) partir(el, base); });
 
   const bloque = $('.intro-in');
