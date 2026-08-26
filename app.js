@@ -519,3 +519,56 @@ addEventListener('load', function montajeHero(){
     foto.appendChild(d);
   });
 });
+
+/* ---------- revelado al bajar ----------
+   Se marcan los hijos directos de cada sección y las tarjetas, y se revelan al
+   entrar en pantalla. Una sola vez: nada se vuelve a esconder al subir, que es
+   lo que marea. El escalonado hace que un grupo entre en cascada y no de golpe. */
+addEventListener('load', function revelado(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const grupos = [
+    ['section.wrap > *, section.band .wrap > *, .intro-in > *', 0],
+    ['.menu-cat', 1], ['.card', 1], ['.event', 1], ['.loc', 1], ['.pkg', 1], ['.stat', 1]
+  ];
+  const vistos = new Set();
+  grupos.forEach(([sel, escalona]) => {
+    $$(sel).forEach((el, i) => {
+      if (vistos.has(el) || el.closest('.hero')) return;
+      vistos.add(el);
+      el.classList.add('rev');
+      if (escalona) el.classList.add('rev-' + Math.min(6, (i % 6) + 1));
+    });
+  });
+
+  const io = new IntersectionObserver((entradas, obs) => {
+    entradas.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visto');
+      obs.unobserve(e.target);            // una vez y se suelta
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+
+  vistos.forEach(el => io.observe(el));
+
+  // Lo que ya está en pantalla al cargar se revela sin esperar al scroll.
+  requestAnimationFrame(() => vistos.forEach(el => {
+    if (el.getBoundingClientRect().top < innerHeight) el.classList.add('visto');
+  }));
+});
+
+/* El video de la barra vive a media página. Se descarga solo cuando el
+   visitante se acerca, para que abrir el sitio siga costando lo que cuesta el
+   hero y nada más. */
+addEventListener('load', function videoBarra(){
+  const v = document.getElementById('videoBarra');
+  if (!v) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const io = new IntersectionObserver((e, obs) => {
+    if (!e[0].isIntersecting) return;
+    v.src = v.dataset.src;
+    v.play().catch(() => {});
+    obs.disconnect();
+  }, { rootMargin: '600px 0px' });
+  io.observe(v);
+});

@@ -127,11 +127,10 @@
     <!-- Grabado detrás de la barra. Con sonido, así que arranca solo cuando
          alguien lo pide. -->
     <figure class="video-barra">
-      <video controls preload="none" playsinline poster="video/barra-poster.jpg"
-             width="1280" height="720">
-        <source src="video/la-barra.mp4" type="video/mp4">
-      </video>
-      <figcaption>A Friday behind the bar on St. Charles.</figcaption>
+      <video id="videoBarra" autoplay muted loop playsinline preload="none"
+             poster="video/barra-poster.jpg" width="1280" height="720"
+             data-src="video/la-barra.mp4"
+             aria-label="A Friday night behind the bar"></video>
     </figure>
     <div class="menu-grid" style="margin-top:2.5rem">
       <div class="menu-cat">
