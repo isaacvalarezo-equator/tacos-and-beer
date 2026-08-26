@@ -245,6 +245,25 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   .hero-foto img{object-position:50% 50%}
 }
 
+/* ---------- video del hero ----------
+   Va encima del montaje de fotos. Si arranca, manda él; si el navegador lo
+   bloquea o el visitante pidió menos movimiento, `js-sin-video` lo apaga y
+   queda el montaje, que ya está debajo. */
+.hero-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:50% 45%;z-index:1;display:block;
+}
+:root.js-sin-video .hero-video{display:none}
+@media (prefers-reduced-motion:reduce){ .hero-video{display:none} }
+
+/* el video de la barra */
+.video-barra{margin:2.2rem 0 0;border:2px solid var(--line-hard);background:#000}
+.video-barra video{width:100%;height:auto;display:block;aspect-ratio:16/9}
+.video-barra figcaption{
+  padding:.7rem .9rem;font-size:.78rem;letter-spacing:.04em;
+  color:var(--ink-soft);border-top:2px solid var(--line-hard);
+}
+
 /* ---------- montaje del hero ----------
    Siete fotos del local encadenadas con fundido y un desplazamiento lento de
    cámara. Se ve como un video de fondo y no pesa como uno: los cuadros entran

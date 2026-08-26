@@ -468,6 +468,19 @@ setInterval(renderTuesday, 60000);
    Los cuadros se inyectan después de `load` para que no compitan con la
    primera pintura. La foto del letrero ya está en el HTML y es el cuadro 1;
    estos son del 2 al 7. Si el visitante pidió menos movimiento, no se cargan. */
+/* Si el video del hero no logra reproducirse solo (iOS en ahorro de batería,
+   Data Saver, o el navegador simplemente lo bloquea), se marca el documento y
+   el CSS lo apaga para que quede el montaje de fotos, que ya está detrás. */
+addEventListener('load', function videoHero(){
+  const v = document.getElementById('heroVideo');
+  if (!v) return;
+  const rendirse = () => document.documentElement.classList.add('js-sin-video');
+  v.addEventListener('error', rendirse);
+  const intento = v.play();
+  if (intento && intento.catch) intento.catch(rendirse);
+  setTimeout(() => { if (v.paused || v.readyState < 2) rendirse(); }, 2600);
+});
+
 addEventListener('load', function montajeHero(){
   const menos = matchMedia('(prefers-reduced-motion: reduce)');
   if (menos.matches) return;

@@ -43,6 +43,14 @@
   <!-- El letrero real encendido, fotografiado por ECG con autorización del
        local. La noche del 22 de agosto de 2026. -->
   <div class="hero-foto">
+   <!-- La fachada de noche, grabada en el local. Va muda y en bucle, como
+        fondo. Si el navegador no la deja arrancar sola, o si el visitante
+        pidió menos movimiento, se apaga y queda el montaje de fotos debajo. -->
+   <video class="hero-video" id="heroVideo" autoplay muted loop playsinline
+          preload="metadata" poster="video/fachada-poster.jpg"
+          aria-label="The storefront at night, with the neon sign on and people at the tables outside">
+     <source src="video/fachada-noche.mp4" type="video/mp4">
+   </video>
    <picture class="cuadro-base">
     <source media="(max-width:700px)" srcset="img/letrero-noche-movil.jpg">
     <img src="img/letrero-noche-1400.jpg"
@@ -116,6 +124,15 @@
   <div class="wrap">
     <p class="eyebrow">The other half of the name</p>
     <h2 class="display">The bar</h2>
+    <!-- Grabado detrás de la barra. Con sonido, así que arranca solo cuando
+         alguien lo pide. -->
+    <figure class="video-barra">
+      <video controls preload="none" playsinline poster="video/barra-poster.jpg"
+             width="1280" height="720">
+        <source src="video/la-barra.mp4" type="video/mp4">
+      </video>
+      <figcaption>A Friday behind the bar on St. Charles.</figcaption>
+    </figure>
     <div class="menu-grid" style="margin-top:2.5rem">
       <div class="menu-cat">
         <h3 class="display">On draft</h3>
