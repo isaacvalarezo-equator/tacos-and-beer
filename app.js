@@ -186,8 +186,8 @@ function renderLate(){
    fotografíe el local. */
 const FOTO_LOC = {
   nola:    'The yellow storefront on St. Charles Avenue, with the sign and the patio',
-  slidell: 'Nachos from the Old Towne kitchen',
-  hammond: 'The Hammond storefront at night with the sign lit'
+  slidell: 'The mint green building in Old Towne, with the patio full',
+  hammond: 'The Hammond storefront on Thomas Street, with the sign and the string lights'
 };
 
 function renderLocs(){
@@ -319,7 +319,7 @@ $('#waitForm').addEventListener('submit', e => {
     date: $('#rDate').value, time: $('#rTime').value,
     size: +$('#rSize').value, pref: $('#wNotes').value
   });
-  e.target.reset(); toast(`Got it, ${rec.name.split(' ')[0]}. ${LOCATIONS[loc].name} will text ${rec.phone} to confirm your table for ${rec.size}.`);
+  e.target.reset(); toast(`Booked, ${rec.name.split(' ')[0]}. Your table for ${rec.size} at ${LOCATIONS[loc].name} is in. See you then.`);
   enviar({ tipo: 'reserva', ...rec }).then(res => {
     if (!res.ok) toast('We saved it, but it did not reach the restaurant. Please call us to be sure.');
   });
@@ -485,6 +485,9 @@ addEventListener('load', function montajeHero(){
     ['img/m5-papel.jpg',    'Tacos served on our house paper'],
     ['img/m6-margarita.jpg','A 64 oz margarita'],
     ['img/m7-mesa.jpg',     'A shared table with chips and guacamole'],
+    ['img/m8-slidell-dentro.jpg', 'The dining room in Slidell on a full night'],
+    ['img/m10-hammond-fuera.jpg', 'The Hammond storefront on Thomas Street'],
+    ['img/m9-hammond-barra.jpg',  'The bar in Hammond'],
   ];
   const total = cuadros.length + 1;          // el letrero cuenta como uno
   const ciclo = total * 2.6;                 // 2.6 s por foto: el primer cambio
@@ -566,3 +569,44 @@ addEventListener('load', function revelado(){
   if (window.ResizeObserver) new ResizeObserver(fijar).observe(bar);
   addEventListener('orientationchange', fijar);
 })();
+
+/* ---------- el texto que sube por palabras ----------
+   Se parte solo el texto visible: los `span.sr` que existen para los lectores
+   de pantalla se dejan intactos, o el nombre del negocio se perdería. */
+addEventListener('load', function palabrasQueSuben(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const partir = (el, retardoBase) => {
+    if (el.dataset.partido) return;
+    el.dataset.partido = '1';
+    let i = 0;
+    [...el.childNodes].forEach(nodo => {
+      if (nodo.nodeType !== 3) return;                  // solo nodos de texto
+      const frag = document.createDocumentFragment();
+      nodo.textContent.split(/(\s+)/).forEach(trozo => {
+        if (!trozo.trim()) { frag.appendChild(document.createTextNode(trozo)); return; }
+        const w = document.createElement('span');
+        w.className = 'palabra';
+        const inner = document.createElement('i');
+        inner.textContent = trozo;
+        inner.style.setProperty('--d', (retardoBase + i * 0.035).toFixed(3) + 's');
+        i++;
+        w.appendChild(inner);
+        frag.appendChild(w);
+      });
+      nodo.replaceWith(frag);
+    });
+  };
+
+  const objetivos = [['.intro .eyebrow', 0], ['.intro-t', .08], ['.intro-sub', .26]];
+  objetivos.forEach(([sel, base]) => { const el = $(sel); if (el) partir(el, base); });
+
+  const bloque = $('.intro-in');
+  if (!bloque) return;
+  const io = new IntersectionObserver((e, obs) => {
+    if (!e[0].isIntersecting) return;
+    objetivos.forEach(([sel]) => $(sel)?.classList.add('visto'));
+    obs.disconnect();
+  }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+  io.observe(bloque);
+});

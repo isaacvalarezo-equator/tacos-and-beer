@@ -304,6 +304,23 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .grupo-lado .shot img{width:100%;height:auto;display:block}
 @media (max-width:820px){ .grupo-in{grid-template-columns:1fr} }
 
+/* ---------- el texto sube desde detrás de una máscara ----------
+   Cada palabra vive en una ventana que la recorta, y sube dentro de ella. Es
+   el mismo gesto de un rótulo que se enciende por partes. Solo transform, que
+   es lo único que el navegador anima sin repintar. */
+.palabras{display:inline}
+.palabra{display:inline-block;overflow:hidden;vertical-align:top}
+.palabra i{
+  display:inline-block;font-style:inherit;
+  transform:translate3d(0,105%,0);
+  transition:transform .78s cubic-bezier(.19,1,.22,1) var(--d,0s);
+}
+.visto .palabra i, .palabras.visto .palabra i{transform:none}
+@media (prefers-reduced-motion:reduce){
+  .palabra{overflow:visible}
+  .palabra i{transform:none;transition:none}
+}
+
 /* ---------- revelado al bajar ----------
    Todo entra al entrar en pantalla, una sola vez. Solo transform y opacity,
    que son las dos propiedades que el navegador anima sin repintar. Quien pidió
