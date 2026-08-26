@@ -157,11 +157,21 @@ function renderLate(){
   }).join('');
 }
 
+/* Una foto por local. Salen del sitio archivado del propio restaurante, así
+   que son suyas. New Orleans y Hammond tienen fachada; de Slidell no hay
+   exterior en el archivo, así que va un plato de la casa hasta que Isaac
+   fotografíe el local. */
+const FOTO_LOC = {
+  nola:    'The yellow storefront on St. Charles Avenue, with the sign and the patio',
+  slidell: 'Nachos from the Old Towne kitchen',
+  hammond: 'The Hammond storefront at night with the sign lit'
+};
+
 function renderLocs(){
   $('#locs').innerHTML = Object.values(LOCATIONS).map(L => {
     const st = openState(L);
     return `<article class="loc ${L.id === loc ? 'on' : ''}">
-      ${L.id === 'nola' ? '<img class="loc-shot" src="img/fachada.jpg" alt="The Tacos and Beer storefront on St. Charles Ave" width="1000" height="753" loading="lazy">' : ''}
+      <img class="loc-shot" src="img/loc-${L.id}.jpg" alt="${FOTO_LOC[L.id]}" width="900" height="600" loading="lazy">
       <span class="hood">${L.hood}</span>
       <h3>${L.name}</h3>
       <address>${L.address}<br>${L.city}</address>
