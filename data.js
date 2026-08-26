@@ -103,7 +103,7 @@ const MENU = {
       ['Chile Relleno', 'Poblano stuffed with melted cheese and your meat, covered in our homemade salsa', 16],
       ['Los Sopes', 'Two crispy cornmeal shells with beans, sour cream, crumbled cheese, lettuce and your meat', 14]
     ]},
-    { cat: 'To start', items: [
+    { cat: 'Appetizers', items: [
       ['Unlimited Chips & Salsa', '', 6],
       ['Cheese Dip', 'Melted cheese with jalapeños, with chips and salsa. Small or large', 6],
       ['Guacamole', 'Made fresh with onion, cilantro and tomato', 6],

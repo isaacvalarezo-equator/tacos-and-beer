@@ -269,51 +269,11 @@ function setLoc(id){
   }
 }
 
-/* ---------- party planner ---------- */
-let pkg = PACKAGES[0], occasion = 'cumpleanos';
+/* ---------- grupos y fiestas ----------
+   Sin estimado en pantalla: los paquetes y sus precios eran una propuesta de
+   ECG, no una oferta del restaurante. Una fiesta de veinte personas se cierra
+   hablando, así que el formulario recoge lo mínimo y el restaurante llama. */
 
-function renderPkgs(){
-  $('#pkgs').innerHTML = PACKAGES.map(p => `
-    <button type="button" class="pkg" data-pkg="${p.id}" aria-pressed="${p.id === pkg.id}">
-      <span class="n">${p.name}<span class="d">${p.desc}</span></span>
-      <span class="p">${money(p.per)} <span style="font-weight:400;font-size:.78rem">p/p</span></span>
-    </button>`).join('');
-  $$('[data-pkg]').forEach(b => b.onclick = () => {
-    pkg = PACKAGES.find(p => p.id === b.dataset.pkg);
-    renderPkgs(); estimate();
-    const big = $('#estTotal');
-    big.classList.remove('bump'); void big.offsetWidth; big.classList.add('bump');
-  });
-}
-
-function renderOcc(){
-  $('#occ').innerHTML = OCCASIONS.map(o => `
-    <button type="button" class="chip" data-occ="${o[0]}" aria-pressed="${o[0] === occasion}">${o[1]}</button>`).join('');
-  $$('[data-occ]').forEach(b => b.onclick = () => { occasion = b.dataset.occ; renderOcc(); });
-}
-
-function estimate(){
-  const g = +$('#pGuests').value;
-  const total = g * pkg.per;
-  $('#gOut').textContent      = g + ' people';
-  $('#estTotal').textContent  = money(total);
-  $('#estPer').textContent    = money(pkg.per);
-  $('#estGuests').textContent = g;
-  $('#estDep').textContent    = money(Math.max(100, Math.round(total * 0.25 / 25) * 25));
-  $('#estVs').textContent     = money(g * 17) + '–' + money(g * 26);
-  $('#estIncludes').innerHTML = pkg.includes.map(i => `<li>${i}</li>`).join('');
-}
-
-/* ---------- lista de espera ---------- */
-let partySize = 2;
-function renderParty(){
-  $('#party').innerHTML = [1,2,3,4,5,6,7].map(n => `
-    <button type="button" class="chip" data-size="${n}" aria-pressed="${n === partySize}">${n}${n === 7 ? '+' : ''}</button>`).join('');
-  $$('[data-size]').forEach(b => b.onclick = () => { partySize = +b.dataset.size; renderParty(); });
-}
-
-/* ---------- toast ---------- */
-let toastT;
 function toast(msg){
   const t = $('#toast');
   t.textContent = msg; t.classList.add('on');
@@ -324,9 +284,7 @@ function toast(msg){
 /* ---------- arranque ---------- */
 $$('.locpick button').forEach(b => b.onclick = () => setLoc(b.dataset.loc));
 
-renderBar(); renderLate(); renderPkgs(); renderOcc(); renderParty();
-$('#pGuests').addEventListener('input', estimate);
-estimate();
+renderBar(); renderLate();
 
 const t = new Date(Date.now() + 6048e5);
 $('#pDate').value = t.toISOString().slice(0,10);
@@ -338,7 +296,7 @@ $('#waitForm').addEventListener('submit', e => {
     loc, name: $('#wName').value.trim(), phone: $('#wPhone').value.trim(),
     size: partySize, pref: $('#wNotes').value
   });
-  e.target.reset(); partySize = 2; renderParty(); renderQueue();
+  e.target.reset(); partySize = 2; renderQueue();
   toast(`You are on the list, ${rec.name.split(' ')[0]}. We will text ${rec.phone} when you are two tables away.`);
 });
 
@@ -348,12 +306,11 @@ $('#partyForm').addEventListener('submit', e => {
   const rec = db.add('party', {
     loc, name: $('#pName').value.trim(), phone: $('#pPhone').value.trim(),
     date: $('#pDate').value, time: $('#pTime').value, guests: g,
-    pkg: pkg.name, per: pkg.per, total: g * pkg.per,
-    occasion: (OCCASIONS.find(o => o[0] === occasion) || [])[1],
+    occasion: $('#pOcc').value.trim(),
     notes: $('#pNotes').value.trim()
   });
-  e.target.reset(); estimate();
-  toast(`Got it, ${rec.name.split(' ')[0]}. ${LOCATIONS[loc].name} will confirm your ${rec.pkg} for ${g} within 24 hours.`);
+  e.target.reset();
+  toast(`Got it, ${rec.name.split(' ')[0]}. ${LOCATIONS[loc].name} will call you back about your table for ${g}.`);
 });
 
 function daypart(){
@@ -534,7 +491,9 @@ addEventListener('load', function revelado(){
   const vistos = new Set();
   grupos.forEach(([sel, escalona]) => {
     $$(sel).forEach((el, i) => {
-      if (vistos.has(el) || el.closest('.hero')) return;
+      // El contenedor de la carta no se anima: sus categorías ya lo hacen, y
+      // envolverlas en otro elemento con opacidad las apagaría en bloque.
+      if (vistos.has(el) || el.closest('.hero') || el.id === 'menuGrid') return;
       vistos.add(el);
       el.classList.add('rev');
       if (escalona) el.classList.add('rev-' + Math.min(6, (i % 6) + 1));
@@ -547,7 +506,11 @@ addEventListener('load', function revelado(){
       e.target.classList.add('visto');
       obs.unobserve(e.target);            // una vez y se suelta
     });
-  }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+    // `threshold: 0` y el retardo en el margen. Con un umbral por proporción,
+    // un elemento más alto que la pantalla no puede alcanzarlo nunca: la carta
+    // de New Orleans mide 7.800 px y en un teléfono de 568 el máximo posible
+    // es 7%. Se quedaba invisible para siempre.
+  }, { rootMargin: '0px 0px -80px 0px', threshold: 0 });
 
   vistos.forEach(el => io.observe(el));
 
@@ -557,18 +520,21 @@ addEventListener('load', function revelado(){
   }));
 });
 
-/* El video de la barra vive a media página. Se descarga solo cuando el
-   visitante se acerca, para que abrir el sitio siga costando lo que cuesta el
-   hero y nada más. */
-addEventListener('load', function videoBarra(){
-  const v = document.getElementById('videoBarra');
-  if (!v) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const io = new IntersectionObserver((e, obs) => {
-    if (!e[0].isIntersecting) return;
-    v.src = v.dataset.src;
-    v.play().catch(() => {});
-    obs.disconnect();
-  }, { rootMargin: '600px 0px' });
-  io.observe(v);
-});
+/* La altura real de la barra, medida y no adivinada. De ella dependen el hueco
+   del hero, el margen de las anclas y el aviso emergente. Antes era un 104px
+   fijo que no coincidía con los 141 o 160 reales, así que las anclas caían
+   pegadas al borde de la barra o justo debajo. */
+(function altoDeBarra(){
+  const bar = document.querySelector('.locbar');
+  if (!bar) return;
+  const fijar = () => {
+    const h = Math.round(bar.getBoundingClientRect().height);
+    // OJO: no se escribe en `--bar-h`. Esa variable es la altura mínima de
+    // `.locbar-in`, así que realimentarla hace crecer la barra sin parar.
+    document.documentElement.style.setProperty('--bar-total', h + 'px');
+    document.documentElement.style.setProperty('--anchor-off', (h + 16) + 'px');
+  };
+  fijar();
+  if (window.ResizeObserver) new ResizeObserver(fijar).observe(bar);
+  addEventListener('orientationchange', fijar);
+})();

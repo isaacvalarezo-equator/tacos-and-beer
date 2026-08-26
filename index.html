@@ -34,6 +34,14 @@
     </div>
 
   </div>
+
+  <nav class="lb-nav" aria-label="Sections">
+    <a href="#menu">Menu</a>
+    <a href="#tuesday">Taco Tuesday</a>
+    <a href="#bar">The bar</a>
+    <a href="#parties">Groups</a>
+    <a href="#locations">Locations</a>
+  </nav>
 </div>
 
 <main id="top">
@@ -47,9 +55,9 @@
         fondo. Si el navegador no la deja arrancar sola, o si el visitante
         pidió menos movimiento, se apaga y queda el montaje de fotos debajo. -->
    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline
-          preload="metadata" poster="video/fachada-poster.jpg"
-          aria-label="The storefront at night, with the neon sign on and people at the tables outside">
-     <source src="video/fachada-noche.mp4" type="video/mp4">
+          preload="auto" poster="video/hero-poster.jpg"
+          aria-label="The storefront at night with the neon sign on, and a Friday behind the bar">
+     <source src="video/tacos-and-beer.mp4" type="video/mp4">
    </video>
    <picture class="cuadro-base">
     <source media="(max-width:700px)" srcset="img/letrero-noche-movil.jpg">
@@ -124,14 +132,6 @@
   <div class="wrap">
     <p class="eyebrow">The other half of the name</p>
     <h2 class="display">The bar</h2>
-    <!-- Grabado detrás de la barra. Con sonido, así que arranca solo cuando
-         alguien lo pide. -->
-    <figure class="video-barra">
-      <video id="videoBarra" autoplay muted loop playsinline preload="none"
-             poster="video/barra-poster.jpg" width="1280" height="720"
-             data-src="video/la-barra.mp4"
-             aria-label="A Friday night behind the bar"></video>
-    </figure>
     <div class="menu-grid" style="margin-top:2.5rem">
       <div class="menu-cat">
         <h3 class="display">On draft</h3>
@@ -194,17 +194,11 @@
 <section class="band band-rojo" id="parties">
   <div class="wrap">
     <p class="eyebrow">Groups of 8 or more</p>
-    <h2 class="display">Plan your party</h2>
-    <p class="hero-sub" style="color:rgba(255,255,255,.9);max-width:52ch">Tell us how many you are and what you are celebrating. You get the estimate right here, without waiting for someone to pick up the phone.</p>
+    <h2 class="display">Bringing a crowd</h2>
+    <p class="intro-sub" style="color:rgba(255,255,255,.92);max-width:52ch">Tell us the date and how many you are. We will call you back with the room, the food and the number, and you will not be on hold to do it.</p>
 
-    <figure class="shot wide" style="margin-top:1.8rem">
-      <img src="img/mesa.jpg" alt="A shared table with chips, guacamole, and salsas" width="900" height="678" loading="lazy">
-    </figure>
-
-    <div class="planner">
+    <div class="grupo-in">
       <form id="partyForm">
-        <div class="pkgs" id="pkgs" role="group" aria-label="Choose a package"></div>
-
         <div class="grid2">
           <div class="field">
             <label for="pDate">Date</label>
@@ -216,15 +210,15 @@
           </div>
         </div>
 
-        <div class="field">
-          <label for="pGuests">How many people <span id="gOut" class="price"></span></label>
-          <input type="range" id="pGuests" min="8" max="120" value="24" step="2">
-          <span class="hint">8 to 120. For more than 120, call us and we will work it out.</span>
-        </div>
-
-        <div class="field">
-          <label>What is the occasion</label>
-          <div class="chips" id="occ" role="group" aria-label="Occasion"></div>
+        <div class="grid2">
+          <div class="field">
+            <label for="pGuests">How many people</label>
+            <input type="number" id="pGuests" min="8" max="200" value="20" step="1" required inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="pOcc">What is the occasion</label>
+            <input type="text" id="pOcc" placeholder="Birthday, rehearsal dinner, work thing…">
+          </div>
         </div>
 
         <div class="grid2">
@@ -243,18 +237,16 @@
           <textarea id="pNotes" placeholder="Allergies, vegetarians, whether you are bringing a cake, whether you need a screen"></textarea>
         </div>
 
-        <button class="btn" type="submit" style="background:#fff;color:var(--rojo);border-color:#fff;width:100%">Send me a quote</button>
+        <button class="btn btn-ghost" type="submit" style="color:#fff;border-color:#fff">Send the request</button>
       </form>
 
-      <aside class="estimate" aria-live="polite">
-        <p class="eyebrow" style="color:rgba(255,255,255,.75)">Your estimate</p>
-        <div class="big" id="estTotal">$432</div>
-        <p style="margin:0;font-size:.87rem"><span id="estPer">$18</span> per person × <span id="estGuests">24</span> people</p>
-        <ul id="estIncludes"></ul>
-        <div class="row"><span>Deposit to hold the date</span><span class="price" id="estDep">$100</span></div>
-        <div class="row" style="border:0;padding-top:.4rem;margin-top:.3rem;opacity:.8;font-size:.78rem">
-          <span>A crawfish boil for the same group</span><span class="price" id="estVs">$408–$624</span>
-        </div>
+      <aside class="grupo-lado">
+        <figure class="shot">
+          <img src="img/mesa.jpg" alt="A shared table with chips, guacamole, and salsas" width="900" height="678" loading="lazy">
+        </figure>
+        <h3 class="display" style="font-size:1.3rem;margin:1.4rem 0 .6rem">Catering, or something bigger</h3>
+        <p style="margin:0 0 1.2rem;font-size:.92rem;line-height:1.5;color:rgba(255,255,255,.9)">Feeding an office, a wedding party or a tailgate takes a real conversation. Pick up the phone and we will build it with you.</p>
+        <a class="btn btn-ghost" id="partyCall" href="tel:+15043048722" style="color:#fff;border-color:#fff">Call about catering</a>
       </aside>
     </div>
   </div>
@@ -262,9 +254,9 @@
 
 <!-- ===== lista de espera ===== -->
 <section class="wrap" id="waitlist">
-  <p class="eyebrow">Walk in, or skip the wait</p>
-  <h2 class="display">The waitlist</h2>
-  <p class="hero-sub">Reservations go through the phone, and they always have. Call us and we will take care of you. This is for the rest of it: the Friday night when nobody can get to the phone, the table of four already circling the block, the moment you just want to know how long the wait really is.</p>
+  <p class="eyebrow">Get a table</p>
+  <h2 class="display">Hold your spot from here</h2>
+  <p class="intro-sub" style="max-width:52ch">Put your name down before you leave the house and walk in when your table is ready. No calling, no standing on the sidewalk on St. Charles waiting for someone to wave you over.</p>
 
   <div class="wait" style="margin-top:2.5rem">
     <form id="waitForm">
@@ -293,7 +285,7 @@
         </select>
       </div>
       <button class="btn btn-primary" type="submit" style="width:100%">Get on the list</button>
-      <p class="hint" style="margin-top:.8rem">We text you when you are two tables away, and you have 10 minutes to get here. Booking a bigger table or a party? Call us, or use the party planner above.</p>
+      <p class="hint" style="margin-top:.8rem">We text you when you are two tables away, and you hold the table for 10 minutes. Prefer to talk to someone? The phone still works: <a id="waitCall" href="tel:+15043048722">give us a call</a>.</p>
     </form>
 
     <aside class="ticket" aria-live="polite">
