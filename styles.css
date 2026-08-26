@@ -389,6 +389,41 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   .intro-in{grid-template-columns:1fr;align-items:start;gap:1.8rem}
 }
 
+/* ---------- la letra del rótulo en todo lo que es etiqueta ----------
+   Titulares, botones, eyebrows, etiquetas y rótulos cortos. Se quedan FUERA a
+   propósito: el cuerpo de texto, las descripciones de la carta, las etiquetas
+   de formulario y los precios. Los precios porque necesitan cifras de ancho
+   fijo para alinearse en columna, y Titan One no las tiene. */
+.btn, .eyebrow, .tag, .intro-meta, .sticky a, .tira-t,
+.loc h3, .event h3, .event .when, .tt-clock-k, .tt-dial .u, .tt-warn,
+.menu-cat h3::after, .queue .me, .foot .brand, footer h4{
+  font-family:var(--black);
+  font-variation-settings:normal;
+}
+.btn{letter-spacing:.05em}
+.eyebrow{letter-spacing:.16em}
+.tag{letter-spacing:.08em}
+.sticky a{letter-spacing:.05em}
+.loc h3, .event h3{letter-spacing:.01em;line-height:1.05}
+
+/* La barra habla con la letra del rótulo, como el resto del sitio. Son
+   etiquetas cortas y en mayúsculas, que es donde Titan One aguanta bien a
+   tamaño chico. El tracking se abre un poco porque la fuente es compacta. */
+.locpick button,
+.locbar .livestate,
+.locbar .ttbadge,
+.locbar .latebadge,
+.lb-cta,
+.lb-nav a{
+  font-family:var(--black);
+  font-variation-settings:normal;
+  letter-spacing:.06em;
+}
+.locpick button{font-size:.72rem}
+.locbar .livestate{font-size:.68rem}
+.lb-cta{font-size:.68rem;letter-spacing:.05em}
+.lb-nav a{letter-spacing:.08em}
+
 /* ---------- la marca al centro de la barra ----------
    Como en la referencia que mandó el dueño. Columnas laterales iguales para
    que el logotipo quede centrado de verdad y no lo desplace el peso de un lado.
@@ -496,7 +531,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 
 .tag{
   display:inline-block;flex:none;align-self:center;
-  padding:.16rem .45rem;font-family:var(--sans);
+  padding:.2rem .45rem;font-family:var(--black);font-variation-settings:normal;
   font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
   font-variation-settings:'wdth' 88,'wght' 800;
   color:#fff;background:var(--ink);
