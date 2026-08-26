@@ -253,6 +253,10 @@ function setLoc(id){
 
   $('#heroBrow').textContent  = (L.since ? 'Since ' + L.since + ' · ' : '') + L.hood;
   $('#heroPitch').textContent = L.pitch;
+  // El texto del local nuevo entra subiendo, igual que entró el primero. En la
+  // carga inicial esto no hace nada: todavía no hay palabras que rehacer.
+  subirDeNuevo($('#heroBrow'), 0);
+  subirDeNuevo($('#heroPitch'), .10);
   $('#heroAddr').textContent  = L.address;
   $('#heroHours').textContent = L.hoursText[0][1];
   $('#menuLoc').textContent   = L.name;
@@ -582,11 +586,16 @@ addEventListener('load', function revelado(){
 
 /* ---------- el texto que sube por palabras ----------
    Se parte solo el texto visible: los `span.sr` que existen para los lectores
-   de pantalla se dejan intactos, o el nombre del negocio se perdería. */
-addEventListener('load', function palabrasQueSuben(){
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+   de pantalla se dejan intactos, o el nombre del negocio se perdería.
 
-  const partir = (el, retardoBase) => {
+   Son declaraciones y no constantes porque setLoc, que vive bastante más
+   arriba, las llama al cambiar de local. */
+function menosMovimiento(){
+  return matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function partir(el, retardoBase){
+    if (!el || menosMovimiento()) return;
     if (el.dataset.partido) return;
     el.dataset.partido = '1';
     let i = 0;
@@ -606,7 +615,27 @@ addEventListener('load', function palabrasQueSuben(){
       });
       nodo.replaceWith(frag);
     });
-  };
+}
+
+/* Cambiar de local reescribe el eyebrow y el pitch con textContent, y con eso
+   se van todos los span.palabra. Aquí el texto nuevo se vuelve a partir desde
+   cero y se le manda subir otra vez, así que entra como entró el primero.
+
+   Si todavía no se había partido nada, no hay nada que rehacer: es la carga
+   inicial y de eso se encarga el observador, que espera a que el bloque entre
+   en pantalla. */
+function subirDeNuevo(el, retardoBase){
+  if (!el || menosMovimiento()) return;
+  if (el.dataset.partido !== '1') return;
+  delete el.dataset.partido;
+  el.classList.remove('visto');
+  partir(el, retardoBase);
+  void el.offsetWidth;          // fuerza el reflujo, o la subida no arranca
+  el.classList.add('visto');
+}
+
+addEventListener('load', function palabrasQueSuben(){
+  if (menosMovimiento()) return;
 
   const objetivos = [['.intro .eyebrow', 0], ['.intro-t', .18], ['.intro-sub', .62]];
   objetivos.forEach(([sel, base]) => { const el = $(sel); if (el) partir(el, base); });
