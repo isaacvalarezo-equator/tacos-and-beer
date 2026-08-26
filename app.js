@@ -106,7 +106,12 @@ function renderMenu(){
           <p class="line">
             <span class="nm">${i[0]}</span>${i[3] ? `<span class="tag ${i[3]}">${i[3] === 'top' ? 'Popular' : 'For groups'}</span>` : ''}
             <span class="leader"></span>
-            ${(() => { const t = tuesdayPrice(i[0], i[2]);
+            ${(() => {
+              // Dos precios quedaron tapados por el reflejo de la carta
+              // plastificada. Hasta que el restaurante los confirme, el sitio
+              // invita a preguntar en vez de inventar una cifra.
+              if (i[2] == null) return '<span class="price ask">Ask us</span>';
+              const t = tuesdayPrice(i[0], i[2]);
               return t
                 ? `<span class="price tuesday"><span class="was">${money(i[2])}</span>${money(t)}</span>`
                 : `<span class="price">${money(i[2])}</span>`; })()}
@@ -211,7 +216,8 @@ function renderSchema(){
     hasMenu:{'@type':'Menu',hasMenuSection:MENU[loc].map(c => ({
       '@type':'MenuSection',name:c.cat,
       hasMenuItem:c.items.map(i => ({'@type':'MenuItem',name:i[0],description:i[1] || undefined,
-        offers:{'@type':'Offer',price:i[2].toFixed(2),priceCurrency:'USD'}}))
+        offers: i[2] == null ? undefined
+          : {'@type':'Offer',price:i[2].toFixed(2),priceCurrency:'USD'}}))
     }))}
   }, null, 2);
 }

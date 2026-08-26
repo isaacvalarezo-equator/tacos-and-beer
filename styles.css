@@ -96,10 +96,11 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* ---------- tipografía de rotulación ---------- */
 .display{
-  letter-spacing:.004em;
-  font-family:var(--sans);
-  font-variation-settings:'wdth' 125,'wght' 900;
-  text-transform:uppercase;line-height:.9;letter-spacing:-.01em;
+  /* La letra del rótulo, en toda la jerarquía de titulares. Titan One no tiene
+     ejes variables, así que el ancho y el peso se dejan de declarar y el
+     tracking pasa a positivo: apretarla la vuelve ilegible. */
+  font-family:var(--black);
+  text-transform:uppercase;line-height:.96;letter-spacing:.006em;
   margin:0;
 }
 h1.display{
@@ -133,7 +134,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
 }
 .brand{
-  font-family:var(--sans);font-variation-settings:'wdth' 125,'wght' 900;
+  font-family:var(--black);
   text-transform:uppercase;font-size:1rem;letter-spacing:-.01em;
   text-decoration:none;white-space:nowrap;
 }
@@ -430,6 +431,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   font-variation-settings:'wdth' 100,'wght' 800;
   font-variant-numeric:tabular-nums;font-size:1.02rem;color:var(--ink);
 }
+.menu-item .price.ask{font-variation-settings:'wdth' 90,'wght' 600;color:var(--ink-soft);font-size:.82rem;text-transform:uppercase;letter-spacing:.06em}
 .menu-item .dsc{
   margin:.28rem 0 0;font-family:var(--sans);font-size:.845rem;line-height:1.45;
   color:var(--ink-soft);font-variation-settings:'wdth' 95,'wght' 400;

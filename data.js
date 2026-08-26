@@ -62,62 +62,109 @@ const LOCATIONS = {
 
 /* Menú por ubicación. Los precios difieren entre locales — dato confirmado
    en la investigación y uno de los argumentos de venta del menú central. */
+/* ─────────────────────────────────────────────────────────────────────
+   CARTA REAL DE NEW ORLEANS
+   Transcrita de fotografías de la carta física del local, tomadas por Isaac
+   el 2026-08-22. Están en `../assets/carta-real/`.
+
+   La maquetación de la carta pone el precio en la línea de ARRIBA del plato,
+   no a su lado. Verificado ampliando la columna de aperitivos.
+
+   ⚠️ DOS PRECIOS QUEDARON TAPADOS por el reflejo del plástico y hay que
+   confirmarlos con el restaurante: T&B Sampler y Nachos. Van marcados con
+   `null` y el sitio los muestra como "ask us" en vez de inventar una cifra.
+
+   Carnes a elegir: grilled chicken, asada, chorizo, carnitas, al pastor,
+   birria, suadero, tinga, carne molida. Lengua +$1, camarón +$2.50,
+   champiñón +$1.50.
+   18% de propina se añade a mesas de 6 o más. ───────────────────────────── */
 const MENU = {
   nola: [
-    { cat: 'To start', items: [
-      ['Tacos & Beer Sampler', 'A little of everything we do well', 14.95, 'top'],
-      ['D.U.I. Fries', 'Fries, meat, cheese, and everything else', 8.95, 'top'],
-      ['Choriqueso', 'Chorizo melted into cheese, with tortillas', 7.95],
-      ['Nachos', 'Add meat for $2.50', 7.95],
-      ['Guacamole', 'Made in house', 3.75],
-      ['La Botana', 'A platter built for sharing', 14.95],
-      ['Ceviche Tostada', '', 6.95],
-      ['Shrimp Cocktail', '', 10.95],
-      ['Chipotle Hot Wings', '', 5.95],
-      ['Chips & Salsa', '', 2.50]
+    { cat: 'Tacos', items: [
+      ['Street Taco', 'Your choice of meat, onion and cilantro on a corn tortilla, with lime and spicy salsa. Lettuce wrap or keto cheese crisp add 75¢', 2.50, 'top'],
+      ['Taco Gabacho', 'Crunchy taco with lettuce, sour cream, shredded cheese and pico de gallo', 4],
+      ['Gnarly Taco', 'Sirloin marinated in Gnarly Barley Jucifer and our citrus blend, with house guacamole, onion and cilantro', 6, 'top'],
+      ['Tacos Dorados', 'Three hard shell tacos with lettuce, sour cream and crumbled queso. Ground beef, refried beans or potatoes', 10],
+      ['Quesabirria', 'Three cheesy tacos with our marinated beef, with a broth to drench them in', 12, 'top'],
+      ['Big Sur Fish Tacos', 'Three grilled or fried fish tacos with pico de gallo, sliced cabbage and our Baja sauce', 14],
+      ['Quesashrimp Tacos', 'Three birria-style chopped shrimp with onion, cilantro and tomato, melted cheese and creamy jalapeño dip', 14],
+      ['Baja Shrimp Tacos', 'Three grilled shrimp tacos on corn tortillas with chipotle sauce, shredded cabbage and pico de gallo', 16],
+      ['Taco 12 Pack', 'Twelve soft tacos with salsa, diced onion and cilantro. Up to three meats. Shrimp or fish pack $35', 30, 'grupo']
     ]},
     { cat: 'Favorites', items: [
-      ['Big A$$ Burrito', 'The name is not an exaggeration', 12.99, 'top'],
-      ['Chimi Chingon', 'A chimichanga done right', 9.95],
-      ['Baja Fish Tacos', 'Beer-battered fish, cabbage, and crema', 9.95, 'top'],
-      ['El Huarache', '', 9.95],
-      ['Tacos Dorados', '', 4.95],
-      ['Quesadilla Dinner', '', 9.95],
-      ['Taco 12 Pack', 'Up to 3 meats. For the whole table', 19.99, 'grupo']
+      ['Molcajete', 'Skirt steak, chicken, sausage and shrimp with grilled onions, served sizzling. Two orders of rice, beans, guacamole, sour cream, pico de gallo and warm tortillas', 40, 'grupo'],
+      ['Big Ass Burrito', 'Rice, beans, guacamole, sour cream, pico de gallo, shredded cheese and your meat. Make it wet for $2', 16, 'top'],
+      ['Chimi Chingon', 'Deep fried burrito with your meat, onions, shredded cheese, cilantro, rice and beans, smothered in cheese dip', 16],
+      ['Las Flautas', 'Three rolled corn tortillas with chicken or beef, fried and topped with sour cream, guacamole and crumbled cheese', 14],
+      ['Enchiladas Tradicional', 'Three enchiladas with your meat, lettuce, crumbled cheese and sour cream. Salsa verde or roja', 16],
+      ['Pollo Asado', 'Citrus marinated chicken with sautéed onions, rice and warm corn tortillas', 16],
+      ['Carne Asada', 'Marinated skirt steak with sautéed onions, rice, beans and pico de gallo', 20],
+      ['Quesadilla Combo', 'Large quesadilla with your meat, rice, beans, sour cream and guacamole', 14],
+      ['Chile Relleno', 'Poblano stuffed with melted cheese and your meat, covered in our homemade salsa', 16],
+      ['Los Sopes', 'Two crispy cornmeal shells with beans, sour cream, crumbled cheese, lettuce and your meat', 14]
     ]},
-    { cat: 'Plates', items: [
-      ['Carne Asada', 'With rice, beans, and tortillas', 14.99, 'top'],
-      ["Micky's Mole", 'Our house mole', 9.95],
-      ['Rocky Relleno', 'Battered stuffed pepper', 9.95],
-      ['Three Enchiladas', '', 9.95],
-      ['Quesadillas Gringas', '', 9.95],
-      ['Three Flautas', '', 9.95],
-      ['Los Sopes', '', 9.95]
+    { cat: 'To start', items: [
+      ['Unlimited Chips & Salsa', '', 6],
+      ['Cheese Dip', 'Melted cheese with jalapeños, with chips and salsa. Small or large', 6],
+      ['Guacamole', 'Made fresh with onion, cilantro and tomato', 6],
+      ['Birria Eggrolls', 'Crispy eggrolls stuffed with shredded beef, with dipping broth', 10, 'top'],
+      ['T&B Sampler', 'Nachos with your meat, quesadilla triangles and mini flautas, with sour cream and guacamole', null],
+      ['Nachos', 'Homemade chips with beans, melted cheese, sour cream, pico de gallo and jalapeños. Add meat $3', null],
+      ['D.U.I. Fries', 'Cheese fries with sour cream, jalapeños and pico de gallo, over beans. Add meat $3', 14, 'top'],
+      ['Choriqueso', 'Our homemade chorizo mixed into our cheese dip, with chips', 12],
+      ['Shrimp Cocktail', 'Jumbo shrimp in our spicy cocktail sauce with avocado, cilantro, onion and tomato', 16],
+      ['Ceviche', 'Lime marinated fish with pico de gallo and avocado slices, with fresh chips. Shrimp ceviche $2 more', 12],
+      ['Chipotle Wings', 'Jumbo wings in our chipotle BBQ sauce. Six or twelve piece', 10],
+      ['La Botana', 'Platter of eight taquitos, carnitas, crumbled Mexican cheese, guacamole and jalapeños', 20, 'grupo']
     ]},
-    { cat: 'Tacos à la carte', items: [
-      ['Taco', 'Pick your meat', 1.95],
-      ['Fish Taco', '', 2.69],
-      ['Flauta', '', 2.50],
-      ['Enchilada', '', 2.50],
-      ['Sope', '', 4.25],
-      ['Huarache', '', 7.95],
-      ['Chile Relleno', '', 5.95]
+    { cat: 'Fresh-Mex', items: [
+      ['Southwest Salad', 'Spring mix with avocado, black beans, corn, tomato, cotija, tortilla strips and cilantro ranch. Chicken or steak', 14],
+      ['Burrito Bowl', 'Your meat over rice, black beans, lettuce, guacamole, corn and cheese', 12],
+      ['Taco Salad', 'Homemade taco shell with lettuce, guacamole, sour cream, beans, cheese, pico de gallo and your meat', 12],
+      ['Veggie Burrito', 'Portobello, sautéed onion, green bell pepper, rice, beans, sour cream, avocado and cheese', 12],
+      ['Bajá Shrimp Burrito', 'Grilled shrimp, rice, pico de gallo, avocado and spicy baja sauce. Melted queso $2', 16],
+      ['Gnarly Burrito', 'Jucifer marinated sirloin, rice, beans, onion, cilantro and queso fresco. Shrimp $2.50', 16],
+      ['Seafood Soup', 'Giant bowl with shrimp, fish, mussels, crab legs, broccoli and carrots in a steamy broth', 20, 'grupo']
     ]},
-    { cat: 'Breakfast, all day', items: [
-      ['Breakfast Burrito', '', 7.95],
-      ['Chilaquiles Con Huevos', '', 6.95],
-      ['Huevos a la Mexicana', '', 6.95],
-      ['Huevos Con Chorizo', '', 6.95],
-      ['Los Rancheros', '', 6.95]
+    { cat: 'Burgers & tortas', items: [
+      ['American Burger', 'Half pound patty with mayo, mustard, ketchup, lettuce, tomato, onion, pickles and American cheese, with fries', 15],
+      ['Mexican Burger', 'Patty topped with our homemade chorizo and avocado, chipotle mayo, lettuce, tomato, onion and pickles, with fries', 16],
+      ['Chicken Sandwich', 'Grilled chicken, chipotle crema, lettuce, tomato, onion, pickles and avocado, with fries', 14],
+      ['L.A. Street Dog', 'Bacon wrapped dog with mayo, mustard, ketchup, grilled onions, jalapeños and guacamole, with fries', 13],
+      ['Torta', 'The Mexican po-boy. Hot and dressed with beans, lettuce, tomato, queso fresco, avocado and your meat', 15]
     ]},
-    { cat: 'Tortas and burgers', items: [
-      ['Torta', 'The Mexican po-boy', 8.95],
-      ['Half Pound Burger', '', 7.95]
+    { cat: 'A la carte', items: [
+      ['Bean Soup', 'Our famous bean soup by the bowl', 3],
+      ['Tamale', 'Red pork tamale', 4],
+      ['Enchilada', 'Topped with lettuce and sour cream. Cheese dip $1', 4],
+      ['Flauta', 'Topped with lettuce, guacamole and sour cream. Order of five $12', 3],
+      ['Big Sur Fish Taco', 'Grilled fish with our chipotle sauce, shredded cabbage and pico de gallo', 5],
+      ['Street Corn', 'Corn on the cob with mayo, crumbled cheese, lime and tajín', 6],
+      ['Shrimp Taco', 'Gulf shrimp with pico de gallo, sliced cabbage and chipotle sauce', 6],
+      ['French Fries', '', 6],
+      ['Sope', 'Crispy cornmeal shell with beans, sour cream, crumbled cheese, lettuce and your meat', 8],
+      ['Quesadilla', 'Flour tortilla with melted cheese and your meat', 9],
+      ['Chile Relleno', 'Lightly fried poblano stuffed with your meat and cheese, topped with red salsa', 12],
+      ['Burrito', 'Rice, beans, cilantro, onion and your meat. Make it wet for $1', 12],
+      ['Chicken Strips with Fries', '', 12]
+    ]},
+    { cat: 'Breakfast', items: [
+      ['Breakfast Burrito', 'Scrambled eggs, chorizo, cheese, refried beans and rice. Make it wet for $2', 12],
+      ['Huevos a la Mexicana', 'Scrambled eggs with tomato, onion and jalapeño, with rice and beans', 12],
+      ['Huevos con Chorizo', 'Scrambled eggs with our homemade spicy sausage, with rice and beans', 12],
+      ['Los Huevos Rancheros', 'Two eggs sunny side up with salsa over a crispy tortilla, with rice and beans', 12],
+      ['Chilaquiles con Huevo', 'Crispy tortilla chips smothered in spicy red sauce with eggs, rice and beans', 12]
+    ]},
+    { cat: 'Kids', items: [
+      ['Quesadilla', 'Shredded chicken and melted cheese, with rice and beans', 8],
+      ['Enchilada', 'Cheese enchilada with rice and beans', 8],
+      ['Chicken Fingers', 'Two breaded strips with BBQ sauce and fries', 8],
+      ['Mini Tacos', 'Mini crunchy chicken tacos with rice and beans', 8]
     ]},
     { cat: 'Dessert', items: [
-      ['Flan', '', 3.99],
-      ['Tres Leches', '', 3.99],
-      ['Arroz Con Leche', '', 3.99]
+      ['Churro Fries', 'Mini cinnamon sugar churros', 8],
+      ['Flan', 'Caramel custard, made here', 8],
+      ['Tres Leches', 'Ultra moist sweet sponge cake', 8]
     ]}
   ],
   slidell: [
