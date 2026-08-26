@@ -4,6 +4,29 @@
 
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+/* ---------- envío de reservas ----------
+   Cuando ENDPOINT esté puesto, cada reserva viaja a la función sin servidor y
+   de ahí al grupo de GroupMe del restaurante. Mientras esté vacío, el sitio
+   funciona igual contra `localStorage`, que es lo que permite enseñarlo en una
+   reunión sin conexión. La demo nunca deja de funcionar por esto. */
+const ENDPOINT = '';   // ej. 'https://reservas.tacosandbeer.workers.dev'
+
+async function enviar(datos){
+  if (!ENDPOINT) return { ok: true, local: true };
+  try {
+    const r = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos),
+    });
+    const j = await r.json().catch(() => ({}));
+    return { ok: r.ok && j.ok !== false, error: j.error };
+  } catch (e) {
+    // Sin red, la reserva ya quedó guardada en el navegador y el panel la ve.
+    return { ok: false, error: 'sin conexión' };
+  }
+}
+
 const money = n => '$' + n.toFixed(n % 1 ? 2 : 0);
 const STORE = 'tb_demo_v1';
 
@@ -269,6 +292,7 @@ function setLoc(id){
    ECG, no una oferta del restaurante. Una fiesta de veinte personas se cierra
    hablando, así que el formulario recoge lo mínimo y el restaurante llama. */
 
+let toastT;
 function toast(msg){
   const t = $('#toast');
   t.textContent = msg; t.classList.add('on');
@@ -296,6 +320,9 @@ $('#waitForm').addEventListener('submit', e => {
     size: +$('#rSize').value, pref: $('#wNotes').value
   });
   e.target.reset(); toast(`Got it, ${rec.name.split(' ')[0]}. ${LOCATIONS[loc].name} will text ${rec.phone} to confirm your table for ${rec.size}.`);
+  enviar({ tipo: 'reserva', ...rec }).then(res => {
+    if (!res.ok) toast('We saved it, but it did not reach the restaurant. Please call us to be sure.');
+  });
 });
 
 $('#partyForm').addEventListener('submit', e => {
@@ -309,6 +336,9 @@ $('#partyForm').addEventListener('submit', e => {
   });
   e.target.reset();
   toast(`Got it, ${rec.name.split(' ')[0]}. ${LOCATIONS[loc].name} will call you back about your table for ${g}.`);
+  enviar({ tipo: 'grupo', ...rec, size: g }).then(res => {
+    if (!res.ok) toast('We saved it, but it did not reach the restaurant. Please call us to be sure.');
+  });
 });
 
 function daypart(){
