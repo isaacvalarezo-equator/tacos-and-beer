@@ -301,7 +301,17 @@ function toast(msg){
 }
 
 /* ---------- arranque ---------- */
-$$('.locpick button').forEach(b => b.onclick = () => setLoc(b.dataset.loc));
+/* Al cambiar de local cambia la carta entera, la dirección, el horario y el
+   teléfono, pero todo eso vive más abajo: desde el hero no se ve nada y parece
+   que el botón no hizo nada. El aviso confirma el cambio donde está el dedo. */
+$$('.locpick button').forEach(b => b.onclick = () => {
+  const antes = loc;
+  setLoc(b.dataset.loc);
+  if (antes !== loc) {
+    const L = LOCATIONS[loc], st = openState(L);
+    toast(`Now showing ${L.name} · ${L.address} · ${st.text}`);
+  }
+});
 
 renderBar(); renderLate();
 
