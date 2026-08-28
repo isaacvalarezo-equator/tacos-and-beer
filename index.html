@@ -56,9 +56,21 @@
         pidió menos movimiento, se apaga y queda el montaje de fotos debajo. -->
    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline
           preload="auto" poster="video/hero-poster.jpg"
-          aria-label="The storefront at night with the neon sign on, and a Friday behind the bar">
-     <source src="video/tacos-and-beer.mp4" type="video/mp4">
-   </video>
+          aria-label="The storefront on St. Charles Avenue at dusk with the neon sign lit, and then a Friday night behind the bar"></video>
+   <script>
+   /* La copia se elige ANTES de que el navegador pida nada. Por eso el video
+      no trae src ni <source> en el marcado: en cuanto los tuviera, empezaría a
+      bajar el archivo de escritorio, que pesa 10 MB y en un teléfono no hace
+      ninguna falta. La copia de móvil mide 720x960 y 3.7 MB, que a 390 px de
+      ancho se ve igual. Quien pide ahorro de datos recibe la ligera también. */
+   (function(){
+     var v = document.getElementById('heroVideo');
+     if (!v) return;
+     var c = navigator.connection || {};
+     var ligera = matchMedia('(max-width:700px)').matches || c.saveData === true;
+     v.src = ligera ? 'video/tacos-and-beer-movil.mp4' : 'video/tacos-and-beer.mp4';
+   })();
+   </script>
    <picture class="cuadro-base">
     <source media="(max-width:700px)" srcset="img/letrero-noche-movil.jpg">
     <img src="img/letrero-noche-1400.jpg"
@@ -303,15 +315,6 @@
       <p class="hint" style="margin-top:.8rem">Booked the moment you send it. Something changes? <a id="waitCall" href="tel:+15043048722">Call us</a> and we will move it.</p>
     </form>
 
-    <aside class="reserva-lado">
-      <h3 class="display" style="font-size:1.2rem;margin:0 0 .8rem">That is the whole thing</h3>
-      <ol class="pasos">
-        <li><span>1</span><div><strong>You book it.</strong> Done. No hold music, no waiting for a callback, no one has to be free to answer.</div></li>
-        <li><span>2</span><div><strong>It shows up in the kitchen chat.</strong> The same group where the team already talks, the second you hit the button.</div></li>
-        <li><span>3</span><div><strong>You walk in.</strong> Your table is under your name.</div></li>
-      </ol>
-      <p class="tiny" style="margin-top:1.1rem;font-size:.78rem;color:var(--ink-soft)">Big group, a whole room, or catering? That one still takes a conversation. <a href="#parties" style="text-decoration:underline">Tell us up there</a>.</p>
-    </aside>
   </div>
 </section>
 
