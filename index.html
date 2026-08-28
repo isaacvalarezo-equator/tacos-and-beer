@@ -55,7 +55,7 @@
         fondo. Si el navegador no la deja arrancar sola, o si el visitante
         pidió menos movimiento, se apaga y queda el montaje de fotos debajo. -->
    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline
-          preload="auto" poster="video/hero-poster.jpg"
+          preload="auto" poster="video/hero-poster-v2.jpg"
           aria-label="The storefront on St. Charles Avenue at dusk with the neon sign lit, and then a Friday night behind the bar"></video>
    <script>
    /* La copia se elige ANTES de que el navegador pida nada. Por eso el video
@@ -68,7 +68,7 @@
      if (!v) return;
      var c = navigator.connection || {};
      var ligera = matchMedia('(max-width:700px)').matches || c.saveData === true;
-     v.src = ligera ? 'video/tacos-and-beer-movil.mp4' : 'video/tacos-and-beer.mp4';
+     v.src = ligera ? 'video/tacos-and-beer-movil-v2.mp4' : 'video/tacos-and-beer-v2.mp4';
    })();
    </script>
    <picture class="cuadro-base">
