@@ -582,6 +582,25 @@ addEventListener('load', function revelado(){
   addEventListener('orientationchange', fijar);
 })();
 
+/* La barra de acciones de abajo también se mide. El hueco que se le reservaba
+   era un 64px fijo y la barra mide 61, así que sobraban 3px de fondo crema
+   entre el pie y la barra, y se veía una línea clara cruzando el final de la
+   página. El hueco lo pone el propio pie, así que aunque la medida baile un
+   píxel lo que asoma es marrón sobre marrón. */
+(function altoDeAcciones(){
+  const acc = document.querySelector('.sticky');
+  if (!acc) return;
+  const fijar = () => {
+    const visible = getComputedStyle(acc).display !== 'none';
+    const h = visible ? Math.round(acc.getBoundingClientRect().height) : 0;
+    document.documentElement.style.setProperty('--acciones-h', h + 'px');
+  };
+  fijar();
+  if (window.ResizeObserver) new ResizeObserver(fijar).observe(acc);
+  addEventListener('orientationchange', fijar);
+  addEventListener('resize', fijar);
+})();
+
 /* ---------- el texto que sube por palabras ----------
    Se parte solo el texto visible: los `span.sr` que existen para los lectores
    de pantalla se dejan intactos, o el nombre del negocio se perdería.

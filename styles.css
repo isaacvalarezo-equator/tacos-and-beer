@@ -745,7 +745,11 @@ input[type=range]:focus-visible{outline:3px solid currentColor;outline-offset:6p
   background-size:32px 32px;background-position:0 0,16px 16px;}
 
 /* ---------- footer ---------- */
-footer{background:var(--comal);color:var(--masa);padding-block:3.5rem 6rem;border-top:2px solid var(--comal)}
+/* Sin reserva fija abajo. Los 6rem estaban para dejar pasar la barra de
+   acciones del teléfono, y en escritorio quedaban de banda marrón vacía al
+   final de la página. El hueco de la barra lo pone la regla de <=640, con la
+   altura que el JS mide de verdad. */
+footer{background:var(--comal);color:var(--masa);padding-block:3.5rem;border-top:2px solid var(--comal)}
 .foot{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:2rem}
 footer a{color:var(--masa)}
 footer h4{margin:0 0 .8rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;font-variation-settings:'wdth' 90,'wght' 700;color:rgba(245,238,225,.6)}
@@ -859,11 +863,14 @@ section[id],header[id]{scroll-margin-top:var(--anchor-off)}
 body:has(:is(input,select,textarea):focus) .sticky{transform:translateY(100%)}
 
 @media (max-width:640px){
-  body{padding-bottom:64px}
+  /* El hueco de la barra de acciones lo pone el propio pie, no el body: así el
+     color que hay detrás de la barra es el marrón del pie y no el crema de la
+     página, y una diferencia de un píxel no dibuja ninguna línea. */
+  footer{padding-bottom:calc(2.5rem + var(--acciones-h, 64px))}
   /* la barra baja a dos filas, así que las anclas necesitan más margen */
   :root{--anchor-off:104px}
   /* el aviso se dibuja por encima de la barra de acciones, no encima de ella */
-  .toast{bottom:calc(64px + 1rem)}
+  .toast{bottom:calc(var(--acciones-h, 64px) + 1rem)}
   .sticky{display:flex}
   .locbar-in{gap:.6rem;padding-block:.5rem}
   .locpick{margin-inline-start:0;width:100%;order:3}
