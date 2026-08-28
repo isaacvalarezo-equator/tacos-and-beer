@@ -351,6 +351,14 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   object-position:50% 45%;z-index:1;display:block;
 }
+/* Con la copia apaisada el hero adopta la proporción del propio video, y así
+   el cuadro entra entero: ni recorte ni bandas. El JS pone la clase cuando
+   sirve esa copia, o sea solo por encima de 700px. */
+:root.js-hero-ancho .hero{
+  aspect-ratio:1920/1080;
+  min-height:0;
+}
+:root.js-hero-ancho .hero-video{object-position:50% 50%}
 :root.js-sin-video .hero-video{display:none}
 @media (prefers-reduced-motion:reduce){ .hero-video{display:none} }
 

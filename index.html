@@ -68,7 +68,14 @@
      if (!v) return;
      var c = navigator.connection || {};
      var ligera = matchMedia('(max-width:700px)').matches || c.saveData === true;
-     v.src = ligera ? 'video/tacos-and-beer-movil-v2.mp4' : 'video/tacos-and-beer-v2.mp4';
+     if (ligera) {
+       v.src = 'video/tacos-and-beer-movil-v2.mp4';
+       v.poster = 'video/hero-poster-v2.jpg';
+     } else {
+       v.src = 'video/hero-ancho-v2.mp4';
+       v.poster = 'video/hero-poster-ancho-v2.jpg';
+       document.documentElement.classList.add('js-hero-ancho');
+     }
    })();
    </script>
    <picture class="cuadro-base">
