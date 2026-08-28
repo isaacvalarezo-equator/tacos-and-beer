@@ -255,7 +255,9 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   margin-top:calc(-1 * var(--bar-total));
   padding-top:var(--bar-total);
   display:block;
-  border-bottom:3px solid var(--comal);
+  /* Sin marco abajo. El corte del video contra el crema de la sección ya es un
+     borde duro, que es lo que pide la casa. Los 3px de --comal quedaban de
+     franja marrón atrapada entre el negro del video y el papel. */
 }
 .hero-foto{position:absolute;inset:0;z-index:-2;display:block;overflow:hidden}
 .cuadro-base{position:absolute;inset:0;display:block}
