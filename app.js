@@ -251,11 +251,9 @@ function setLoc(id){
   $('#livetext').textContent = st.text;
   $('#dot').className = 'dot' + (st.open ? '' : ' shut');
 
-  $('#heroBrow').textContent  = (L.since ? 'Since ' + L.since + ' · ' : '') + L.hood;
   $('#heroPitch').textContent = L.pitch;
   // El texto del local nuevo entra subiendo, igual que entró el primero. En la
   // carga inicial esto no hace nada: todavía no hay palabras que rehacer.
-  subirDeNuevo($('#heroBrow'), 0);
   subirDeNuevo($('#heroPitch'), .10);
   $('#heroAddr').textContent  = L.address;
   $('#heroHours').textContent = L.hoursText[0][1];
@@ -637,7 +635,7 @@ function subirDeNuevo(el, retardoBase){
 addEventListener('load', function palabrasQueSuben(){
   if (menosMovimiento()) return;
 
-  const objetivos = [['.intro .eyebrow', 0], ['.intro-t', .18], ['.intro-sub', .62]];
+  const objetivos = [['.intro-t', .18], ['.intro-sub', .62]];
   objetivos.forEach(([sel, base]) => { const el = $(sel); if (el) partir(el, base); });
 
   const bloque = $('.intro-in');

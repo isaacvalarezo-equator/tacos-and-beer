@@ -56,7 +56,7 @@
         pidió menos movimiento, se apaga y queda el montaje de fotos debajo. -->
    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline
           preload="auto" poster="video/hero-poster-v2.jpg"
-          aria-label="The storefront on St. Charles Avenue at dusk with the neon sign lit, and then a Friday night behind the bar"></video>
+          aria-label="The storefront on St. Charles Avenue at dusk with the neon sign lit, and then the bar inside on a busy night"></video>
    <script>
    /* La copia se elige ANTES de que el navegador pida nada. Por eso el video
       no trae src ni <source> en el marcado: en cuanto los tuviera, empezaría a
@@ -69,11 +69,11 @@
      var c = navigator.connection || {};
      var ligera = matchMedia('(max-width:700px)').matches || c.saveData === true;
      if (ligera) {
-       v.src = 'video/tacos-and-beer-movil-v2.mp4';
-       v.poster = 'video/hero-poster-v2.jpg';
+       v.src = 'video/hero-movil-v3.mp4';
+       v.poster = 'video/hero-poster-v3.jpg';
      } else {
-       v.src = 'video/hero-ancho-v2.mp4';
-       v.poster = 'video/hero-poster-ancho-v2.jpg';
+       v.src = 'video/hero-ancho-v3.mp4';
+       v.poster = 'video/hero-poster-ancho-v3.jpg';
        document.documentElement.classList.add('js-hero-ancho');
      }
    })();
@@ -94,7 +94,6 @@
 <section class="intro" id="intro">
   <div class="wrap intro-in">
     <div>
-      <p class="eyebrow" id="heroBrow">Since 2014</p>
       <h1 class="intro-t"><span class="sr">Tacos and Beer. </span>Tacos, cold beer, and a 64 oz margarita.</h1>
       <p class="intro-sub" id="heroPitch">&mdash;</p>
     </div>
