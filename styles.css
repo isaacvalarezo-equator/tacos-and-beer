@@ -90,6 +90,8 @@
    color de la página que no existe en el local. */
 html{accent-color:var(--rojo)}
 html{-webkit-text-size-adjust:100%}
+html{overscroll-behavior-x:none}
+body{overscroll-behavior-x:none}
 body{
   margin:0;background:var(--bg);color:var(--ink);
   font-family:var(--sans);font-size:17px;line-height:1.55;
@@ -355,10 +357,7 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 /* Con la copia apaisada el hero adopta la proporción del propio video, y así
    el cuadro entra entero: ni recorte ni bandas. El JS pone la clase cuando
    sirve esa copia, o sea solo por encima de 700px. */
-:root.js-hero-ancho .hero{
-  aspect-ratio:1920/1080;
-  min-height:0;
-}
+:root.js-hero-ancho .hero{min-height:min(100svh, 940px)}
 :root.js-hero-ancho .hero-video{object-position:50% 50%}
 :root.js-sin-video .hero-video{display:none}
 @media (prefers-reduced-motion:reduce){ .hero-video{display:none} }
