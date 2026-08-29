@@ -413,7 +413,10 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 }
 @media (hover:hover) and (pointer:fine){ .hero-baja:hover span{opacity:1} }
 
-.intro{background:var(--bg);border-bottom:2px solid var(--line-hard);padding-block:clamp(2.6rem,5.5vw,4.4rem)}
+.intro{
+  background:var(--bg);border-bottom:2px solid var(--line-hard);
+  padding-block:0 clamp(2.6rem,5.5vw,4.4rem);
+}
 .intro-in{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,5vw,4.5rem);align-items:end}
 .intro-t{
   font-family:var(--black);
@@ -1059,7 +1062,12 @@ body:has(:is(input,select,textarea):focus) .sticky{transform:translateY(100%)}
 }
 .tt-strip.flip .tt-run{animation-direction:reverse}
 @keyframes march{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.tt:hover .tt-run{animation-play-state:paused}
+/* La cinta se paraba con el ratón en cualquier punto de la sección, así que se
+   congelaba justo cuando alguien se ponía a mirarla. Ahora solo se detiene si
+   se apunta a la propia cinta, que es cuando parar sirve para leerla. */
+@media (hover:hover) and (pointer:fine){
+  .tt-strip:hover .tt-run{animation-play-state:paused}
+}
 
 .tt-title{
   font-size:clamp(2.8rem,8vw,6.2rem);line-height:.86;margin:0 0 1rem;
@@ -1092,18 +1100,29 @@ body:has(:is(input,select,textarea):focus) .sticky{transform:translateY(100%)}
 }
 .tt-warn{margin:1rem 0 0;font-size:.78rem;color:var(--amarillo)}
 
-/* cuando de verdad ES martes, el bloque se enciende */
-:root[data-tuesday="1"] .tt{background:var(--amarillo);color:var(--comal);border-color:var(--comal)}
+/* Cuando de verdad ES martes, el bloque se enciende. El ámbar es un material
+   del local, como el papel deli, así que FIJA SUS TOKENS y no sigue al tema:
+   de noche --amarillo sube de brillo y --rojo se vuelve neón, y sobre ese
+   ámbar el rojo se caía a 2.28:1. */
+:root[data-tuesday="1"] .tt{
+  background:var(--amarillo-dia);color:var(--comal);border-color:var(--comal);
+  --ink:var(--comal); --ink-soft:var(--barro);
+  --line:rgba(34,26,22,.2); --line-hard:var(--comal); --surface:transparent;
+  --amarillo:var(--amarillo-dia); --rojo:var(--rojo-dia); --verde:var(--verde-dia);
+}
+/* Rojo sobre ámbar mide 2.78:1 y no llega ni al mínimo de un titular. El
+   titular toma el ladrillo de la columna del comedor, que da 3.63:1, y las
+   dos líneas de texto chico toman la tinta de la casa. */
+:root[data-tuesday="1"] .tt-title{color:var(--ladrillo)}
 :root[data-tuesday="1"] .tt .eyebrow,
-:root[data-tuesday="1"] .tt-title{color:var(--rojo)}
-:root[data-tuesday="1"] .tt-strip{background:var(--rojo);color:#fff}
+:root[data-tuesday="1"] .tt-warn{color:var(--comal)}
+:root[data-tuesday="1"] .tt-strip{background:var(--rojo-solido);color:#fff}
 :root[data-tuesday="1"] .tt-note,
 :root[data-tuesday="1"] .tt-clock-k,
-:root[data-tuesday="1"] .tt-dial .u{color:rgba(34,26,22,.6)}
+:root[data-tuesday="1"] .tt-dial .u{color:rgba(34,26,22,.72)}
 :root[data-tuesday="1"] .tt-clock{border-color:rgba(34,26,22,.3)}
 :root[data-tuesday="1"] .tt-dial div{border-color:rgba(34,26,22,.22)}
 :root[data-tuesday="1"] .tt-dial .v{color:var(--comal)}
-:root[data-tuesday="1"] .tt-warn{color:var(--rojo)}
 :root[data-tuesday="1"] .tt .btn-ghost{color:var(--comal);border-color:var(--comal)}
 
 /* aviso en la barra superior, solo los martes */
@@ -1112,7 +1131,9 @@ body:has(:is(input,select,textarea):focus) .sticky{transform:translateY(100%)}
   background:var(--amarillo);color:var(--comal);text-decoration:none;
   font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
   font-variation-settings:'wdth' 90,'wght' 800;
+  position:relative;
 }
+.ttbadge::after{content:"";position:absolute;inset:-11px -6px}
 :root[data-tuesday="1"] .ttbadge{display:inline-flex}
 @media (hover:hover) and (pointer:fine){ .ttbadge:hover{background:#fff} }
 
