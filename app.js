@@ -324,12 +324,26 @@ const t = new Date(Date.now() + 6048e5);
 $('#pDate').value = t.toISOString().slice(0,10);
 $('#pDate').min   = new Date().toISOString().slice(0,10);
 
+/* La versión del texto de permiso. Se sube cada vez que cambie una palabra de
+   lo que la persona lee junto a la casilla. */
+const PERMISO_VERSION = '2026-08-29';
+const PERMISO_TEXTO = 'Also send me Taco Tuesday, events and offers by email or text. You can stop from any message.';
+
 $('#waitForm').addEventListener('submit', e => {
   e.preventDefault();
+  const optin = $('#wOptin') ? $('#wOptin').checked : false;
   const rec = db.add('wait', {
     loc, name: $('#wName').value.trim(), phone: $('#wPhone').value.trim(),
+    email: $('#wEmail') ? $('#wEmail').value.trim() : '',
     date: $('#rDate').value, time: $('#rTime').value,
-    size: +$('#rSize').value, pref: $('#wNotes').value
+    size: +$('#rSize').value, pref: $('#wNotes').value,
+    permiso: {
+      marketing: optin,
+      canales: optin ? ['email', 'sms'] : [],
+      version: PERMISO_VERSION,
+      texto: PERMISO_TEXTO,
+      en: new Date().toISOString()
+    }
   });
   e.target.reset(); toast(`Booked, ${rec.name.split(' ')[0]}. Your table for ${rec.size} at ${LOCATIONS[loc].name} is in. See you then.`);
   enviar({ tipo: 'reserva', ...rec }).then(res => {

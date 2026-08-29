@@ -309,6 +309,44 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
    pasos se fue a la propuesta, que es donde se cuenta lo que hace el producto.
    El sitio del restaurante reserva y ya. */
 .reserva{display:grid;grid-template-columns:1fr;gap:clamp(2rem,4vw,3.5rem);margin-top:2.4rem;align-items:start;max-width:46rem}
+/* ---------- permiso de datos ----------
+   La casilla arranca vacía y el área de toque es la etiqueta entera, que es lo
+   que un dedo acierta. La nota de abajo explica lo que hace falta para reservar,
+   que no lleva casilla porque sin eso no hay mesa. */
+.permiso{margin:1.6rem 0 1.4rem;display:grid;gap:.7rem}
+.permiso-check{
+  display:flex;gap:.7rem;align-items:flex-start;cursor:pointer;
+  font-size:.87rem;line-height:1.5;min-height:44px;padding-block:.3rem;
+}
+.permiso-check input{
+  inline-size:22px;block-size:22px;flex:none;margin:.1rem 0 0;cursor:pointer;
+}
+.permiso-nota{
+  margin:0;font-size:.8rem;line-height:1.55;color:var(--ink-soft);max-width:60ch;
+}
+.permiso-nota a{color:var(--ink);text-decoration:underline;text-underline-offset:.18em}
+.field .opt{
+  font-variation-settings:'wdth' 90,'wght' 500;text-transform:none;
+  letter-spacing:0;opacity:.62;margin-inline-start:.4rem;
+}
+
+/* ---------- cómo se tratan los datos ---------- */
+.privacidad{padding-block:clamp(3rem,6vw,5rem)}
+.priv-grid{
+  display:grid;gap:clamp(1.6rem,3vw,2.6rem);margin-top:2.2rem;
+  grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));
+}
+.priv-grid h3{
+  font-family:var(--black);text-transform:uppercase;font-size:.95rem;
+  letter-spacing:.01em;margin:0 0 .5rem;line-height:1.15;
+}
+.priv-grid p{margin:0;font-size:.9rem;line-height:1.6;color:var(--ink-soft)}
+.priv-pie{
+  margin:2.4rem 0 0;padding-top:1.2rem;border-top:1px solid var(--line);
+  font-size:.82rem;color:var(--ink-soft);
+}
+.priv-pie a{color:var(--ink)}
+
 /* ---------- grupos y fiestas ---------- */
 .grupo-in{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,4vw,3.5rem);margin-top:2.4rem;align-items:start}
 .grupo-lado .shot{margin:0;border:2px solid rgba(255,255,255,.5)}
