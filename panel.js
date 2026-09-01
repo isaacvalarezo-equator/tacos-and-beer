@@ -143,13 +143,13 @@ function seed(){
   const now = Date.now(), min = 60000;
   const d = { wait: [
     { id:'s1', at:new Date(now-4*min).toISOString(),  status:'waiting', loc:'nola',
-      name:'Danielle Boudreaux', phone:'(504) 555-0182', size:4, pref:'Patio' },
+      name:'Danielle Boudreaux', phone:'(504) 555-0182', size:4 },
     { id:'s2', at:new Date(now-11*min).toISOString(), status:'texted',  loc:'nola',
-      name:'Marcus Trahan',      phone:'(504) 555-0143', size:2, pref:'At the bar' },
+      name:'Marcus Trahan',      phone:'(504) 555-0143', size:2 },
     { id:'s3', at:new Date(now-19*min).toISOString(), status:'waiting', loc:'slidell',
-      name:'The Nguyen party',   phone:'(985) 555-0117', size:6, pref:'Inside' },
+      name:'The Nguyen party',   phone:'(985) 555-0117', size:6 },
     { id:'s4', at:new Date(now-26*min).toISOString(), status:'waiting', loc:'hammond',
-      name:'Ashley Landry',      phone:'(985) 555-0166', size:3, pref:'Near the screens' }
+      name:'Ashley Landry',      phone:'(985) 555-0166', size:3 }
   ], party: [
     { id:'p1', at:new Date(now-52*min).toISOString(), status:'new', loc:'nola',
       name:'Rebecca Fontenot', phone:'(504) 555-0198', date:'2026-09-12', time:'19:00',

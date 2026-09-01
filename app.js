@@ -9,7 +9,9 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
    de ahí al grupo de GroupMe del restaurante. Mientras esté vacío, el sitio
    funciona igual contra `localStorage`, que es lo que permite enseñarlo en una
    reunión sin conexión. La demo nunca deja de funcionar por esto. */
-const ENDPOINT = '';   // ej. 'https://reservas.tacosandbeer.workers.dev'
+/* ENCENDER AQUÍ. Esta línea la reescribe sola `servidor/encender.sh` al
+   desplegar, y también se puede pegar a mano. No borrar el marcador. */
+const ENDPOINT = ''; /* encender-aqui */
 
 async function enviar(datos){
   if (!ENDPOINT) return { ok: true, local: true };
@@ -317,8 +319,22 @@ $$('.locpick button').forEach(b => b.onclick = () => {
 
 renderBar(); renderLate();
 
-const hoy = new Date().toISOString().slice(0,10);
-const rd = $('#rDate'); if (rd) { rd.value = hoy; rd.min = hoy; }
+/* El día y la hora van en un solo campo. `toISOString` da UTC, y en Louisiana
+   eso adelanta cinco horas: a las siete de la tarde el campo ya proponía
+   mañana. Se arma con la hora local restando el desfase del navegador. */
+const enLocal = d => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0,16);
+
+/* Se propone esta noche a las siete, que es la hora a la que más se reserva. Si
+   ya pasó, la propuesta es dentro de una hora. `reset()` devuelve el campo al
+   valor del marcado, que está vacío, así que hay que reponerlo tras reservar. */
+function proponerCuando(){
+  const rw = $('#rWhen'); if (!rw) return;
+  const ahora = new Date();
+  const siete = new Date(ahora); siete.setHours(19,0,0,0);
+  rw.value = enLocal(siete > ahora ? siete : new Date(ahora.getTime() + 36e5));
+  rw.min   = enLocal(ahora);
+}
+proponerCuando();
 
 const t = new Date(Date.now() + 6048e5);
 $('#pDate').value = t.toISOString().slice(0,10);
@@ -332,11 +348,14 @@ const PERMISO_TEXTO = 'Also send me Taco Tuesday, events and offers by email or 
 $('#waitForm').addEventListener('submit', e => {
   e.preventDefault();
   const optin = $('#wOptin') ? $('#wOptin').checked : false;
+  // El campo entrega '2026-09-15T19:00'. Se parte porque el grupo de GroupMe, la
+  // confirmación y el panel siguen leyendo el día y la hora por separado.
+  const [dia, hora] = ($('#rWhen').value || '').split('T');
   const rec = db.add('wait', {
     loc, name: $('#wName').value.trim(), phone: $('#wPhone').value.trim(),
     email: $('#wEmail') ? $('#wEmail').value.trim() : '',
-    date: $('#rDate').value, time: $('#rTime').value,
-    size: +$('#rSize').value, pref: $('#wNotes').value,
+    date: dia || '', time: hora || '',
+    size: +$('#rSize').value,
     permiso: {
       marketing: optin,
       canales: optin ? ['email', 'sms'] : [],
@@ -345,7 +364,8 @@ $('#waitForm').addEventListener('submit', e => {
       en: new Date().toISOString()
     }
   });
-  e.target.reset(); toast(`Booked, ${rec.name.split(' ')[0]}. Your table for ${rec.size} at ${LOCATIONS[loc].name} is in. See you then.`);
+  e.target.reset(); proponerCuando();
+  toast(`Booked, ${rec.name.split(' ')[0]}. Your table for ${rec.size} at ${LOCATIONS[loc].name} is in. See you then.`);
   enviar({ tipo: 'reserva', ...rec }).then(res => {
     if (!res.ok) toast('We saved it, but it did not reach the restaurant. Please call us to be sure.');
   });

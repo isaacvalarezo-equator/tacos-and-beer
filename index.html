@@ -7,7 +7,7 @@
 <title>Tacos and Beer — New Orleans · Slidell · Hammond</title>
 <meta name="description" content="Tacos, cold beer, and 64 oz margaritas in New Orleans, Slidell, and Hammond. Full menu, big tables for groups, and reservations you can make online.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v9">
+<link rel="stylesheet" href="styles.css?v10">
 </head>
 <body>
 
@@ -273,21 +273,10 @@
 <section class="wrap" id="waitlist">
   <p class="eyebrow">Reserve a table</p>
   <h2 class="display">Book it from here</h2>
-  <p class="intro-sub" style="max-width:54ch">Pick your day, your time and how many you are. Your table is booked on the spot. Nobody has to call you back and you do not have to wait for anyone to pick up.</p>
+  <p class="intro-sub" style="max-width:54ch">Tell us when you are coming and how many you are. Your table is booked on the spot. Nobody has to call you back and you do not have to wait for anyone to pick up.</p>
 
   <div class="reserva">
     <form id="waitForm">
-      <div class="grid2">
-        <div class="field">
-          <label for="rDate">Day</label>
-          <input type="date" id="rDate" required>
-        </div>
-        <div class="field">
-          <label for="rTime">Time</label>
-          <input type="time" id="rTime" value="19:00" required>
-        </div>
-      </div>
-
       <div class="grid2">
         <div class="field">
           <label for="wName">Name</label>
@@ -308,19 +297,13 @@
 
       <div class="grid2">
         <div class="field">
+          <label for="rWhen">When</label>
+          <input type="datetime-local" id="rWhen" required>
+        </div>
+        <div class="field">
           <label for="rSize">How many</label>
           <input type="number" id="rSize" min="1" max="12" value="2" step="1" required inputmode="numeric">
           <span class="hint">More than 12? Use the group form above.</span>
-        </div>
-        <div class="field">
-          <label for="wNotes">Where would you like to sit</label>
-          <select id="wNotes">
-            <option value="">No preference</option>
-            <option>Upstairs</option>
-            <option>Outside</option>
-            <option>Inside</option>
-            <option>In the bar</option>
-          </select>
         </div>
       </div>
 
@@ -463,7 +446,7 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script type="application/ld+json" id="schema"></script>
-<script src="data.js?v9"></script>
-<script src="app.js?v9"></script>
+<script src="data.js?v10"></script>
+<script src="app.js?v10"></script>
 </body>
 </html>
