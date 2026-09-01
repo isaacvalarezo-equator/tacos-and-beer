@@ -5,9 +5,9 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tacos and Beer — New Orleans · Slidell · Hammond</title>
-<meta name="description" content="Tacos, cold beer, and 64 oz margaritas in New Orleans, Slidell, and Hammond. Full menu, big tables for groups, and reservations you can make online.">
+<meta name="description" content="Tacos and cold beer in New Orleans, Slidell, and Hammond. Full menu, big tables for groups, and reservations you can make online.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v10">
+<link rel="stylesheet" href="styles.css?v11">
 </head>
 <body>
 
@@ -94,7 +94,7 @@
 <section class="intro" id="intro">
   <div class="wrap intro-in">
     <div>
-      <h1 class="intro-t"><span class="sr">Tacos and Beer. </span>Tacos, cold beer, and a 64 oz margarita.</h1>
+      <h1 class="intro-t"><span class="sr">Tacos and Beer. </span>Tacos, cold beer, and three doors in Louisiana.</h1>
       <p class="intro-sub" id="heroPitch">&mdash;</p>
     </div>
     <div class="intro-acc">
@@ -271,6 +271,7 @@
 
 <!-- ===== lista de espera ===== -->
 <section class="wrap" id="waitlist">
+ <div class="reserva-col">
   <p class="eyebrow">Reserve a table</p>
   <h2 class="display">Book it from here</h2>
   <p class="intro-sub" style="max-width:54ch">Tell us when you are coming and how many you are. Your table is booked on the spot. Nobody has to call you back and you do not have to wait for anyone to pick up.</p>
@@ -302,10 +303,11 @@
         </div>
         <div class="field">
           <label for="rSize">How many</label>
-          <input type="number" id="rSize" min="1" max="12" value="2" step="1" required inputmode="numeric">
-          <span class="hint">More than 12? Use the group form above.</span>
+          <input type="number" id="rSize" min="1" max="12" value="2" step="1" required
+                 inputmode="numeric" aria-describedby="pistaSize">
         </div>
       </div>
+      <p class="hint pista-fila" id="pistaSize">More than 12? Use the group form above.</p>
 
       <div class="permiso">
         <label class="permiso-check">
@@ -325,6 +327,7 @@
     </form>
 
   </div>
+ </div>
 </section>
 
 <!-- ===== late night ===== -->
@@ -399,7 +402,7 @@
       <div>
         <a class="brand" href="#top"><img src="img/logo.png" alt="Tacos and Beer" width="399" height="60" loading="lazy"></a>
         <p style="max-width:32ch;color:rgba(246,236,220,.7);font-size:.9rem;margin-top:.8rem">
-          Tacos, cold beer and 64 oz margaritas in New Orleans, Slidell and Hammond.
+          Tacos and cold beer in New Orleans, Slidell and Hammond.
         </p>
       </div>
       <div>
@@ -446,7 +449,7 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script type="application/ld+json" id="schema"></script>
-<script src="data.js?v10"></script>
-<script src="app.js?v10"></script>
+<script src="data.js?v11"></script>
+<script src="app.js?v11"></script>
 </body>
 </html>

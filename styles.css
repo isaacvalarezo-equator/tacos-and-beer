@@ -308,7 +308,28 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 /* El formulario se queda con la columna entera: la explicación de los tres
    pasos se fue a la propuesta, que es donde se cuenta lo que hace el producto.
    El sitio del restaurante reserva y ya. */
-.reserva{display:grid;grid-template-columns:1fr;gap:clamp(2rem,4vw,3.5rem);margin-top:2.4rem;align-items:start;max-width:46rem}
+.reserva{display:grid;grid-template-columns:1fr;gap:clamp(2rem,4vw,3.5rem);margin-top:2.4rem;align-items:start}
+/* El formulario mide 46rem y la sección 1280px, así que sin esto el bloque se
+   quedaba pegado al borde izquierdo con 486px de aire muerto a la derecha: el
+   38% del ancho en un monitor de 1440. Se centra la columna ENTERA, titular y
+   texto incluidos, para que los bordes izquierdos sigan alineados entre sí. */
+.reserva-col{max-width:46rem;margin-inline:auto}
+
+/* El control nativo de datetime-local trae su propio alto y salía 2px por
+   debajo del campo de al lado. En una fila de dos cajas, esos 2px se leen como
+   un descuadre. Se igualan por abajo, y el `appearance` quita el alto extra que
+   mete el widget del calendario. */
+/* 3.65rem queda por encima del alto natural de los dos controles, así que
+   ambos se apoyan en el suelo y miden exactamente lo mismo. Con 3.55 el
+   datetime seguía sacando 1.1px. */
+.field input:not([type=range]),.field select{min-height:3.65rem}
+.field input[type=datetime-local]{appearance:none;-webkit-appearance:none}
+
+/* El aviso de los 12 salió de la celda: dentro dejaba una fila con un lado
+   lleno y el otro vacío. Sigue anunciado al campo por `aria-describedby`. */
+/* Al salir del `.field` dejó de alcanzarle `.field .hint`, y salía a tamaño de
+   cuerpo. Se le repite aquí el tamaño de pista. */
+.pista-fila{font-size:.76rem;opacity:.75;margin:-.5rem 0 1.1rem}
 /* ---------- permiso de datos ----------
    La casilla arranca vacía y el área de toque es la etiqueta entera, que es lo
    que un dedo acierta. La nota de abajo explica lo que hace falta para reservar,

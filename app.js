@@ -529,7 +529,7 @@ addEventListener('load', function montajeHero(){
     ['img/m3-comedor.jpg',  'The turquoise dining room'],
     ['img/m4-platon.jpg',   'A platter of assorted tacos'],
     ['img/m5-papel.jpg',    'Tacos served on our house paper'],
-    ['img/m6-margarita.jpg','A 64 oz margarita'],
+    ['img/m6-margarita.jpg','A frozen margarita with two straws'],
     ['img/m7-mesa.jpg',     'A shared table with chips and guacamole'],
     ['img/m8-slidell-dentro.jpg', 'The dining room in Slidell on a full night'],
     ['img/m10-hammond-fuera.jpg', 'The Hammond storefront on Thomas Street'],
