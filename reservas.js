@@ -4,7 +4,7 @@
    lee las reservas hechas en este navegador, igual que la demo del sitio. */
 
 /* ENCENDER AQUÍ. La reescribe `servidor/encender.sh`. No borrar el marcador. */
-const ENDPOINT = ''; /* encender-aqui */
+const ENDPOINT = "https://reservas-tacos-and-beer.isaacvalarezo30.workers.dev"; /* encender-aqui */
 
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -162,7 +162,7 @@ function pintar(){
               ${r.grupo === false ? '<br><strong>Did not reach GroupMe. Call them to confirm.</strong>' : ''}
             </div>
             <details class="gm">
-              <summary>${!ENDPOINT ? 'Message that would go to GroupMe' : r.grupo === false ? 'Message that did not reach GroupMe' : 'Message sent to GroupMe'}${r.evento ? ' · on the calendar' : ''}</summary>
+              <summary>${!ENDPOINT || r.grupo === null ? 'Message that would go to GroupMe' : r.grupo === false ? 'Message that did not reach GroupMe' : 'Message sent to GroupMe'}${r.evento ? ' · on the calendar' : ''}</summary>
               <pre>${esc(mensajeGroupMe(r))}</pre>
             </details>
           </div>

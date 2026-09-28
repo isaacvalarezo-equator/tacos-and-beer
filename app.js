@@ -11,7 +11,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
    reunión sin conexión. La demo nunca deja de funcionar por esto. */
 /* ENCENDER AQUÍ. Esta línea la reescribe sola `servidor/encender.sh` al
    desplegar, y también se puede pegar a mano. No borrar el marcador. */
-const ENDPOINT = ''; /* encender-aqui */
+const ENDPOINT = "https://reservas-tacos-and-beer.isaacvalarezo30.workers.dev"; /* encender-aqui */
 
 async function enviar(datos){
   if (!ENDPOINT) return { ok: true, local: true };
