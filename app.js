@@ -266,9 +266,9 @@ function setLoc(id){
   $('#stickyCall').href       = 'tel:' + L.tel;
   const sm = $('#stickyMaps'); if (sm) sm.href = L.maps;
   const hc = $('#heroCall'); if (hc) hc.href = 'tel:' + L.tel;
-  // Los formularios arrancan en el local que se está viendo, pero el cliente
-  // lo ve escrito y lo puede cambiar: de ese campo depende a qué grupo llega.
-  ['#rLoc', '#pLoc'].forEach(q => { const s = $(q); if (s) s.value = id; });
+  // Las reservas en línea son solo de New Orleans por ahora (Isaac, 28 de
+  // septiembre de 2026): #rLoc y #pLoc van fijos en el marcado y cambiar de
+  // local arriba no los mueve. Para abrir otro local, vuelve el <select>.
 
   // Cada ciudad tiene una carta de distinto largo: New Orleans son 41 platos y
   // Hammond 26. Sin anclar el scroll, quien esté leyendo a media página sale
@@ -373,7 +373,7 @@ $('#waitForm').addEventListener('submit', e => {
       en: new Date().toISOString()
     }
   });
-  e.target.reset(); proponerCuando(); $('#rLoc').value = loc;
+  e.target.reset(); proponerCuando();
   toast(`Booked, ${rec.name.split(' ')[0]}. Your table for ${rec.size} at ${LOCATIONS[donde].name} is in. See you then.`);
   enviar({ tipo: 'reserva', ...rec }).then(res => {
     if (!res.ok) toast('We saved it, but it did not reach the restaurant. Please call us to be sure.');
@@ -390,7 +390,7 @@ $('#partyForm').addEventListener('submit', e => {
     occasion: $('#pOcc').value.trim(),
     notes: $('#pNotes').value.trim()
   });
-  e.target.reset(); $('#pLoc').value = loc;
+  e.target.reset();
   toast(`Got it, ${rec.name.split(' ')[0]}. ${LOCATIONS[donde].name} will call you back about your table for ${g}.`);
   enviar({ tipo: 'grupo', ...rec, size: g }).then(res => {
     if (!res.ok) toast('We saved it, but it did not reach the restaurant. Please call us to be sure.');

@@ -7,7 +7,7 @@
 <title>Tacos and Beer — New Orleans · Slidell · Hammond</title>
 <meta name="description" content="Tacos and cold beer in New Orleans, Slidell, and Hammond. Full menu, big tables for groups, and reservations you can make online.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v13">
+<link rel="stylesheet" href="styles.css?v14">
 </head>
 <body>
 
@@ -216,14 +216,8 @@
 
     <div class="grupo-in">
       <form id="partyForm">
-        <div class="field">
-          <label for="pLoc">Which restaurant</label>
-          <select id="pLoc" required>
-            <option value="nola">New Orleans · St. Charles Ave</option>
-            <option value="slidell">Slidell · 1st St</option>
-            <option value="hammond">Hammond · Thomas St</option>
-          </select>
-        </div>
+        <input type="hidden" id="pLoc" value="nola">
+        <p class="solo-local">New Orleans · 1622 St. Charles Ave</p>
 
         <div class="grid2">
           <div class="field">
@@ -283,18 +277,13 @@
  <div class="reserva-col">
   <p class="eyebrow">Reserve a table</p>
   <h2 class="display">Book it from here</h2>
-  <p class="intro-sub" style="max-width:54ch">Tell us when you are coming and how many you are. Your table is booked on the spot. Nobody has to call you back and you do not have to wait for anyone to pick up.</p>
+  <p class="intro-sub" style="max-width:54ch">Tell us when and how many. Your table is booked on the spot.</p>
 
   <div class="reserva">
     <form id="waitForm">
-      <div class="field">
-        <label for="rLoc">Which restaurant</label>
-        <select id="rLoc" required>
-            <option value="nola">New Orleans · St. Charles Ave</option>
-            <option value="slidell">Slidell · 1st St</option>
-            <option value="hammond">Hammond · Thomas St</option>
-          </select>
-      </div>
+      <input type="hidden" id="rLoc" value="nola">
+      <p class="solo-local">New Orleans · 1622 St. Charles Ave
+        <span>Slidell or Hammond? Call the restaurant for now.</span></p>
 
       <div class="grid2">
         <div class="field">
@@ -449,7 +438,7 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script type="application/ld+json" id="schema"></script>
-<script src="data.js?v13"></script>
-<script src="app.js?v13"></script>
+<script src="data.js?v14"></script>
+<script src="app.js?v14"></script>
 </body>
 </html>

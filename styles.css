@@ -330,6 +330,9 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 /* Al salir del `.field` dejó de alcanzarle `.field .hint`, y salía a tamaño de
    cuerpo. Se le repite aquí el tamaño de pista. */
 .pista-fila{font-size:.76rem;opacity:.75;margin:-.5rem 0 1.1rem}
+/* El local fijo de las reservas: se lee como dato, no como campo. */
+.solo-local{margin:0 0 1.1rem;font-weight:600}
+.solo-local span{display:block;font-weight:400;font-size:.8rem;opacity:.75;margin-top:.2rem}
 /* ---------- permiso de datos ----------
    La casilla arranca vacía y el área de toque es la etiqueta entera, que es lo
    que un dedo acierta. La nota de abajo explica lo que hace falta para reservar,

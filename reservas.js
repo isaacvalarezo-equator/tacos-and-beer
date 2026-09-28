@@ -53,6 +53,18 @@ function mensajeGroupMe(r){
 }
 
 let todas = [], vista = 'hoy';
+/* Si hoy no hay nada, el admin abre en Upcoming: con "Today" vacío el manager
+   creía que no había reservas. Solo en la primera carga, y nunca después de
+   que alguien elija pestaña a mano, o el refresco de cada minuto se la cambiaría. */
+let vistaElegida = false;
+function vistaInicial(){
+  if (vistaElegida) return;
+  vistaElegida = true;
+  const hoy = hoyLA();
+  if (todas.some(r => r.date === hoy) || !todas.some(r => r.date > hoy)) return;
+  vista = 'futuro';
+  $$('.seg button').forEach(x => x.setAttribute('aria-pressed', x.dataset.v === vista));
+}
 /* Como la tablet del host en OpenTable o Resy: quien marca "Keep me signed
    in" no vuelve a teclear la clave en ese aparato. Sin marcar, se olvida al
    cerrar la pestaña. "Sign out" la borra de los dos sitios. */
@@ -98,7 +110,7 @@ async function cargar(){
   error('');
   if (!ENDPOINT){
     $('#demo').hidden = false; $('#login').hidden = true; $('#vista').hidden = false;
-    todas = deEsteNavegador(); pintar(); return;
+    todas = deEsteNavegador(); vistaInicial(); pintar(); return;
   }
   const k = clave.get();
   if (!k){ $('#login').hidden = false; $('#vista').hidden = true; $('#clave').focus(); return; }
@@ -113,7 +125,7 @@ async function cargar(){
     if (!r.ok || !j.ok) throw new Error(j.error || r.status);
     todas = j.reservas || [];
     $('#login').hidden = true; $('#vista').hidden = false; $('#salir').hidden = false;
-    pintar();
+    vistaInicial(); pintar();
   } catch (e) {
     error('Could not load the reservations. Check the connection and press Refresh.');
     $('#vista').hidden = false;
@@ -172,7 +184,7 @@ function pintar(){
 }
 
 $$('.seg button').forEach(b => b.onclick = () => {
-  vista = b.dataset.v;
+  vista = b.dataset.v; vistaElegida = true;
   $$('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
   pintar();
 });
