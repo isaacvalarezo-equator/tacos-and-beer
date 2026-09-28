@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Reservations · Tacos and Beer</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css?v12">
+<style>
+  /* Herramienta de trabajo del restaurante. La barra fija su fondo de madera y
+     por eso fija también su tinta; el resto sigue al tema. */
+  body{background:var(--bg);color:var(--ink)}
+  .adm-top{position:sticky;top:0;z-index:60;background:var(--comal);color:var(--masa);border-bottom:3px solid var(--rojo-solido)}
+  .adm-top .in{max-width:1100px;margin:0 auto;padding:.8rem 16px;display:flex;gap:1rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .adm-top img{height:36px;width:auto}
+  .adm-top .t{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;font-variation-settings:'wdth' 90,'wght' 700;color:rgba(245,238,225,.75)}
+  .adm{max-width:1100px;margin:0 auto;padding:2rem 16px 5rem}
+  .adm h1{font-size:clamp(1.9rem,5vw,3rem);margin:0 0 1.4rem}
+
+  .aviso{padding:.8rem 1rem;border:2px dashed var(--line);font-size:.85rem;color:var(--ink-soft);margin-bottom:1.4rem}
+  .aviso.error{border-style:solid;border-color:var(--rojo);color:var(--ink)}
+
+  .login{max-width:26rem;border:2px solid var(--line-hard);padding:1.4rem;background:var(--surface,var(--cal))}
+  .login label{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-variation-settings:'wdth' 90,'wght' 700;margin-bottom:.4rem}
+  .login input{width:100%;min-height:44px;padding:.6rem .8rem;border:2px solid var(--line-hard);background:transparent;color:var(--ink);font:inherit}
+  .login button{margin-top:.8rem}
+  .login .recordar{display:flex;gap:.6rem;align-items:center;min-height:44px;margin-top:.6rem;text-transform:none;letter-spacing:0;font-size:.9rem;font-variation-settings:normal;font-weight:400}
+  .login .recordar input{width:20px;height:20px;min-height:0}
+  #salir{min-height:44px;margin-inline-start:.8rem;padding:0 .9rem;border:2px solid rgba(245,238,225,.5);background:transparent;color:var(--masa);font:inherit;cursor:pointer}
+
+  .ctl{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
+  .seg{display:flex;border:2px solid var(--line-hard)}
+  .seg button{min-height:44px;padding:0 1rem;border:0;background:transparent;color:var(--ink);font:inherit;font-size:.82rem;cursor:pointer;font-variation-settings:'wdth' 90,'wght' 700}
+  .seg button+button{border-inline-start:2px solid var(--line-hard)}
+  .seg button[aria-pressed="true"]{background:var(--rojo-solido);color:#fff}
+  .ctl select,.ctl input[type=search]{min-height:44px;padding:0 .8rem;border:2px solid var(--line-hard);background:transparent;color:var(--ink);font:inherit;font-size:.9rem}
+  .ctl input[type=search]{flex:1;min-width:12rem}
+  .btn{min-height:44px;padding:0 1.1rem;border:2px solid var(--line-hard);background:transparent;color:var(--ink);font:inherit;font-size:.82rem;cursor:pointer;font-variation-settings:'wdth' 90,'wght' 700}
+  .btn:hover{background:var(--comal);color:var(--masa)}
+
+  .resumen{display:flex;gap:1.6rem;flex-wrap:wrap;margin:0 0 1.2rem;font-size:.9rem;color:var(--ink-soft)}
+  .resumen b{color:var(--ink);font-variant-numeric:tabular-nums;font-size:1.3rem;margin-inline-end:.3rem}
+
+  .dia{margin-top:1.6rem;padding-block:0}
+  .dia h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;font-variation-settings:'wdth' 90,'wght' 700;margin:0 0 .5rem;color:var(--ink-soft)}
+  .fila{display:grid;grid-template-columns:5.2rem 1fr auto;gap:.3rem 1rem;align-items:start;padding:.9rem 0;border-top:1px solid var(--line)}
+  .fila .h{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.05rem}
+  .fila .nm{font-family:var(--dish);font-weight:600;font-size:1.1rem}
+  .fila .meta{font-size:.84rem;color:var(--ink-soft);line-height:1.55;margin-top:.15rem}
+  .fila .meta a{color:inherit}
+  .fila .n{font-variant-numeric:tabular-nums;font-weight:800;font-size:1.1rem;text-align:end;white-space:nowrap}
+  .etq{display:inline-block;color:var(--ink);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;padding:.12rem .4rem;border:2px solid currentColor;margin-inline-start:.4rem;vertical-align:.15em;font-variation-settings:'wdth' 90,'wght' 700}
+  .gm{margin-top:.5rem}
+  .gm summary{display:inline-flex;align-items:center;min-height:44px;cursor:pointer;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;font-variation-settings:'wdth' 90,'wght' 700;color:var(--ink)}
+  .gm pre{margin:.2rem 0 0;padding:.8rem 1rem;background:var(--surface,var(--cal));border-inline-start:4px solid var(--turquesa);font:.88rem/1.55 ui-monospace,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink)}
+  .vacio{padding:2.5rem 0;color:var(--ink-soft)}
+  @media(max-width:560px){.fila{grid-template-columns:4.2rem 1fr}.fila .n{grid-column:2;text-align:start}}
+</style>
+</head>
+<body>
+
+<header class="adm-top">
+  <div class="in">
+    <a href="index.html"><img src="img/logo.png" alt="Tacos and Beer" width="399" height="60"></a>
+    <span class="t">Reservations <button type="button" id="salir" hidden>Sign out</button></span>
+  </div>
+</header>
+
+<main class="adm">
+  <h1 class="display">Reservations</h1>
+
+  <p class="aviso" id="demo" hidden>Demo mode: showing the bookings made on the site in this browser. Once reservations are switched on, this page shows every booking from every phone.</p>
+  <p class="aviso error" id="error" role="alert" hidden></p>
+
+  <form class="login" id="login" hidden>
+    <label for="clave">Password</label>
+    <input id="clave" type="password" autocomplete="current-password" required>
+    <label class="recordar"><input type="checkbox" id="recordar"> Keep me signed in on this device</label>
+    <button class="btn" type="submit">Open</button>
+  </form>
+
+  <div id="vista" hidden>
+    <div class="ctl">
+      <div class="seg" role="group" aria-label="When">
+        <button type="button" data-v="hoy" aria-pressed="true">Today</button>
+        <button type="button" data-v="futuro" aria-pressed="false">Upcoming</button>
+        <button type="button" data-v="pasado" aria-pressed="false">Past</button>
+      </div>
+      <select id="loc" aria-label="Location">
+        <option value="all">All locations</option>
+        <option value="nola">New Orleans</option>
+        <option value="slidell">Slidell</option>
+        <option value="hammond">Hammond</option>
+      </select>
+      <input type="search" id="buscar" placeholder="Name or phone" aria-label="Search by name or phone">
+      <button class="btn" type="button" id="recargar">Refresh</button>
+    </div>
+    <p class="resumen" id="resumen" aria-live="polite"></p>
+    <div id="lista"></div>
+  </div>
+</main>
+
+<script src="reservas.js?v1"></script>
+</body>
+</html>

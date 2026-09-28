@@ -362,6 +362,8 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
   letter-spacing:.01em;margin:0 0 .5rem;line-height:1.15;
 }
 .priv-grid p{margin:0;font-size:.9rem;line-height:1.6;color:var(--ink-soft)}
+.priv-corto{max-width:62ch;margin:0 0 1rem;font-size:.95rem;line-height:1.65;color:var(--ink-soft)}
+.priv-link{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);font-size:.95rem}
 .priv-pie{
   margin:2.4rem 0 0;padding-top:1.2rem;border-top:1px solid var(--line);
   font-size:.82rem;color:var(--ink-soft);
@@ -665,6 +667,11 @@ section{padding-block:clamp(3.5rem,8vw,7rem)}
 .band-comal{background:var(--comal);color:var(--masa);border-color:var(--comal)}
 .band-comal .eyebrow{color:rgba(245,238,225,.6)}
 .band-rojo{background:var(--rojo-solido);color:#fff;border-color:var(--rojo-solido)}
+/* Blanco al 72% sobre el rojo daba 3.28:1 en un texto de 11.5px. Entero da 5.1. */
+.band-rojo .eyebrow{color:#fff}
+/* Lo mismo en turquesa: la tinta oscura al 72% daba 3.47:1 de día y 4.41 de
+   noche. Estaba ahí desde antes y no se veía porque la prueba no leía color-mix. */
+.band-turquesa .eyebrow{color:var(--comal)}
 
 .events{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:2rem}
 .event{border:2px solid currentColor;padding:1.3rem;display:flex;flex-direction:column;gap:.5rem}

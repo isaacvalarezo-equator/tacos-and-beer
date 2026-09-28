@@ -70,9 +70,9 @@ const LOCATIONS = {
    La maquetación de la carta pone el precio en la línea de ARRIBA del plato,
    no a su lado. Verificado ampliando la columna de aperitivos.
 
-   ⚠️ DOS PRECIOS QUEDARON TAPADOS por el reflejo del plástico y hay que
-   confirmarlos con el restaurante: T&B Sampler y Nachos. Van marcados con
-   `null` y el sitio los muestra como "ask us" en vez de inventar una cifra.
+   DOS PRECIOS QUEDARON TAPADOS por el reflejo del plástico: T&B Sampler $20
+   y Nachos $12. Los pasó Isaac del restaurante el 28 de septiembre de 2026.
+   Si otro precio falta algún día, va en `null` y el sitio dice "Ask us".
 
    Carnes a elegir: grilled chicken, asada, chorizo, carnitas, al pastor,
    birria, suadero, tinga, carne molida. Lengua +$1, camarón +$2.50,
@@ -108,8 +108,8 @@ const MENU = {
       ['Cheese Dip', 'Melted cheese with jalapeños, with chips and salsa. Small or large', 6],
       ['Guacamole', 'Made fresh with onion, cilantro and tomato', 6],
       ['Birria Eggrolls', 'Crispy eggrolls stuffed with shredded beef, with dipping broth', 10, 'top'],
-      ['T&B Sampler', 'Nachos with your meat, quesadilla triangles and mini flautas, with sour cream and guacamole', null],
-      ['Nachos', 'Homemade chips with beans, melted cheese, sour cream, pico de gallo and jalapeños. Add meat $3', null],
+      ['T&B Sampler', 'Nachos with your meat, quesadilla triangles and mini flautas, with sour cream and guacamole', 20],
+      ['Nachos', 'Homemade chips with beans, melted cheese, sour cream, pico de gallo and jalapeños. Add meat $3', 12],
       ['D.U.I. Fries', 'Cheese fries with sour cream, jalapeños and pico de gallo, over beans. Add meat $3', 14, 'top'],
       ['Choriqueso', 'Our homemade chorizo mixed into our cheese dip, with chips', 12],
       ['Shrimp Cocktail', 'Jumbo shrimp in our spicy cocktail sauce with avocado, cilantro, onion and tomato', 16],
@@ -339,20 +339,22 @@ const PACKAGES = [
 
 /* Fotos del local, mapeadas por platillo. Solo las que existen de verdad:
    si un platillo no está aquí, la tarjeta cae al bloque de color. */
+/* Una foto va con un plato solo si enseña ese plato. El 28 de septiembre de
+   2026 Isaac vio el Big Ass Burrito con una foto de tacos: la misma foto
+   cubría el burrito y el Chimi, la de asada cubría las enchiladas de mole y la
+   de pescado los tacos de camarón. Lo que no tiene foto propia cae al bloque
+   de color. Quesabirria y sopes: fotos de Isaac en el local, 31 de agosto. */
 const FOTOS = {
   'Tacos & Beer Sampler': 'img/platon.jpg',
   'T&B Sampler':          'img/platon.jpg',
   'Carne Asada':          'img/asada.jpg',
   'Baja Fish Tacos':      'img/pescado.jpg',
   'Taco 12 Pack':         'img/tacos.jpg',
-  'Tacos Dorados':        'img/tacos.jpg',
   'Torta':                'img/torta.jpg',
-  'Grilled Shrimp Tacos': 'img/pescado.jpg',
-  'Big A$$ Burrito':      'img/papel.jpg',
-  'Big Ass Burrito':      'img/papel.jpg',
-  'Chimi Chingon':        'img/papel.jpg',
-  "Micky's Mole Enchiladas": 'img/asada.jpg',
-  'Los Sopes':            'img/tacos.jpg'
+  'Street Taco':          'img/papel.jpg',
+  'Taco':                 'img/papel.jpg',
+  'Quesabirria':          'img/quesabirria.jpg',
+  'Los Sopes':            'img/sopes.jpg'
 };
 
 /* Taco Tuesday. Confirmado en Slidell con foto del propio local ($1 todo el

@@ -93,7 +93,9 @@ function openState(L){
 /* ---------- render ---------- */
 function renderRail(L){
   const tops = [];
-  MENU[loc].forEach(c => c.items.forEach(i => { if (i[3] === 'top') tops.push(i); }));
+  // Entran los populares y, aunque no lo sean, los que tienen foto propia: una
+  // foto del plato real vende más que un bloque de color.
+  MENU[loc].forEach(c => c.items.forEach(i => { if (i[3] === 'top' || FOTOS[i[0]]) tops.push(i); }));
   // Las fotos reales van primero; lo que no está fotografiado cae al bloque de color.
   tops.sort((a, b) => (FOTOS[b[0]] ? 1 : 0) - (FOTOS[a[0]] ? 1 : 0));
   $('#rail').innerHTML = tops.slice(0,8).map((i, n) => {
@@ -107,7 +109,7 @@ function renderRail(L){
       <div class="card-body">
         <h3>${i[0]}</h3>
         <p>${i[1] || ''}</p>
-        <span class="price">${money(i[2])}</span>
+        <span class="price">${i[2] == null ? 'Ask us' : money(i[2])}</span>
       </div>
     </article>`;
   }).join('');
@@ -264,6 +266,9 @@ function setLoc(id){
   $('#stickyCall').href       = 'tel:' + L.tel;
   const sm = $('#stickyMaps'); if (sm) sm.href = L.maps;
   const hc = $('#heroCall'); if (hc) hc.href = 'tel:' + L.tel;
+  // Los formularios arrancan en el local que se está viendo, pero el cliente
+  // lo ve escrito y lo puede cambiar: de ese campo depende a qué grupo llega.
+  ['#rLoc', '#pLoc'].forEach(q => { const s = $(q); if (s) s.value = id; });
 
   // Cada ciudad tiene una carta de distinto largo: New Orleans son 41 platos y
   // Hammond 26. Sin anclar el scroll, quien esté leyendo a media página sale
@@ -342,8 +347,11 @@ $('#pDate').min   = new Date().toISOString().slice(0,10);
 
 /* La versión del texto de permiso. Se sube cada vez que cambie una palabra de
    lo que la persona lee junto a la casilla. */
-const PERMISO_VERSION = '2026-08-29';
-const PERMISO_TEXTO = 'Also send me Taco Tuesday, events and offers by email or text. You can stop from any message.';
+/* 2026-09-28: se quitó "or text". Los SMS no están construidos, y guardar un
+   permiso para un canal que no existe es un permiso TCPA sin respaldo. Los
+   permisos viejos siguen diciendo lo que la persona leyó entonces. */
+const PERMISO_VERSION = '2026-09-28';
+const PERMISO_TEXTO = 'Also send me Taco Tuesday, events and offers by email. You can stop from any message.';
 
 $('#waitForm').addEventListener('submit', e => {
   e.preventDefault();
@@ -351,21 +359,22 @@ $('#waitForm').addEventListener('submit', e => {
   // El campo entrega '2026-09-15T19:00'. Se parte porque el grupo de GroupMe, la
   // confirmación y el panel siguen leyendo el día y la hora por separado.
   const [dia, hora] = ($('#rWhen').value || '').split('T');
+  const donde = $('#rLoc').value;
   const rec = db.add('wait', {
-    loc, name: $('#wName').value.trim(), phone: $('#wPhone').value.trim(),
+    loc: donde, name: $('#wName').value.trim(), phone: $('#wPhone').value.trim(),
     email: $('#wEmail') ? $('#wEmail').value.trim() : '',
     date: dia || '', time: hora || '',
     size: +$('#rSize').value,
     permiso: {
       marketing: optin,
-      canales: optin ? ['email', 'sms'] : [],
+      canales: optin ? ['email'] : [],
       version: PERMISO_VERSION,
       texto: PERMISO_TEXTO,
       en: new Date().toISOString()
     }
   });
-  e.target.reset(); proponerCuando();
-  toast(`Booked, ${rec.name.split(' ')[0]}. Your table for ${rec.size} at ${LOCATIONS[loc].name} is in. See you then.`);
+  e.target.reset(); proponerCuando(); $('#rLoc').value = loc;
+  toast(`Booked, ${rec.name.split(' ')[0]}. Your table for ${rec.size} at ${LOCATIONS[donde].name} is in. See you then.`);
   enviar({ tipo: 'reserva', ...rec }).then(res => {
     if (!res.ok) toast('We saved it, but it did not reach the restaurant. Please call us to be sure.');
   });
@@ -374,14 +383,15 @@ $('#waitForm').addEventListener('submit', e => {
 $('#partyForm').addEventListener('submit', e => {
   e.preventDefault();
   const g = +$('#pGuests').value;
+  const donde = $('#pLoc').value;
   const rec = db.add('party', {
-    loc, name: $('#pName').value.trim(), phone: $('#pPhone').value.trim(),
+    loc: donde, name: $('#pName').value.trim(), phone: $('#pPhone').value.trim(),
     date: $('#pDate').value, time: $('#pTime').value, guests: g,
     occasion: $('#pOcc').value.trim(),
     notes: $('#pNotes').value.trim()
   });
-  e.target.reset();
-  toast(`Got it, ${rec.name.split(' ')[0]}. ${LOCATIONS[loc].name} will call you back about your table for ${g}.`);
+  e.target.reset(); $('#pLoc').value = loc;
+  toast(`Got it, ${rec.name.split(' ')[0]}. ${LOCATIONS[donde].name} will call you back about your table for ${g}.`);
   enviar({ tipo: 'grupo', ...rec, size: g }).then(res => {
     if (!res.ok) toast('We saved it, but it did not reach the restaurant. Please call us to be sure.');
   });
@@ -699,4 +709,55 @@ addEventListener('load', function palabrasQueSuben(){
     obs.disconnect();
   }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
   io.observe(bloque);
+});
+
+/* Los titulares de cada sección suben igual que la entrada, cada uno cuando
+   entra en pantalla y una sola vez. Isaac pidió más vida en las letras el 28 de
+   septiembre de 2026.
+
+   Algunos antetítulos llevan dentro un span que setLoc reescribe (el nombre
+   del local en "The New Orleans menu"). Ese span sube entero como una palabra
+   más y sigue siendo el mismo nodo, así que setLoc lo encuentra y le cambia el
+   texto sin romper nada. Los span.sr no se tocan. */
+function partirTitular(el, retardoBase){
+  if (!el || el.dataset.partido) return;
+  el.dataset.partido = '1';
+  let i = 0;
+  const envolver = (contenido) => {
+    const w = document.createElement('span');
+    w.className = 'palabra';
+    const inner = document.createElement('i');
+    inner.style.setProperty('--d', (retardoBase + i++ * 0.055).toFixed(3) + 's');
+    inner.appendChild(contenido);
+    w.appendChild(inner);
+    return w;
+  };
+  [...el.childNodes].forEach(nodo => {
+    if (nodo.nodeType === 1) {
+      if (nodo.classList.contains('sr')) return;
+      const hueco = document.createTextNode('');
+      nodo.replaceWith(hueco);
+      hueco.replaceWith(envolver(nodo));
+      return;
+    }
+    if (nodo.nodeType !== 3) return;
+    const frag = document.createDocumentFragment();
+    nodo.textContent.split(/(\s+)/).forEach(trozo => {
+      if (!trozo.trim()) { frag.appendChild(document.createTextNode(trozo)); return; }
+      frag.appendChild(envolver(document.createTextNode(trozo)));
+    });
+    nodo.replaceWith(frag);
+  });
+}
+
+addEventListener('load', function titularesQueSuben(){
+  if (menosMovimiento()) return;
+  const els = $$('h2.display, .eyebrow').filter(el => !el.closest('.intro-in, footer'));
+  els.forEach((el, n) => partirTitular(el, el.classList.contains('eyebrow') ? 0 : .12));
+  const io = new IntersectionObserver((es, obs) => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('visto');
+    obs.unobserve(e.target);
+  }), { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(el => io.observe(el));
 });

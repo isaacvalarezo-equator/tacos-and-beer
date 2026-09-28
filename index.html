@@ -7,7 +7,7 @@
 <title>Tacos and Beer — New Orleans · Slidell · Hammond</title>
 <meta name="description" content="Tacos and cold beer in New Orleans, Slidell, and Hammond. Full menu, big tables for groups, and reservations you can make online.">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v11">
+<link rel="stylesheet" href="styles.css?v12">
 </head>
 <body>
 
@@ -162,8 +162,8 @@
         <h3 class="display" style="margin-top:2rem">Specials</h3>
         <div id="specials"></div>
         <figure class="shot" style="margin-top:1.6rem">
-          <img src="img/margarita.jpg" alt="A house margarita in the big glass" width="560" height="865" loading="lazy">
-          <figcaption>The fishbowl. It comes in 16, 32, and 64 ounces.</figcaption>
+          <img src="img/margaritas-frozen.jpg" alt="Two frozen margaritas with lime on the bar, one pink and one yellow" width="700" height="1050" loading="lazy">
+          <figcaption>Frozen margaritas, made at the bar.</figcaption>
         </figure>
       </div>
     </div>
@@ -216,6 +216,15 @@
 
     <div class="grupo-in">
       <form id="partyForm">
+        <div class="field">
+          <label for="pLoc">Which restaurant</label>
+          <select id="pLoc" required>
+            <option value="nola">New Orleans · St. Charles Ave</option>
+            <option value="slidell">Slidell · 1st St</option>
+            <option value="hammond">Hammond · Thomas St</option>
+          </select>
+        </div>
+
         <div class="grid2">
           <div class="field">
             <label for="pDate">Date</label>
@@ -278,6 +287,15 @@
 
   <div class="reserva">
     <form id="waitForm">
+      <div class="field">
+        <label for="rLoc">Which restaurant</label>
+        <select id="rLoc" required>
+            <option value="nola">New Orleans · St. Charles Ave</option>
+            <option value="slidell">Slidell · 1st St</option>
+            <option value="hammond">Hammond · Thomas St</option>
+          </select>
+      </div>
+
       <div class="grid2">
         <div class="field">
           <label for="wName">Name</label>
@@ -293,7 +311,7 @@
         <label for="wEmail">Email <span class="opt">optional</span></label>
         <input type="email" id="wEmail" autocomplete="email" placeholder="you@example.com"
                inputmode="email" spellcheck="false">
-        <span class="hint">So we can send you the confirmation and remind you before the day.</span>
+        <span class="hint">So we can reach you about your booking.</span>
       </div>
 
       <div class="grid2">
@@ -312,7 +330,7 @@
       <div class="permiso">
         <label class="permiso-check">
           <input type="checkbox" id="wOptin">
-          <span>Also send me Taco Tuesday, events and offers by email or text.
+          <span>Also send me Taco Tuesday, events and offers by email.
                 You can stop from any message.</span>
         </label>
         <p class="permiso-nota">
@@ -363,32 +381,11 @@
   <p class="eyebrow">Your information</p>
   <h2 class="display">What we keep, and why</h2>
 
-  <div class="priv-grid">
-    <div>
-      <h3>To hold your table</h3>
-      <p>Your name, phone number and, if you give it, your email. We use them to
-      confirm the booking, to remind you before the day, and to reach you if
-      something changes. A reservation does not work without them.</p>
-    </div>
-    <div>
-      <h3>Only if you tick the box</h3>
-      <p>Taco Tuesday, events and offers, by email or text. That box is separate
-      and it starts empty. Leaving it empty does not change your reservation in
-      any way.</p>
-    </div>
-    <div>
-      <h3>Stopping</h3>
-      <p>Every message we send carries a way out, and it works on the message
-      you are reading, not on the next one. You can also call the restaurant and
-      ask us to take you off, and to delete what we hold.</p>
-    </div>
-    <div>
-      <h3>Where it goes</h3>
-      <p>Your booking lands in the group chat the team already uses to run the
-      floor. We do not sell it, and we do not hand it to anyone who is not
-      working your table.</p>
-    </div>
-  </div>
+  <p class="priv-corto">We use your name, phone and email to hold your table, and it goes
+  to the team that runs the floor. Offers only reach you if you tick the box, and
+  every message lets you stop. We do not sell your information, and if you call
+  us we will take you off and delete it.</p>
+  <p><a class="priv-link" href="legal.html">Privacy policy and terms</a></p>
 
   <p class="priv-pie">
     Tacos and Beer · 1622 St. Charles Ave, New Orleans, LA 70130 ·
@@ -413,6 +410,9 @@
           <a href="#parties">Groups and parties</a>
           <a href="#waitlist">Reservations</a>
           <a href="#locations">Locations and hours</a>
+          <a href="legal.html">Privacy policy</a>
+          <a href="legal.html#terms">Terms of use</a>
+          <a href="reservas.html" rel="nofollow">Staff</a>
         </p>
       </div>
       <div>
@@ -449,7 +449,7 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script type="application/ld+json" id="schema"></script>
-<script src="data.js?v11"></script>
-<script src="app.js?v11"></script>
+<script src="data.js?v12"></script>
+<script src="app.js?v12"></script>
 </body>
 </html>
