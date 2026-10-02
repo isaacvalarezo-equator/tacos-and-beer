@@ -415,7 +415,7 @@ setInterval(() => { const st = openState(LOCATIONS[loc]);
 (function reveals(){
   const solo = ['#menu > .eyebrow','#menu > h2','#menu > .hero-sub','#menu > .shot',
                 '.rail-head','#espera h2','#waitlist h2','.late > div','.wait','.planner'];
-  const grupos = ['#menuGrid','#events','#locs','.three','.gal'];
+  const grupos = ['#menuGrid','#resenasGrid','#events','#locs','.three','.gal'];
   solo.forEach(q => $$(q).forEach(el => el.classList.add('rv')));
   grupos.forEach(q => $$(q).forEach(el => el.classList.add('rv-stagger')));
 

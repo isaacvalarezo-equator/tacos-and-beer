@@ -1230,3 +1230,35 @@ body:has(:is(input,select,textarea):focus) .sticky{transform:translateY(100%)}
   .locpick button{font-size:.64rem;letter-spacing:.04em;padding:.4rem .2rem}
   .locbar .livestate{font-size:.64rem}
 }
+
+/* ---------- reseñas ----------
+   Sobre el papel deli, con el mismo borde de dos píxeles que las tarjetas del
+   rail. Las comillas son lo único en rojo: hacen de ilustración. Las tarjetas
+   no llevan estrellas porque de dos citas no consta la puntuación, y poner
+   cinco a ojo sería inventar el dato. */
+.resenas{
+  /* Tres columnas fijas: con auto-fit cabían cuatro y la fila de abajo dejaba
+     un hueco a la derecha. */
+  display:grid;gap:1rem;grid-template-columns:repeat(3,1fr);
+}
+@media (max-width:860px){.resenas{grid-template-columns:1fr}}
+.resena{
+  margin:0;padding:1.4rem 1.3rem 1.2rem;
+  border:2px solid var(--line-hard);background:var(--surface);
+  display:flex;flex-direction:column;gap:.9rem;
+}
+.resena::before{
+  content:"\201C";font-family:var(--black);color:var(--rojo);
+  font-size:3.4rem;line-height:.6;height:1.6rem;
+}
+.resena-grande{grid-column:1/-1}
+.resena-gancho{
+  margin:0;font-family:var(--black);text-transform:uppercase;
+  font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1;letter-spacing:.004em;
+}
+.resena blockquote{margin:0;font-size:1rem;line-height:1.5;flex:1}
+.resena-grande blockquote{font-size:clamp(1rem,1.6vw,1.2rem);max-width:62ch}
+.resena figcaption{
+  font-family:var(--black);text-transform:uppercase;letter-spacing:.08em;
+  font-size:.72rem;color:var(--ink-soft);
+}
