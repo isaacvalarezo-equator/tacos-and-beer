@@ -734,7 +734,9 @@ function partirTitular(el, retardoBase){
   };
   [...el.childNodes].forEach(nodo => {
     if (nodo.nodeType === 1) {
-      if (nodo.classList.contains('sr')) return;
+      // El <br> se queda donde está: metido en un span.palabra deja de partir
+      // la línea y "Taco<br>Tuesday" salía como TACOTUESDAY.
+      if (nodo.tagName === 'BR' || nodo.classList.contains('sr')) return;
       const hueco = document.createTextNode('');
       nodo.replaceWith(hueco);
       hueco.replaceWith(envolver(nodo));
